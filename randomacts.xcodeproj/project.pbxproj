@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7A82B0C070B00400842 /* RaokItemView.swift */; };
+		A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7AC2B0C0A7900400842 /* Actions.swift */; };
 		A6D5F9C22B07B9960047C7A1 /* randomactsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5F9C12B07B9960047C7A1 /* randomactsApp.swift */; };
 		A6D5F9C42B07B9960047C7A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5F9C32B07B9960047C7A1 /* ContentView.swift */; };
 		A6D5F9C62B07B9970047C7A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6D5F9C52B07B9970047C7A1 /* Assets.xcassets */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A6ACF7A82B0C070B00400842 /* RaokItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaokItemView.swift; sourceTree = "<group>"; };
+		A6ACF7AC2B0C0A7900400842 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		A6D5F9BE2B07B9960047C7A1 /* randomacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = randomacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D5F9C12B07B9960047C7A1 /* randomactsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomactsApp.swift; sourceTree = "<group>"; };
 		A6D5F9C32B07B9960047C7A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +75,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A6ACF7AA2B0C09EF00400842 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6ACF7A82B0C070B00400842 /* RaokItemView.swift */,
+				A6D5F9C32B07B9960047C7A1 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6ACF7AB2B0C0A2A00400842 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A6ACF7AC2B0C0A7900400842 /* Actions.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A6D5F9B52B07B9960047C7A1 = {
 			isa = PBXGroup;
 			children = (
@@ -94,8 +115,9 @@
 		A6D5F9C02B07B9960047C7A1 /* randomacts */ = {
 			isa = PBXGroup;
 			children = (
+				A6ACF7AB2B0C0A2A00400842 /* Model */,
+				A6ACF7AA2B0C09EF00400842 /* Views */,
 				A6D5F9C12B07B9960047C7A1 /* randomactsApp.swift */,
-				A6D5F9C32B07B9960047C7A1 /* ContentView.swift */,
 				A6D5F9C52B07B9970047C7A1 /* Assets.xcassets */,
 				A6D5F9C72B07B9970047C7A1 /* Preview Content */,
 			);
@@ -258,6 +280,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6D5F9C42B07B9960047C7A1 /* ContentView.swift in Sources */,
+				A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */,
+				A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */,
 				A6D5F9C22B07B9960047C7A1 /* randomactsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
