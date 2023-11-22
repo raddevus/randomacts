@@ -10,17 +10,34 @@ import SwiftUI
 struct RaokItemView: View {
     @State var results = [Action]()
     var body: some View {
-        VStack{
-            List(results, id:\ .description){ item in
-                VStack(alignment: .leading){
-                    Text("\(item.category ?? " ")   \(item.subcategory ?? "" )   \(item.description ?? "")")
-                }
+        NavigationStack{
+            Form{
                 
+                Section{
+                    VStack{
+                        List(results, id:\ .description){ item in
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
+                                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                    Text("\(item.subCategory ?? "")").foregroundStyle(Color.blue)
+                                    Text("\(item.description ?? "")")
+                                    Spacer()
+                                    
+                                }
+                                Divider()
+                            }
+                            
+                        }
+                    }
+                }
             }.onAppear(perform:loadData)
+                .navigationTitle("KTasks")
         }
     }
     
     func loadData() {
+        print("loadData()...")
             guard let url = URL(string: "https://newlibre.com/kind/api/KTask/GetAll" ) else {
                 print("Invalid URL")
                 return
@@ -38,7 +55,7 @@ struct RaokItemView: View {
                                         self.results = response.tasks
                                         //                            print("in here")
                                     }
-                                    print("response: \(response)")
+                                    // print("response: \(response)")
                                     return
                                     
                                 }catch {

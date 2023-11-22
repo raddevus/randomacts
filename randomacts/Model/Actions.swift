@@ -10,7 +10,7 @@ import Foundation
 struct Action: Codable{
     let screenName: String?
     let category: String?
-    let subcategory: String?
+    let subCategory: String?
     let description: String?
     let status: String?
     let created: String?
