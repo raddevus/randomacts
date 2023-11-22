@@ -23,3 +23,6 @@ struct Task: Codable{
     let tasks: [Action]
     
 }
+
+var allCategories = Set<String>()
+var allDescriptions = Set<String>()

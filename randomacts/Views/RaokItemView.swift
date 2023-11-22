@@ -9,6 +9,10 @@ import SwiftUI
 
 struct RaokItemView: View {
     @State var results = [Action]()
+//    init(results: [Action]){
+//        addCat()
+//        print("there are : \(allCategories.count)")
+//    }
     var body: some View {
         NavigationStack{
             Form{
@@ -31,8 +35,27 @@ struct RaokItemView: View {
                         }
                     }
                 }
-            }.onAppear(perform:loadData)
+            }.onAppear(perform: {
+                
+                loadData()
+                
+            })
                 .navigationTitle("KTasks")
+        }
+    }
+    
+    func addCat(){
+        print("addCat()...")
+        if results.count == 0 {return}
+        for i in 0...results.count-1{
+            allDescriptions.insert(results[i].description ?? "")
+            if results[i].category == ""{continue}
+            allCategories.insert(results[i].category ?? "")
+            //print("\(i) : \(results[i].category ?? "")")
+        }
+        print("there are \(allCategories.count) Cats!")
+        for item in allCategories {
+            print ("Category : \(item)")
         }
     }
     
@@ -53,9 +76,10 @@ struct RaokItemView: View {
                                     print("is this called?")
                                     DispatchQueue.main.async {
                                         self.results = response.tasks
-                                        //                            print("in here")
+                                        addCat()
                                     }
                                     // print("response: \(response)")
+                                    
                                     return
                                     
                                 }catch {
@@ -76,9 +100,9 @@ struct RaokItemView: View {
                     print("I failed")
                 }
             }.resume()
-        }
+    }
 }
 
 #Preview {
-    RaokItemView(results:[Action]())
+    RaokItemView()
 }
