@@ -59,11 +59,11 @@ struct RaokItemView: View {
         }
     }
     
-    func loadData() {
+    func loadData() ->[Action] {
         print("loadData()...")
             guard let url = URL(string: "https://newlibre.com/kind/api/KTask/GetAll" ) else {
                 print("Invalid URL")
-                return
+                return []
             }
             let request = URLRequest(url: url)
 
@@ -75,7 +75,9 @@ struct RaokItemView: View {
                                     let response = try JSONDecoder().decode(Task.self, from: data)
                                     print("is this called?")
                                     DispatchQueue.main.async {
+                                        
                                         self.results = response.tasks
+                                        
                                         addCat()
                                     }
                                     // print("response: \(response)")
@@ -100,6 +102,8 @@ struct RaokItemView: View {
                     print("I failed")
                 }
             }.resume()
+        
+        return results
     }
 }
 
