@@ -93,8 +93,7 @@ struct ContentView: View {
 //                            
 //                        }
                         loadData(updateLocal)
-                        print("globalTask is set!: \(globalTask)")
-                        currentTaskText = globalTask
+                        print("globalTask is set!: \(currentTaskText)")
                         print("### getRandomTask() ####")
                         //getRandomTask()
                         

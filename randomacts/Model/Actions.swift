@@ -29,9 +29,10 @@ var allDescriptions = Set<String>()
 
 var results = [Action]()
 
-var globalTask = ""
 
 func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
+    
+    var taskText = ""
     print("loadData()...")
         guard let url = URL(string: "https://newlibre.com/kind/api/KTask/GetAll" ) else {
             print("Invalid URL")
@@ -42,8 +43,8 @@ func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
         if (allDescriptions.count > 0){
             print("### TASKS ARE ALREADY LOADED ######")
             
-                globalTask = getRandomTask()
-                updateTaskText(globalTask)
+                taskText = getRandomTask()
+                updateTaskText(taskText)
             
             return []
         }
@@ -60,9 +61,9 @@ func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
                                     results = response.tasks
                                     
                                     addCat()
-                                    globalTask = getRandomTask()
+                                    taskText = getRandomTask()
                                     
-                                    updateTaskText(globalTask)
+                                    updateTaskText(taskText)
                                     
                                 }
                                 // print("response: \(response)")
@@ -95,7 +96,7 @@ func addCat(){
 //        print ("Category : \(item)")
 //    }
     print("leaving addCat()...")
-    
+
 }
 
 func getRandomTask() -> String{
