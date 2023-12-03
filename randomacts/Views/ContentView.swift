@@ -14,9 +14,23 @@ struct ContentView: View {
     @State private var isQuoteDisplayed = true
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
+    @State private var dayNumber = 0
     
     func updateLocal(_ taskText: String){
         currentTaskText = taskText
+    }
+    
+    func calcDayNumber() -> Int{
+        // this code is from:
+        // https://www.epochconverter.com/daynumbers
+        // I used https://swiftify.com/converter/code
+        // to conver the Objective-C code to Swift
+        var currentDay: Int
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "D"
+        let date = Date()
+        currentDay = Int(dateFormatter.string(from: date)) ?? 0
+        return currentDay
     }
     
     var body: some View {
@@ -129,6 +143,10 @@ struct ContentView: View {
                     Text("Task History")
                     Section{
                         Text("This will include the list of tasks the user has chosen, associated date they took the task on and a [ ] completed check box to indicate if they completed it")
+                        Text("Day Number: \(dayNumber)")
+                        Button("Calc DayNumber"){
+                            dayNumber = calcDayNumber()
+                        }
                     }
                 }
                 .toolbar{
