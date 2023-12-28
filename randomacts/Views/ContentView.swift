@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var isShowingDetailView = false
     @State private var currentTaskText = ""
     @State private var customTaskDescription = ""
@@ -15,6 +16,21 @@ struct ContentView: View {
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
+    
+    @State private var user: User
+        
+    init(){
+        // UserDefaults.standard.removeObject(forKey: "userId")
+        let userId = UserDefaults.standard.value(forKey: "userId")
+        
+        if (userId == nil){
+            user = User()
+            UserDefaults.standard.set(user.id.uuidString, forKey:"userId")
+        }
+        else{
+            user = User(id: userId as! String)
+        }
+    }
     
     func updateLocal(_ taskText: String){
         currentTaskText = taskText
@@ -165,7 +181,7 @@ struct ContentView: View {
                 Form{
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
-                    Text("userid: 23ad334c48a7d")
+                    Text("userid: \(user.id.uuidString)")
                     Section{
                         Button("Add Friend"){
                             isShowingAlert = true
