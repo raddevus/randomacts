@@ -11,29 +11,36 @@ struct ContentView: View {
     
     @State private var isShowingDetailView = false
     @State private var currentTaskText = ""
+    @State private var currentTask: KTask? = nil
     @State private var customTaskDescription = ""
     @State private var isQuoteDisplayed = true
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     
-    @State private var user: User
+    @State private var user: UserX
         
     init(){
         // UserDefaults.standard.removeObject(forKey: "userId")
         let userId = UserDefaults.standard.value(forKey: "userId")
         
         if (userId == nil){
-            user = User()
+            user = UserX()
             UserDefaults.standard.set(user.id.uuidString, forKey:"userId")
         }
         else{
-            user = User(id: userId as! String)
+            user = UserX(id: userId as! String)
         }
     }
     
     func updateLocal(_ taskText: String){
         currentTaskText = taskText
+    }
+    
+    func updateCurrentTask(_ ktask: KTask?){
+        currentTask = ktask
+        print ("currentTask items: \(currentTask?.id) - \(currentTask?.description)")
+    currentTaskText = currentTask?.description ?? ""
     }
     
     func calcDayNumber() -> Int{
@@ -54,6 +61,10 @@ struct ContentView: View {
         TabView{
             NavigationStack{
                 Form{
+                    Button("Remove UserData"){
+                        UserDefaults.standard.removeObject(forKey: "userId")
+                        print("removed the userid")
+                    }
                     DisclosureGroup("Random Acts Info"){
                         Text("Random Acts of Kindness helps create the opportunity to be more intentional about completing small, positive tasks that benefit others.")
                         
@@ -101,6 +112,7 @@ struct ContentView: View {
                     Section{
                         Button("Get New Task"){
                             loadData(updateLocal)
+                            loadAllKTasks(updateCurrentTask)
                         }.buttonStyle(.bordered)
                     }
                     Section{
@@ -122,7 +134,8 @@ struct ContentView: View {
 //                        DispatchQueue.main.async {              loadData()
 //                            
 //                        }
-                        loadData(updateLocal)
+                        loadAllKTasks( updateCurrentTask)
+                        //loadData(updateLocal)
                         print("globalTask is set!: \(currentTaskText)")
                         print("### getRandomTask() ####")
                         //getRandomTask()
@@ -163,6 +176,14 @@ struct ContentView: View {
                         Button("Calc DayNumber"){
                             dayNumber = calcDayNumber()
                         }
+                        Button("GetQuote"){
+                            let q = QuoteX()
+                            //q.Gen1()
+                            print("#########")
+                            q.Gen2()
+                            q.Gen3()
+                            //q.GetQuote(iso8601Date: "2023-01-01")
+                        }.buttonStyle(.bordered)
                     }
                 }
                 .toolbar{
@@ -181,7 +202,12 @@ struct ContentView: View {
                 Form{
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
-                    Text("userid: \(user.id.uuidString)")
+                    Text("userid: \(user.id.uuidString.lowercased())")
+                    Button("Save User Data"){
+                        //user.Save()
+                        user.screenName="yondofooma"
+                        user.Save(isScreenName: true)
+                    }.buttonStyle(.bordered)
                     Section{
                         Button("Add Friend"){
                             isShowingAlert = true

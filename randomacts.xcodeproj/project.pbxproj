@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7A82B0C070B00400842 /* RaokItemView.swift */; };
 		A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7AC2B0C0A7900400842 /* Actions.swift */; };
-		A6C2798F2B3CE12C0099C8DA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2798E2B3CE12C0099C8DA /* User.swift */; };
+		A6C2798F2B3CE12C0099C8DA /* UserX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2798E2B3CE12C0099C8DA /* UserX.swift */; };
+		A6C279912B3F4CF30099C8DA /* QuoteX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C279902B3F4CF30099C8DA /* QuoteX.swift */; };
+		A6C279932B44D5A00099C8DA /* KTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C279922B44D5A00099C8DA /* KTask.swift */; };
 		A6D5F9C22B07B9960047C7A1 /* randomactsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5F9C12B07B9960047C7A1 /* randomactsApp.swift */; };
 		A6D5F9C42B07B9960047C7A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D5F9C32B07B9960047C7A1 /* ContentView.swift */; };
 		A6D5F9C62B07B9970047C7A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6D5F9C52B07B9970047C7A1 /* Assets.xcassets */; };
@@ -39,7 +41,9 @@
 /* Begin PBXFileReference section */
 		A6ACF7A82B0C070B00400842 /* RaokItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaokItemView.swift; sourceTree = "<group>"; };
 		A6ACF7AC2B0C0A7900400842 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
-		A6C2798E2B3CE12C0099C8DA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A6C2798E2B3CE12C0099C8DA /* UserX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserX.swift; sourceTree = "<group>"; };
+		A6C279902B3F4CF30099C8DA /* QuoteX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteX.swift; sourceTree = "<group>"; };
+		A6C279922B44D5A00099C8DA /* KTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTask.swift; sourceTree = "<group>"; };
 		A6D5F9BE2B07B9960047C7A1 /* randomacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = randomacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D5F9C12B07B9960047C7A1 /* randomactsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomactsApp.swift; sourceTree = "<group>"; };
 		A6D5F9C32B07B9960047C7A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -90,7 +94,9 @@
 			isa = PBXGroup;
 			children = (
 				A6ACF7AC2B0C0A7900400842 /* Actions.swift */,
-				A6C2798E2B3CE12C0099C8DA /* User.swift */,
+				A6C2798E2B3CE12C0099C8DA /* UserX.swift */,
+				A6C279902B3F4CF30099C8DA /* QuoteX.swift */,
+				A6C279922B44D5A00099C8DA /* KTask.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -285,8 +291,10 @@
 				A6D5F9C42B07B9960047C7A1 /* ContentView.swift in Sources */,
 				A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */,
 				A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */,
-				A6C2798F2B3CE12C0099C8DA /* User.swift in Sources */,
+				A6C279912B3F4CF30099C8DA /* QuoteX.swift in Sources */,
+				A6C2798F2B3CE12C0099C8DA /* UserX.swift in Sources */,
 				A6D5F9C22B07B9960047C7A1 /* randomactsApp.swift in Sources */,
+				A6C279932B44D5A00099C8DA /* KTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

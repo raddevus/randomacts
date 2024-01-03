@@ -43,7 +43,7 @@ func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
         if (allDescriptions.count > 0){
             print("### TASKS ARE ALREADY LOADED ######")
             
-                taskText = getRandomTask()
+                taskText = getRandomTaskText()
                 updateTaskText(taskText)
             
             return []
@@ -61,7 +61,7 @@ func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
                                     results = response.tasks
                                     
                                     addCat()
-                                    taskText = getRandomTask()
+                                    taskText = getRandomTaskText()
                                     
                                     updateTaskText(taskText)
                                     
@@ -99,7 +99,7 @@ func addCat(){
 
 }
 
-func getRandomTask() -> String{
+func getRandomTaskText() -> String{
     print("in getRandomTask()...")
     var currentTaskText = ""
     if allDescriptions.count <= 0{
