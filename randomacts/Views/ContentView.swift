@@ -33,10 +33,6 @@ struct ContentView: View {
         }
     }
     
-    func updateLocal(_ taskText: String){
-        currentTaskText = taskText
-    }
-    
     func updateCurrentTask(_ ktask: KTask?){
         currentTask = ktask
         print ("currentTask items: \(currentTask?.id) - \(currentTask?.description)")
@@ -111,7 +107,6 @@ struct ContentView: View {
                 Form{
                     Section{
                         Button("Get New Task"){
-                            loadData(updateLocal)
                             loadAllKTasks(updateCurrentTask)
                         }.buttonStyle(.bordered)
                     }
@@ -135,7 +130,6 @@ struct ContentView: View {
 //                            
 //                        }
                         loadAllKTasks( updateCurrentTask)
-                        //loadData(updateLocal)
                         print("globalTask is set!: \(currentTaskText)")
                         print("### getRandomTask() ####")
                         //getRandomTask()
