@@ -8,38 +8,48 @@
 import Foundation
 
 struct RetVal : Decodable{
-    let success: Bool
-    let message: String
+//    let success: Bool?
+//    let message: String
     let user: User
 }
 
 struct User: Decodable{
-    let Id: Int64
-    let RoleId: Int64
-    let Guid: String
-    let ScreenName: String
-    let PwdHash: String
-    let Email: String
-    let Created: Date
-    let Updated: Date
-    let Active: Bool
+    let id: Int64
+    let roleId: Int64
+    let guid: String
+    let screenName: String?
+    let pwdHash: String?
+    let email: String?
+    let created: String?
+    let updated: Date?
+    let active: Bool
+    
 }
 
-class UserX: ObservableObject, Codable, Identifiable{
-    public let id: UUID
-    var screenName: String = ""
+struct userData: Encodable{
+    let guid: String
+    let screenName: String
+    init (_ guid: String, _ screenName: String){
+        self.guid = guid
+        self.screenName = screenName
+    }
+}
+
+class LocalUser: ObservableObject, Codable, Identifiable{
+    //public let id: UUID
+    public let uuid: UUID
+    var screenName = ""
     
     init(){
-        id = UUID()
+        uuid = UUID()
     }
     
-    init (id: String){
-        self.id = UUID(uuidString: id)!
-        print("self.id: \(self.id)")
+    init (uuid: String){
+        self.uuid = UUID(uuidString: uuid)!
+        print("self.uuid: \(self.uuid)")
     }
     
     func Save(isScreenName: Bool = false) -> Bool{
-        
         let destinationUrl : String = {
             if isScreenName{
                 "https://newlibre.com/kind/api/User/SetScreenName"
@@ -56,15 +66,14 @@ class UserX: ObservableObject, Codable, Identifiable{
         var request = URLRequest(url: url)
         if isScreenName{
             request.httpMethod = "POST"
-            // url.append(queryItems:  [URLQueryItem(name: "guid", value: "\(id)"), URLQueryItem(name: "screenName", value: "\(screenName)")])
-            let req = "guid=\(id.uuidString.lowercased()),screenName=\(screenName)"
-            //print("url: \(url)")
-            request.httpBody = req.data(using: String.Encoding.utf8)
+            
+            var finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(screenName)"
+            request.httpBody = finalData.data(using: String.Encoding.utf8)
         }
         else{
             request.httpMethod = "POST"
-            let req = "guid=\(id.uuidString.lowercased())"
-            request.httpBody = req.data(using: String.Encoding.utf8)
+            let req = "guid=\(uuid.uuidString.lowercased())"
+            request.httpBody =  Data(req.utf8)// req.data(using: String.Encoding.utf8)
         }
         
         
@@ -74,24 +83,23 @@ class UserX: ObservableObject, Codable, Identifiable{
                 print("data: \(data) \(Date())")
                             do {
                                 let response = try JSONDecoder().decode(RetVal.self, from: data)
-                                print("is this called?")
+                                print("calling user.Save()...")
                                 
                                 DispatchQueue.main.async {
-                                    
-                                    var success = response.success
-                                    print("\(success)")
+                                    print ("response: \(data)")
+                                    print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
                                     
                                 }
-                                // print("response: \(response)")
                                 
                                 return
                                 
                             }catch {
-                                print ("\(error)")
+                                print("CATCH: \(String(decoding: data, as: UTF8.self))")
                             }
             }
             else{
                 print("I failed")
+                
             }
         }.resume()
         return true

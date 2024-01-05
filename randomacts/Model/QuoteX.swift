@@ -8,7 +8,7 @@
 import Foundation
 
 struct thing : Decodable{
-    let success : Bool
+    //let success : Int
     let quote: quote
 }
 
@@ -20,14 +20,15 @@ struct quote: Decodable{
     let content: String
     let dayNumber: Int
     let created: String
-    let updated: String
+    let updated: String?
     let active: Bool
     
 }
 
 struct gen1Reply : Decodable{
-    let sucess: Bool
+    let success: Bool?
     let message: String
+    let user: User
 }
 
 struct Extra: Decodable{
@@ -37,7 +38,7 @@ struct Extra: Decodable{
 }
 
 struct gen2Reply : Decodable{
-    let sucess: Bool
+    let success: Bool
     let message: String
     let extra : Extra
 }
@@ -71,13 +72,15 @@ class QuoteX{
                 
                 print("data: \(data) \(Date())")
                             do {
+                                print("\(data.debugDescription)")
                                 let response = try JSONDecoder().decode(thing.self, from: data)
-                                print("is this called?")
+                                print("GetQuote!!")
                                 
                                 DispatchQueue.main.async {
                                     
-                                    var success = response.success
-                                    print("\(success)")
+                                    //var success = response.success
+                                    //print("success: \(success)")
+                                    print(response.quote.content)
                                     
                                 }
                                 // print("response: \(response)")
@@ -120,8 +123,9 @@ class QuoteX{
                                 
                                 DispatchQueue.main.async {
                                     
-                                    var success = response.sucess
+                                    var success = response.success
                                     print("\(success)")
+                                    print("user \(response.user)")
                                     
                                 }
                                 // print("response: \(response)")
@@ -164,7 +168,7 @@ class QuoteX{
                                 
                                 DispatchQueue.main.async {
                                     
-                                    var success = response.sucess
+                                    var success = response.success
                                     print("response: \(response)")
                                     print("\(success)")
                                     

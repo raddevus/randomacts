@@ -18,18 +18,18 @@ struct ContentView: View {
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     
-    @State private var user: UserX
+    @State private var user: LocalUser
         
     init(){
         // UserDefaults.standard.removeObject(forKey: "userId")
         let userId = UserDefaults.standard.value(forKey: "userId")
         
         if (userId == nil){
-            user = UserX()
-            UserDefaults.standard.set(user.id.uuidString, forKey:"userId")
+            user = LocalUser()
+            UserDefaults.standard.set(user.uuid.uuidString, forKey:"userId")
         }
         else{
-            user = UserX(id: userId as! String)
+            user = LocalUser(uuid: userId as! String)
         }
     }
     
@@ -172,10 +172,11 @@ struct ContentView: View {
                         }
                         Button("GetQuote"){
                             let q = QuoteX()
-                            //q.Gen1()
+                            //q.GetQuote(iso8601Date: "2024-01-01")
+                            q.Gen1()
                             print("#########")
-                            q.Gen2()
-                            q.Gen3()
+                            //q.Gen2()
+                            // q.Gen3()
                             //q.GetQuote(iso8601Date: "2023-01-01")
                         }.buttonStyle(.bordered)
                     }
@@ -196,10 +197,10 @@ struct ContentView: View {
                 Form{
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
-                    Text("userid: \(user.id.uuidString.lowercased())")
+                    Text("userid: \(user.uuid.uuidString.lowercased())")
                     Button("Save User Data"){
-                        //user.Save()
-                        user.screenName="yondofooma"
+                        user.Save()
+                        user.screenName="galliocious"
                         user.Save(isScreenName: true)
                     }.buttonStyle(.bordered)
                     Section{
