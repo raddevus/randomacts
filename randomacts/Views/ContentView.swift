@@ -18,19 +18,10 @@ struct ContentView: View {
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     
-    @State private var user: LocalUser
+    @State private var localUser: LocalUser?
         
     init(){
-        // UserDefaults.standard.removeObject(forKey: "userId")
-        let userId = UserDefaults.standard.value(forKey: "userId")
-        
-        if (userId == nil){
-            user = LocalUser()
-            UserDefaults.standard.set(user.uuid.uuidString, forKey:"userId")
-        }
-        else{
-            user = LocalUser(uuid: userId as! String)
-        }
+        //createLocalUser()
     }
     
     func updateCurrentTask(_ ktask: KTask?){
@@ -52,14 +43,36 @@ struct ContentView: View {
         return currentDay
     }
     
+    func createLocalUser(){
+        let userData = UserDefaults.standard.data(forKey: "localUser")
+        
+        if (userData != nil){
+            print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
+            localUser  = try? JSONDecoder().decode(LocalUser.self, from: userData! )
+            print("localUser LOADED! -> \(localUser?.user.guid ?? "fail")")
+        }
+        
+        if (localUser == nil){
+            localUser = LocalUser()
+            if let data = try? JSONEncoder().encode(localUser) {
+                UserDefaults.standard.set(data, forKey: "localUser")
+            }
+            print("localUser created -> \(localUser!.user.guid)")
+        }
+    }
+    
     var body: some View {
         
         TabView{
             NavigationStack{
                 Form{
                     Button("Remove UserData"){
-                        UserDefaults.standard.removeObject(forKey: "userId")
-                        print("removed the userid")
+                        UserDefaults.standard
+                            .removeObject(forKey: "localUser")
+                        print("removed the localUser")
+                    }
+                    Button("Create User"){
+                        createLocalUser()
                     }
                     DisclosureGroup("Random Acts Info"){
                         Text("Random Acts of Kindness helps create the opportunity to be more intentional about completing small, positive tasks that benefit others.")
@@ -197,11 +210,11 @@ struct ContentView: View {
                 Form{
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
-                    Text("userid: \(user.uuid.uuidString.lowercased())")
+                    // Text("userid: \(localUser.uuid.uuidString.lowercased())")
                     Button("Save User Data"){
-                        user.Save()
-                        user.screenName="galliocious"
-                        user.Save(isScreenName: true)
+                        //localUser?.Save()
+                        //localUser!.user.screenName="speelenktuff"
+                        //localUser!.Save(isScreenName: true)
                     }.buttonStyle(.bordered)
                     Section{
                         Button("Add Friend"){

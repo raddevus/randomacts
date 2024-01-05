@@ -13,40 +13,45 @@ struct RetVal : Decodable{
     let user: User
 }
 
-struct User: Decodable{
+struct User: Codable{
     let id: Int64
     let roleId: Int64
     let guid: String
-    let screenName: String?
+    var screenName: String
     let pwdHash: String?
     let email: String?
     let created: String?
     let updated: Date?
     let active: Bool
     
-}
-
-struct userData: Encodable{
-    let guid: String
-    let screenName: String
-    init (_ guid: String, _ screenName: String){
+    init(_ guid: String){
+        id = 0
+        roleId = 0
         self.guid = guid
-        self.screenName = screenName
+        screenName = ""
+        pwdHash = ""
+        email = ""
+        created = ""
+        updated = nil
+        active = true
     }
+    
 }
 
 class LocalUser: ObservableObject, Codable, Identifiable{
-    //public let id: UUID
-    public let uuid: UUID
-    var screenName = ""
+    
+    var user: User
+    private let uuid: UUID
     
     init(){
         uuid = UUID()
+        user = User(uuid.uuidString.lowercased())
     }
     
     init (uuid: String){
         self.uuid = UUID(uuidString: uuid)!
         print("self.uuid: \(self.uuid)")
+        user = User(self.uuid.uuidString.lowercased())
     }
     
     func Save(isScreenName: Bool = false) -> Bool{
@@ -67,7 +72,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         if isScreenName{
             request.httpMethod = "POST"
             
-            var finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(screenName)"
+            var finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(user.screenName)"
             request.httpBody = finalData.data(using: String.Encoding.utf8)
         }
         else{
