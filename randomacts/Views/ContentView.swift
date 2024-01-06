@@ -18,10 +18,10 @@ struct ContentView: View {
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     
-    @State private var localUser: LocalUser?
+     private var localUser: LocalUser?
         
     init(){
-        //createLocalUser()
+        self.localUser = createLocalUser()
     }
     
     func updateCurrentTask(_ ktask: KTask?){
@@ -43,22 +43,23 @@ struct ContentView: View {
         return currentDay
     }
     
-    func createLocalUser(){
+    func createLocalUser() -> LocalUser{
         let userData = UserDefaults.standard.data(forKey: "localUser")
-        
+        var user: LocalUser? = nil
         if (userData != nil){
             print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
-            localUser  = try? JSONDecoder().decode(LocalUser.self, from: userData! )
-            print("localUser LOADED! -> \(localUser?.user.guid ?? "fail")")
+            user  = try? JSONDecoder().decode(LocalUser.self, from: userData! )
+            print("localUser LOADED! -> \(user?.user.guid ?? "fail")")
         }
         
-        if (localUser == nil){
-            localUser = LocalUser()
-            if let data = try? JSONEncoder().encode(localUser) {
+        if (user == nil){
+            user = LocalUser()
+            if let data = try? JSONEncoder().encode(user) {
                 UserDefaults.standard.set(data, forKey: "localUser")
             }
-            print("localUser created -> \(localUser!.user.guid)")
+            print("localUser created -> \(user!.user.guid)")
         }
+        return user!
     }
     
     var body: some View {
@@ -210,11 +211,14 @@ struct ContentView: View {
                 Form{
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
-                    // Text("userid: \(localUser.uuid.uuidString.lowercased())")
+                    
+                    
+                    
+                    Text("userid: \(self.localUser!.user.guid)")
                     Button("Save User Data"){
-                        //localUser?.Save()
-                        //localUser!.user.screenName="speelenktuff"
-                        //localUser!.Save(isScreenName: true)
+                        localUser?.Save()
+                        localUser!.user.screenName="speelenktuff"
+                        localUser!.Save(isScreenName: true)
                     }.buttonStyle(.bordered)
                     Section{
                         Button("Add Friend"){
