@@ -98,7 +98,9 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 self.user.created = response.user.created
                                 self.user.updated = response.user.updated
                                 print("SAVING SELF!!")
-                                saveUser(self)
+                                if !isScreenName {
+                                    saveUser(self)
+                                }
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")
                                     print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
