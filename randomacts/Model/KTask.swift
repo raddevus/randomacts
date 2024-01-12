@@ -10,7 +10,7 @@ import Foundation
 
 struct KTask: Decodable{
     let id: Int64
-    let screenName: String
+    let userId: Int64
     let category: String
     let subCategory: String
     let description: String

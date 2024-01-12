@@ -8,21 +8,21 @@
 import Foundation
 
 struct RetVal : Decodable{
-//    let success: Bool?
-//    let message: String
+    let success: Bool?
+    let message: String
     let user: User
 }
 
 struct User: Codable{
-    let id: Int64
-    let roleId: Int64
-    let guid: String
+    var id: Int64
+    var roleId: Int64
+    var guid: String
     var screenName: String
-    let pwdHash: String?
-    let email: String?
-    let created: String?
-    let updated: Date?
-    let active: Bool
+    var pwdHash: String?
+    var email: String?
+    var created: String?
+    var updated: Date?
+    var active: Bool
     
     init(_ guid: String){
         id = 0
@@ -89,7 +89,13 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                             do {
                                 let response = try JSONDecoder().decode(RetVal.self, from: data)
                                 print("calling user.Save()...")
-                                
+                                self.user.id = response.user.id
+                                self.user.roleId = response.user.roleId
+                                self.user.screenName = response.user.screenName
+                                self.user.pwdHash = response.user.pwdHash
+                                self.user.email = response.user.email
+                                self.user.created = response.user.created
+                                self.user.updated = response.user.updated
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")
                                     print("SUCCESS: \(String(decoding: data, as: UTF8.self))")

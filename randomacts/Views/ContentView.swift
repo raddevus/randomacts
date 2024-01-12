@@ -17,11 +17,18 @@ struct ContentView: View {
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
+    @State private var screenName = ""
+    private var sn = ""
     
      private var localUser: LocalUser?
         
-    init(){
+    init() {
+        print("init() is RUNNING...")
         self.localUser = createLocalUser()
+        print("getting localUser...")
+        
+        print("got localUser....")
+        print("screenName INIT(): \(screenName )")
     }
     
     func updateCurrentTask(_ ktask: KTask?){
@@ -54,12 +61,29 @@ struct ContentView: View {
         
         if (user == nil){
             user = LocalUser()
-            if let data = try? JSONEncoder().encode(user) {
-                UserDefaults.standard.set(data, forKey: "localUser")
-            }
+            
+            user?.Save()
+            
+            saveUserToUserDefaults(user: user!)
             print("localUser created -> \(user!.user.guid)")
+        
         }
+        
         return user!
+    }
+    
+    func saveUserToUserDefaults(user: LocalUser){
+        if let data = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(data, forKey: "localUser")
+        }
+    }
+    
+    func getUserInfo(){
+        let userData = UserDefaults.standard.data(forKey: "localUser")
+        var user: LocalUser? = nil
+        if (userData != nil){
+            print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
+        }
     }
     
     var body: some View {
@@ -74,6 +98,10 @@ struct ContentView: View {
                     }
                     Button("Create User"){
                         createLocalUser()
+                    }
+                    Button("Get User Info"){
+                        getUserInfo()
+                        print("screenName 1: \(screenName)")
                     }
                     DisclosureGroup("Random Acts Info"){
                         Text("Random Acts of Kindness helps create the opportunity to be more intentional about completing small, positive tasks that benefit others.")
@@ -212,13 +240,16 @@ struct ContentView: View {
                     Text("Profile")
                     Text("ScreenName: fred flintstone")
                     
-                    
-                    
                     Text("userid: \(self.localUser!.user.guid)")
+                    TextField(
+                        "screenName",
+                        text: $screenName)
                     Button("Save User Data"){
-                        localUser?.Save()
-                        localUser!.user.screenName="speelenktuff"
+                        // localUser?.Save()
+                        localUser!.user.screenName=screenName
+                        saveUserToUserDefaults(user: localUser!)
                         localUser!.Save(isScreenName: true)
+                        screenName = localUser!.user.screenName
                     }.buttonStyle(.bordered)
                     Section{
                         Button("Add Friend"){
@@ -247,6 +278,11 @@ struct ContentView: View {
                             }
                         }
                     }
+                }
+                .onAppear(){
+                    print("displaying PROFILE!")
+                    print ("PROFILE screenName: \(screenName)")
+                    screenName = localUser!.user.screenName
                 }
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {
