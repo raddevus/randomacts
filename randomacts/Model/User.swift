@@ -9,7 +9,6 @@ import Foundation
 
 struct RetVal : Decodable{
     let success: Bool?
-    let message: String
     let user: User
 }
 
@@ -54,7 +53,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         user = User(self.uuid.uuidString.lowercased())
     }
     
-    func Save(isScreenName: Bool = false) -> Bool{
+    func Save(saveUser: @escaping (_ user: LocalUser) ->(), isScreenName: Bool = false) -> Bool{
         let destinationUrl : String = {
             if isScreenName{
                 "https://newlibre.com/kind/api/User/SetScreenName"
@@ -90,12 +89,16 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 let response = try JSONDecoder().decode(RetVal.self, from: data)
                                 print("calling user.Save()...")
                                 self.user.id = response.user.id
+                                print("got userId = \(self.user.id)")
+                                // print("self.user.id ====> \(self.user.id)")
                                 self.user.roleId = response.user.roleId
                                 self.user.screenName = response.user.screenName
                                 self.user.pwdHash = response.user.pwdHash
                                 self.user.email = response.user.email
                                 self.user.created = response.user.created
                                 self.user.updated = response.user.updated
+                                print("SAVING SELF!!")
+                                saveUser(self)
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")
                                     print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
@@ -105,6 +108,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 return
                                 
                             }catch {
+                                print("\(error)")
                                 print("CATCH: \(String(decoding: data, as: UTF8.self))")
                             }
             }
@@ -113,6 +117,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                 
             }
         }.resume()
+        
         return true
     }
 }

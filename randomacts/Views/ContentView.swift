@@ -62,7 +62,7 @@ struct ContentView: View {
         if (user == nil){
             user = LocalUser()
             
-            user?.Save()
+            user?.Save(saveUser: saveUserToUserDefaults)
             
             saveUserToUserDefaults(user: user!)
             print("localUser created -> \(user!.user.guid)")
@@ -73,6 +73,8 @@ struct ContentView: View {
     }
     
     func saveUserToUserDefaults(user: LocalUser){
+        let outdata = (try? JSONEncoder().encode(user)) ?? Data()
+        print("saveUserToDefaults -> \(String(decoding: outdata, as: UTF8.self))")
         if let data = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(data, forKey: "localUser")
         }
@@ -80,7 +82,7 @@ struct ContentView: View {
     
     func getUserInfo(){
         let userData = UserDefaults.standard.data(forKey: "localUser")
-        var user: LocalUser? = nil
+        
         if (userData != nil){
             print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
         }
@@ -247,8 +249,8 @@ struct ContentView: View {
                     Button("Save User Data"){
                         // localUser?.Save()
                         localUser!.user.screenName=screenName
-                        saveUserToUserDefaults(user: localUser!)
-                        localUser!.Save(isScreenName: true)
+                        //saveUserToUserDefaults(user: localUser!)
+                        localUser!.Save(saveUser:saveUserToUserDefaults, isScreenName: true)
                         screenName = localUser!.user.screenName
                     }.buttonStyle(.bordered)
                     Section{
