@@ -64,7 +64,7 @@ struct ContentView: View {
             
             user?.Save(saveUser: saveUserToUserDefaults)
             
-            saveUserToUserDefaults(user: user!)
+            saveUserToUserDefaults(inUser: user!)
             print("localUser created -> \(user!.user.guid)")
         
         }
@@ -72,12 +72,28 @@ struct ContentView: View {
         return user!
     }
     
-    func saveUserToUserDefaults(user: LocalUser){
-        let outdata = (try? JSONEncoder().encode(user)) ?? Data()
+    func saveUserToUserDefaults(inUser: LocalUser){
+        print (" ## saveUserToUserDefaults ##")
+        let outdata = (try? JSONEncoder().encode(inUser)) ?? Data()
         print("saveUserToDefaults -> \(String(decoding: outdata, as: UTF8.self))")
-        if let data = try? JSONEncoder().encode(user) {
+        if let data = try? JSONEncoder().encode(inUser) {
             UserDefaults.standard.set(data, forKey: "localUser")
         }
+    }
+    
+    func updateUserScreenName(inUser: LocalUser){
+        print (" ## updateUserScreenName ##")
+        var user: LocalUser? = nil
+        let userData = UserDefaults.standard.data(forKey: "localUser")
+        
+        if (userData != nil){
+            print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
+            user  = try? JSONDecoder().decode(LocalUser.self, from: userData! )
+            print("localUser LOADED! -> \(user?.user.guid ?? "fail")")
+        } 
+        
+        user?.user.screenName = inUser.user.screenName
+        saveUserToUserDefaults(inUser: user!)
     }
     
     func getUserInfo(){
@@ -240,7 +256,7 @@ struct ContentView: View {
             NavigationStack{
                 Form{
                     Text("Profile")
-                    Text("ScreenName: fred flintstone")
+                    Text("ScreenName: \(screenName)")
                     
                     Text("userid: \(self.localUser!.user.guid)")
                     TextField(
@@ -250,7 +266,7 @@ struct ContentView: View {
                         // localUser?.Save()
                         localUser!.user.screenName=screenName
                         //saveUserToUserDefaults(user: localUser!)
-                        localUser!.Save(saveUser:saveUserToUserDefaults, isScreenName: true)
+                        localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
                         screenName = localUser!.user.screenName
                     }.buttonStyle(.bordered)
                     Section{
