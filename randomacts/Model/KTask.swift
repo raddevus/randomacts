@@ -85,7 +85,7 @@ func getRandomTask() -> KTask?{
         print("No items loaded! Please run Load KTasks")
         return nil
     }
-    var idx = Int.random(in: 0...allKTasks.count-1)
+    let idx = Int.random(in: 0...allKTasks.count-1)
     currentTask = Array(allKTasks)[idx]
     print ("KTask: \(String(describing: currentTask))")
     return currentTask

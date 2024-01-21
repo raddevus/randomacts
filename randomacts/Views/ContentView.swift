@@ -33,7 +33,7 @@ struct ContentView: View {
     
     func updateCurrentTask(_ ktask: KTask?){
         currentTask = ktask
-        print ("currentTask items: \(currentTask?.id) - \(currentTask?.description)")
+        print ("currentTask items: \(String(describing: currentTask?.id)) - \(String(describing: currentTask?.description))")
     currentTaskText = currentTask?.description ?? ""
     }
     
@@ -64,9 +64,7 @@ struct ContentView: View {
             
             user?.Save(saveUser: saveUserToUserDefaults)
             
-            saveUserToUserDefaults(inUser: user!)
             print("localUser created -> \(user!.user.guid)")
-        
         }
         
         return user!

@@ -63,7 +63,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
             }
         }()
         
-        guard var url = URL(string: destinationUrl ) else {
+        guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
             return false
         }
@@ -71,7 +71,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         if isScreenName{
             request.httpMethod = "POST"
             
-            var finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(user.screenName)"
+            let finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(user.screenName)"
             request.httpBody = finalData.data(using: String.Encoding.utf8)
         }
         else{

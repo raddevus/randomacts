@@ -104,7 +104,7 @@ class QuoteX{
             "https://newlibre.com/kind/api/Quote/Gen1"
         }()
         
-        guard var url = URL(string: destinationUrl ) else {
+        guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
             return false
         }
@@ -123,8 +123,8 @@ class QuoteX{
                                 
                                 DispatchQueue.main.async {
                                     
-                                    var success = response.success
-                                    print("\(success)")
+                                    let success = response.success
+                                    print("\(String(describing: success))")
                                     print("user \(response.user)")
                                     
                                 }
@@ -149,7 +149,7 @@ class QuoteX{
             "https://newlibre.com/kind/api/Quote/Gen2"
         }()
         
-        guard var url = URL(string: destinationUrl ) else {
+        guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
             return false
         }
@@ -168,7 +168,7 @@ class QuoteX{
                                 
                                 DispatchQueue.main.async {
                                     
-                                    var success = response.success
+                                    let success = response.success
                                     print("response: \(response)")
                                     print("\(success)")
                                     
@@ -194,7 +194,7 @@ class QuoteX{
             "https://newlibre.com/kind/api/Quote/Gen3"
         }()
         
-        guard var url = URL(string: destinationUrl ) else {
+        guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
             return false
         }
