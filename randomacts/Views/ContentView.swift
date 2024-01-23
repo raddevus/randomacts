@@ -21,12 +21,14 @@ struct ContentView: View {
     @State private var colorTheme = ColorScheme.light
     @State private var isDarkMode = false
     @State private var guidForLoadUser = ""
+    @State private var isShowingGuidError = false
     
     private var sn = ""
     
     @State private var localUser: LocalUser?
         
     init() {
+        print("####### BEGIN ########")
         print("init() is RUNNING...")
         self.localUser = createLocalUser()
         print("getting localUser...")
@@ -107,10 +109,11 @@ struct ContentView: View {
         } 
         
         user?.user.screenName = inUser.user.screenName
+        self.screenName = user?.user.screenName ?? ""
         saveUserToUserDefaults(inUser: user!)
     }
     
-    func getUserInfo(){
+    func getUserInfo() -> LocalUser?{
         let userData = UserDefaults.standard.data(forKey: "localUser")
         
         if (userData != nil){
@@ -118,7 +121,7 @@ struct ContentView: View {
         }
         let localDark = UserDefaults.standard.bool(forKey: "isDarkMode")
         print("localDark : \(localDark)")
-        setColorTheme()
+        return try? JSONDecoder().decode(LocalUser.self, from: userData! )
     }
     
     var body: some View {
@@ -289,9 +292,20 @@ struct ContentView: View {
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
                     Button("Load User From GUID"){
+                        if guidForLoadUser.count != 36{
+                            isShowingGuidError = true
+                            return
+                        }
                         localUser = LocalUser(uuid:guidForLoadUser)
                         localUser?.Save(saveUser: saveUserToUserDefaults)
                     }.buttonStyle(.bordered)
+                        .alert("GUID Is Invalid!", isPresented: $isShowingGuidError){
+                            Button("OK"){
+                                guidForLoadUser = ""
+                            }
+                        } message:{
+                            Text("Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)")
+                        }
                     Toggle(isOn: $isDarkMode){
                         Text("Dark Mode")
                     }.onChange(of: isDarkMode){
@@ -333,8 +347,12 @@ struct ContentView: View {
                 }
                 .onAppear(){
                     print("displaying PROFILE!")
-                    print ("PROFILE screenName: \(screenName)")
+                    if (localUser == nil){
+                        localUser = getUserInfo()
+                    }
                     screenName = localUser?.user.screenName ?? ""
+                    print ("PROFILE screenName: \(screenName)")
+                    
                 }
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {
