@@ -18,6 +18,9 @@ struct ContentView: View {
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     @State private var screenName = ""
+    @State private var colorTheme = ColorScheme.light
+    @State private var isDarkMode = false
+    
     private var sn = ""
     
      private var localUser: LocalUser?
@@ -29,6 +32,18 @@ struct ContentView: View {
         
         print("got localUser....")
         print("screenName INIT(): \(screenName )")
+        
+    }
+    
+    func setColorTheme(){
+        isDarkMode = UserDefaults.standard.bool(forKey: "isDarkMode")
+        print("READ isDarkMode \(isDarkMode)")
+        if (isDarkMode){
+            colorTheme = .dark
+        }
+        else{
+            colorTheme = .light
+        }
     }
     
     func updateCurrentTask(_ ktask: KTask?){
@@ -100,6 +115,9 @@ struct ContentView: View {
         if (userData != nil){
             print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
         }
+        let localDark = UserDefaults.standard.bool(forKey: "isDarkMode")
+        print("localDark : \(localDark)")
+        setColorTheme()
     }
     
     var body: some View {
@@ -159,6 +177,7 @@ struct ContentView: View {
             }.tabItem{
                 Label("Main", systemImage:"house")
             }
+            
             
             // Begin 2nd Tab
             NavigationStack{
@@ -267,6 +286,17 @@ struct ContentView: View {
                         localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
                         screenName = localUser!.user.screenName
                     }.buttonStyle(.bordered)
+                    Toggle(isOn: $isDarkMode){
+                        Text("Dark Mode")
+                    }.onChange(of: isDarkMode){
+                        if (isDarkMode){
+                            colorTheme = .dark
+                        }
+                        else{
+                            colorTheme = .light
+                        }
+                        UserDefaults.standard.setValue(isDarkMode, forKey: "isDarkMode")
+                    }
                     Section{
                         Button("Add Friend"){
                             isShowingAlert = true
@@ -310,11 +340,15 @@ struct ContentView: View {
                 Label("Profile", systemImage: "person")
             }
         }
+        .onAppear{
+            setColorTheme()
         }
-        
-
+        .environment(\.colorScheme, $colorTheme.wrappedValue)
+        }
 }
 
 #Preview {
     ContentView()
+        // .previewDevice("iPhone")
+        //.environment(\.colorScheme, .dark)
 }
