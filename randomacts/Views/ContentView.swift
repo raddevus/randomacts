@@ -20,10 +20,11 @@ struct ContentView: View {
     @State private var screenName = ""
     @State private var colorTheme = ColorScheme.light
     @State private var isDarkMode = false
+    @State private var guidForLoadUser = ""
     
     private var sn = ""
     
-     private var localUser: LocalUser?
+    @State private var localUser: LocalUser?
         
     init() {
         print("init() is RUNNING...")
@@ -275,7 +276,7 @@ struct ContentView: View {
                     Text("Profile")
                     Text("ScreenName: \(screenName)")
                     
-                    Text("userid: \(self.localUser!.user.guid)")
+                    Text("userid: \(self.localUser?.user.guid ?? "")")
                     TextField(
                         "screenName",
                         text: $screenName)
@@ -285,6 +286,11 @@ struct ContentView: View {
                         //saveUserToUserDefaults(user: localUser!)
                         localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
                         screenName = localUser!.user.screenName
+                    }.buttonStyle(.bordered)
+                    TextField("GUID", text: $guidForLoadUser)
+                    Button("Load User From GUID"){
+                        localUser = LocalUser(uuid:guidForLoadUser)
+                        localUser?.Save(saveUser: saveUserToUserDefaults)
                     }.buttonStyle(.bordered)
                     Toggle(isOn: $isDarkMode){
                         Text("Dark Mode")
@@ -328,7 +334,7 @@ struct ContentView: View {
                 .onAppear(){
                     print("displaying PROFILE!")
                     print ("PROFILE screenName: \(screenName)")
-                    screenName = localUser!.user.screenName
+                    screenName = localUser?.user.screenName ?? ""
                 }
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {

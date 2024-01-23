@@ -20,7 +20,7 @@ struct User: Codable{
     var pwdHash: String?
     var email: String?
     var created: String?
-    var updated: Date?
+    var updated: String?
     var active: Bool
     
     init(_ guid: String){
