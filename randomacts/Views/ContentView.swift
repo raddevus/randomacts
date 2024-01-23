@@ -186,7 +186,7 @@ struct ContentView: View {
                         localUser!.user.screenName=screenName
                         //saveUserToUserDefaults(user: localUser!)
                         localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
-                        screenName = localUser!.user.screenName
+                        screenName = localUser?.user.screenName ?? ""
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
                     Button("Load User From GUID"){
