@@ -9,15 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var isShowingDetailView = false
+    @State public var isShowingDetailView = false
     @State private var currentTaskText = ""
     @State private var currentTask: KTask? = nil
-    @State private var customTaskDescription = ""
-    @State private var isQuoteDisplayed = true
+    @State public var customTaskDescription = ""
+    @State public var isQuoteDisplayed = true
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
-    @State private var screenName = ""
+    @State public var screenName = ""
     @State private var colorTheme = ColorScheme.light
     @State private var isDarkMode = false
     @State private var guidForLoadUser = ""
@@ -127,57 +127,9 @@ struct ContentView: View {
     var body: some View {
         
         TabView{
+            // HOME VIEW
             NavigationStack{
-                Form{
-                    Button("Remove UserData"){
-                        UserDefaults.standard
-                            .removeObject(forKey: "localUser")
-                        print("removed the localUser")
-                    }
-                    Button("Create User"){
-                        createLocalUser()
-                    }
-                    Button("Get User Info"){
-                        getUserInfo()
-                        print("screenName 1: \(screenName)")
-                    }
-                    DisclosureGroup("Random Acts Info"){
-                        Text("Random Acts of Kindness helps create the opportunity to be more intentional about completing small, positive tasks that benefit others.")
-                        
-                    }
-                    DisclosureGroup("Random Acts Tasks Explained"){
-                        Text("While each individual task might only take a few moments or cost a few dollars, the cumulative impact of your efforts, and the efforts of others using this app, will undoubtedly make the world a more positive place! In addition, research suggests completing tasks like these is likely to strength your connections with others, improve your mood, and possibly your health. If you are ready, then let's get started!")
-                    }
-                    Text(Date.now.formatted())
-                    DisclosureGroup("Quote of the Day", isExpanded: $isQuoteDisplayed){
-                        Text("The reasonable man adapts himself to the world: the unreasonable one persists in trying to adapt the world to himself. Therefore all progress depends on the unreasonable man.").font(.callout)
-                        Text("~George Bernard Shaw").font(.title2)
-                        Text("NOTE: a new quote will be retrieved from the WebAPI every day (12am local time) and displayed here.").font(.footnote)
-                    }.font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    Button("View Master List of KTasks"){
-                        isShowingDetailView.toggle()
-                        
-                    }.buttonStyle(.bordered)
-                        .sheet(isPresented: $isShowingDetailView, content: {
-                            RaokItemView( )
-                        })
-                    Text("Allowing users to view the list of tasks will help them decide if they want to use the app. -- but they will also be")
-//                    Section{
-//                        Button("Show Current Task"){
-//                            loadData(updateLocal)
-//                        }.buttonStyle(.bordered)
-//                        Text("Test -> \(currentTaskText)")
-//                        
-//                    }
-                    
-                    
-                }.toolbar{
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("Random Acts of Kindness")
-                            .font(.system(size: 22, weight: .bold))
-                    }
-                }.font(.system(size:20))
-                
+                HomeView(self)
             }.tabItem{
                 Label("Main", systemImage:"house")
             }
@@ -205,15 +157,9 @@ struct ContentView: View {
                     print("doing the thing!")
                     print ("currentTaskText: \(currentTaskText)")
                     if (currentTaskText == ""){
-                        
-                         
-//                        DispatchQueue.main.async {              loadData()
-//                            
-//                        }
-                        loadAllKTasks( updateCurrentTask)
+                         loadAllKTasks( updateCurrentTask)
                         print("globalTask is set!: \(currentTaskText)")
                         print("### getRandomTask() ####")
-                        //getRandomTask()
                         
                     }
                 }
@@ -223,19 +169,9 @@ struct ContentView: View {
                 }
             // END 2nd TAB
             
-            // Begin 3rd Tab
+            // ## CUSTOM TASK VIEW
             NavigationStack{
-                Form{
-                    Text("Custom Tasks")
-                    TextField("Task description", text: $customTaskDescription)
-                    Text("we will add a form which will allow the user to add custom tasks that have arisen in her own life & she has completed")
-                    Text("Those tasks will be added to her history list so she can mark them as completed to create a journal of her kindess")
-                }.toolbar{
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("Custom Tasks")
-                            .font(.system(size: 22, weight: .bold))
-                    }
-                }
+                CustomTaskView(self)
             }.tabItem{
                 Label("Custom Task", systemImage:"note.text.badge.plus")
             }
