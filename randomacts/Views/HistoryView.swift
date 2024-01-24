@@ -18,7 +18,7 @@ struct HistoryView: View {
             Section{
                 Text("This will include the list of tasks the user has chosen, associated date they took the task on and a [ ] completed check box to indicate if they completed it")
                 Button("GetQuote"){
-                    let ut = LocalUserTask(parentView.localUser?.user.id ?? 54)
+                    let ut = LocalUserTask(parentView.localUser?.user.id ?? 0)
                     ut.GetAll(saveUserTasks: saveUserTasks)
                     //let q = QuoteX()
                     //q.GetQuote(iso8601Date: "2024-01-01")

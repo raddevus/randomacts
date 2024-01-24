@@ -243,15 +243,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .onAppear(){
-                    print("displaying PROFILE!")
-                    if (localUser == nil){
-                        localUser = getUserInfo()
-                    }
-                    screenName = localUser?.user.screenName ?? ""
-                    print ("PROFILE screenName: \(screenName)")
-                    
-                }
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {
                         Text("Profile")
@@ -264,6 +255,12 @@ struct ContentView: View {
         }
         .onAppear{
             setColorTheme()
+            print("displaying PROFILE!")
+            if (localUser == nil){
+                localUser = getUserInfo()
+            }
+            screenName = localUser?.user.screenName ?? ""
+            print ("PROFILE screenName: \(screenName)")
         }
         .environment(\.colorScheme, $colorTheme.wrappedValue)
         }
