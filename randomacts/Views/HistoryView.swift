@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct HistoryView: View {
+    let parentView : ContentView
+    init(_ parentView: ContentView){
+        self.parentView = parentView
+    }
     var body: some View {
         Form{
             Text("Task History")
             Section{
                 Text("This will include the list of tasks the user has chosen, associated date they took the task on and a [ ] completed check box to indicate if they completed it")
                 Button("GetQuote"){
-                    let q = QuoteX()
+                    let ut = LocalUserTask(parentView.localUser?.user.id ?? 54)
+                    ut.GetAll(saveUserTasks: saveUserTasks)
+                    //let q = QuoteX()
                     //q.GetQuote(iso8601Date: "2024-01-01")
-                    q.Gen1()
+                    //q.Gen1()
                     print("#########")
                     //q.Gen2()
                     // q.Gen3()
@@ -33,6 +39,10 @@ struct HistoryView: View {
     }
 }
 
+func saveUserTasks(userTasks: [UserTask]){
+    print("I'm in SAVEUSERTASKS!")
+}
+
 #Preview {
-    HistoryView()
+    HistoryView(ContentView())
 }

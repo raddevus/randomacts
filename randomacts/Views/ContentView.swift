@@ -25,7 +25,7 @@ struct ContentView: View {
     
     private var sn = ""
     
-    @State private var localUser: LocalUser?
+    @State public var localUser: LocalUser?
         
     init() {
         print("####### BEGIN ########")
@@ -165,7 +165,7 @@ struct ContentView: View {
             
             // HISTORY VIEW - tab 4
             NavigationStack{
-                HistoryView()
+                HistoryView(self)
             }.tabItem{
                 Label("History", systemImage: "list.bullet")
             }

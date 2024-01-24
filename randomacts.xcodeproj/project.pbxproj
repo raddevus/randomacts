@@ -12,6 +12,7 @@
 		A6BD30A12B6069010080FCB4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A02B6069010080FCB4 /* HomeView.swift */; };
 		A6BD30A32B6072390080FCB4 /* CustomTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A22B6072390080FCB4 /* CustomTaskView.swift */; };
 		A6BD30A52B6074790080FCB4 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A42B6074790080FCB4 /* HistoryView.swift */; };
+		A6BD30A72B607A4D0080FCB4 /* LocalUserTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A62B607A4D0080FCB4 /* LocalUserTask.swift */; };
 		A6C2798F2B3CE12C0099C8DA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2798E2B3CE12C0099C8DA /* User.swift */; };
 		A6C279912B3F4CF30099C8DA /* QuoteX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C279902B3F4CF30099C8DA /* QuoteX.swift */; };
 		A6C279932B44D5A00099C8DA /* KTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C279922B44D5A00099C8DA /* KTask.swift */; };
@@ -47,6 +48,7 @@
 		A6BD30A02B6069010080FCB4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A6BD30A22B6072390080FCB4 /* CustomTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskView.swift; sourceTree = "<group>"; };
 		A6BD30A42B6074790080FCB4 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		A6BD30A62B607A4D0080FCB4 /* LocalUserTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserTask.swift; sourceTree = "<group>"; };
 		A6C2798E2B3CE12C0099C8DA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A6C279902B3F4CF30099C8DA /* QuoteX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteX.swift; sourceTree = "<group>"; };
 		A6C279922B44D5A00099C8DA /* KTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTask.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				A6C2798E2B3CE12C0099C8DA /* User.swift */,
 				A6C279902B3F4CF30099C8DA /* QuoteX.swift */,
 				A6C279922B44D5A00099C8DA /* KTask.swift */,
+				A6BD30A62B607A4D0080FCB4 /* LocalUserTask.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				A6BD30A52B6074790080FCB4 /* HistoryView.swift in Sources */,
 				A6D5F9C22B07B9960047C7A1 /* randomactsApp.swift in Sources */,
 				A6C279932B44D5A00099C8DA /* KTask.swift in Sources */,
+				A6BD30A72B607A4D0080FCB4 /* LocalUserTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
