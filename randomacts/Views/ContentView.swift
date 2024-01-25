@@ -82,6 +82,7 @@ struct ContentView: View {
         if let data = try? JSONEncoder().encode(inUser) {
             UserDefaults.standard.set(data, forKey: "localUser")
         }
+        self.screenName = inUser.user.screenName
     }
     
     func updateUserScreenName(inUser: LocalUser){
@@ -109,6 +110,16 @@ struct ContentView: View {
         let localDark = UserDefaults.standard.bool(forKey: "isDarkMode")
         print("localDark : \(localDark)")
         return try? JSONDecoder().decode(LocalUser.self, from: userData! )
+    }
+    
+    func processGuidEntry(){
+        if guidForLoadUser.count != 36{
+            isShowingGuidError = true
+            return
+        }
+        localUser = LocalUser(uuid:guidForLoadUser)
+        guidForLoadUser = ""
+        localUser?.Save(saveUser: saveUserToUserDefaults)
     }
     
     var body: some View {
@@ -190,13 +201,11 @@ struct ContentView: View {
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
                         .textInputAutocapitalization(.never)
-                    Button("Load User From GUID"){
-                        if guidForLoadUser.count != 36{
-                            isShowingGuidError = true
-                            return
+                        .onSubmit{
+                            processGuidEntry()
                         }
-                        localUser = LocalUser(uuid:guidForLoadUser)
-                        localUser?.Save(saveUser: saveUserToUserDefaults)
+                    Button("Load User From GUID"){
+                        processGuidEntry()
                     }.buttonStyle(.bordered)
                         .alert("GUID Is Invalid!", isPresented: $isShowingGuidError){
                             Button("OK"){
