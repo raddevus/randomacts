@@ -11,7 +11,10 @@ struct HistoryView: View {
     let parentView : ContentView
     init(_ parentView: ContentView){
         self.parentView = parentView
+        self.userTasks = nil
     }
+    @State var userTasks: [UserTask]?
+    
     var body: some View {
         Form{
             Text("Task History")
@@ -36,12 +39,43 @@ struct HistoryView: View {
                     .font(.system(size: 22, weight: .bold))
             }
         }
+        
+        NavigationStack{
+            Form{
+                
+                Section{
+                    VStack{
+                        List(userTasks ?? [], id:\ .description){ item in
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
+                                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                    Text("\(item.subcategory ?? "")").foregroundStyle(Color.blue)
+                                    Text("\(item.description ?? "")")
+                                    Spacer()
+                                    
+                                }
+                                Divider()
+                            }
+                            
+                        }
+                    }
+                }
+            }.onAppear(perform: {
+                                
+                
+            })
+                .navigationTitle("KTasks")
+        }
     }
+    
+    func saveUserTasks(userTasks: [UserTask]){
+        print("I'm in SAVEUSERTASKS!")
+        self.userTasks = userTasks
+    }
+
 }
 
-func saveUserTasks(userTasks: [UserTask]){
-    print("I'm in SAVEUSERTASKS!")
-}
 
 #Preview {
     HistoryView(ContentView())
