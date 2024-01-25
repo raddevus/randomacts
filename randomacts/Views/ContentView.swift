@@ -189,6 +189,7 @@ struct ContentView: View {
                         screenName = localUser?.user.screenName ?? ""
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
+                        .textInputAutocapitalization(.never)
                     Button("Load User From GUID"){
                         if guidForLoadUser.count != 36{
                             isShowingGuidError = true
