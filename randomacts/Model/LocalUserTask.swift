@@ -15,7 +15,7 @@ struct UserTask: Codable{
     let id: Int64
     let userId: Int64
     let taskId: Int64
-    let note: String?
+    var note: String?
     let category: String?
     let subcategory: String?
     let description: String?
