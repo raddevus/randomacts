@@ -22,6 +22,19 @@ struct UserTask: Codable{
     let created: String?
     let completed: String?
     let active: Bool
+    
+    init(){
+        id = 0
+        userId = 0
+        taskId = 0
+        note = nil
+        category = nil
+        subcategory = nil
+        description = nil
+        created = nil
+        completed = nil
+        active = false
+    }
 }
 
 class LocalUserTask : ObservableObject, Codable, Identifiable{

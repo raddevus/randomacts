@@ -9,11 +9,15 @@ import SwiftUI
 
 struct HistoryView: View {
     let parentView : ContentView
+    @State private var isUserTaskViewShown = false
+    @State private var currentSelectedItem: UserTask = UserTask()
     init(_ parentView: ContentView){
         self.parentView = parentView
-        self.userTasks = nil
+        //self.currentSelectedItem = UserTask()
     }
-    @State var userTasks: [UserTask]?
+    @State private var userTasks: [UserTask]?
+    
+    static var utItem: UserTask?
     
     var body: some View {
         Form{
@@ -56,7 +60,18 @@ struct HistoryView: View {
                                     
                                 }
                                 Divider()
+                            }.onTapGesture {
+                                print("item: \(item.id)")
+                                isUserTaskViewShown = true
+                                self.currentSelectedItem = item
+                                HistoryView.utItem = item
                             }
+                            
+                            .sheet(isPresented: $isUserTaskViewShown, content: {
+                                UserTaskView(userTask: HistoryView.utItem ?? UserTask())
+                           })
+                            
+                            
                             
                         }
                     }
@@ -72,6 +87,9 @@ struct HistoryView: View {
     func saveUserTasks(userTasks: [UserTask]){
         print("I'm in SAVEUSERTASKS!")
         self.userTasks = userTasks
+        if (self.userTasks!.count > 0){
+            HistoryView.utItem = self.userTasks![0]
+        }
     }
 
 }
