@@ -9,7 +9,6 @@ import SwiftUI
 
 struct UserTaskView: View {
     @Binding var userTask : UserTask?
-    @Binding var noteData: String?
         
     var body: some View {
         Text("Screw you, Xcode")
@@ -18,8 +17,6 @@ struct UserTaskView: View {
             TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
                 userTask?.note = $0
                 print("userTask.note: \(userTask?.note)")
-                //print("noteData: \(noteData)")
-                noteData = $0
             })
             .padding(.all, 7.0)
             .opacity(0.80)
@@ -35,5 +32,5 @@ struct UserTaskView: View {
 //    @State var noteThing: String? = "this is note"
 //    @State var ut: UserTask? = UserTask()
 //    //UserTaskView(userTask: $ut)//, noteData: $noteThing)
-//    UserTaskView(noteData: $noteThing)
+//    UserTaskView(userTask: $ut, noteData: $noteThing)
 //}

@@ -10,19 +10,12 @@ import SwiftUI
 struct HistoryView: View {
     let parentView : ContentView
     @State private var isUserTaskViewShown = false
-    @State private var currentSelectedItem: UserTask = UserTask()
-    
+    @State public var userTasks: [UserTask]?
+    @State var userTaskItem: UserTask?
+
     init(_ parentView: ContentView){
         self.parentView = parentView
-        //self.currentSelectedItem = UserTask()
     }
-    @State public var userTasks: [UserTask]?
-    
-    static var utItem: UserTask?
-    
-    @State var userTaskItem: UserTask?
-    
-    @State var noteHolder: String?
     
     var body: some View {
         Form{
@@ -68,21 +61,13 @@ struct HistoryView: View {
                             }.onTapGesture {
                                 print("item: \(item.id)")
                                 isUserTaskViewShown = true
-                                self.currentSelectedItem = item
-                                HistoryView.utItem = item
-                                noteHolder = item.note
                                 userTaskItem = item
                             }
                             
                             .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
                                    content: {
-                                // UserTaskView(userTask: HistoryView.utItem ?? UserTask(), noteData: $noteHolder)
-                                UserTaskView(userTask: $userTaskItem, noteData: $noteHolder)
+                                UserTaskView(userTask: $userTaskItem)
                            })
-                            
-                            
-                            
-                            
                         }
                     }
                 }
@@ -95,19 +80,13 @@ struct HistoryView: View {
     }
     
     func didDismiss(){
-        print("note is now: \(HistoryView.utItem?.note)")
-        print("#### NOTEHOLDER ##### \(noteHolder)")
+        print("userTaskItem : \(userTaskItem?.note ?? "")")
     }
     
     func saveUserTasks(userTasks: [UserTask]){
         print("I'm in SAVEUSERTASKS!")
         self.userTasks = userTasks
-        if (self.userTasks!.count > 0){
-            HistoryView.utItem = self.userTasks![0]
-        }
-        
     }
-
 }
 
 
