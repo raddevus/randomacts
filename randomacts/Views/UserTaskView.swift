@@ -8,24 +8,32 @@
 import SwiftUI
 
 struct UserTaskView: View {
-    @State var userTask : UserTask
+    @Binding var userTask : UserTask?
+    @Binding var noteData: String?
         
     var body: some View {
+        Text("Screw you, Xcode")
         Group{
-            Text("ID: \(userTask.id)")
-            TextEditor(text: Binding(get: { userTask.note ?? "" }) {
-                userTask.note = $0
+            Text("ID: \(userTask?.id ?? 0 )")
+            TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
+                userTask?.note = $0
+                print("userTask.note: \(userTask?.note)")
+                //print("noteData: \(noteData)")
+                noteData = $0
             })
-            .padding(.all)
+            .padding(.all, 7.0)
             .opacity(0.80)
             //.background(Color(red: 0.9, green: 0.9, blue: 0.2))
             .background(Color.yellow)
             
-            Text("This is another control")
+//            Text("This is another control")
         }
     }
 }
 
-#Preview {
-    UserTaskView(userTask: UserTask())
-}
+//#Preview {
+//    @State var noteThing: String? = "this is note"
+//    @State var ut: UserTask? = UserTask()
+//    //UserTaskView(userTask: $ut)//, noteData: $noteThing)
+//    UserTaskView(noteData: $noteThing)
+//}
