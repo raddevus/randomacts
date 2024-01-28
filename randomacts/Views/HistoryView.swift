@@ -21,37 +21,46 @@ struct HistoryView: View {
         
         NavigationStack{
             Form{
-                
                 Section{
                     VStack{
-                        List(userTasks ?? [], id:\ .description){ item in
-                            VStack(alignment: .leading){
-                                HStack{
-                                    Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
-                                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                                    Text("\(item.subcategory ?? "")").foregroundStyle(Color.blue)
-                                    Text("\(item.description ?? "")")
-                                    Spacer()
+
+                            if userTasks?.count ?? 0 > 0 {
+                                List(userTasks ?? [], id:\ .description){ item in
+                                    VStack(alignment: .leading){
+                                        HStack{
+                                            Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
+                                                .fontWeight(.bold)
+                                            Text("\(item.subcategory ?? "")").foregroundStyle(Color.blue)
+                                            Text("\(item.description ?? "")")
+                                            Spacer()
+                                            
+                                        }
+                                        Divider()
+                                    }.onTapGesture {
+                                        print("item: \(item.id)")
+                                        isUserTaskViewShown = true
+                                        userTaskItem = item
+                                    }
                                     
+                                    .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
+                                           content: {
+                                        UserTaskView(userTask: $userTaskItem)
+                                    })
                                 }
-                                Divider()
-                            }.onTapGesture {
-                                print("item: \(item.id)")
-                                isUserTaskViewShown = true
-                                userTaskItem = item
+                                
                             }
-                            
-                            .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
-                                   content: {
-                                UserTaskView(userTask: $userTaskItem)
-                           })
+                        else{
+                            Text("No task history available")
                         }
                     }
                 }
             }.onAppear(perform: {
                 let ut = LocalUserTask(parentView.localUser?.user.id ?? 0)
-                ut.GetAll(saveUserTasks: saveUserTasks)
-                print("#########")
+                // only called if there is a valid userId
+                if ut.userId != 0{
+                    ut.GetAll(saveUserTasks: saveUserTasks)
+                }
+                print("### ONAPPEAR HISTORYVIEW  ####")
                 
             })
             //.navigationTitle("Task History")
@@ -73,7 +82,6 @@ struct HistoryView: View {
         self.userTasks = userTasks
     }
 }
-
 
 #Preview {
     HistoryView(ContentView())
