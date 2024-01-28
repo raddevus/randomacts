@@ -281,6 +281,8 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        // .previewDevice("iPhone")
+        .previewDevice("iPhone 13")
+        .previewDisplayName("iPhone 13")
+        //.environment(\.colorScheme, .dark)
         //.environment(\.colorScheme, .dark)
 }

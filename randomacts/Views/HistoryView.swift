@@ -92,4 +92,6 @@ struct HistoryView: View {
 
 #Preview {
     HistoryView(ContentView())
+        .previewDevice("iPhone 13")
+        .previewDisplayName("iPhone 13")
 }
