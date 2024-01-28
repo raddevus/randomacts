@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State public var isShowingDetailView = false
-    @State private var currentTaskText = ""
+    @State public var currentTaskText = ""
     @State private var currentTask: KTask? = nil
     @State public var customTaskDescription = ""
     @State public var isQuoteDisplayed = true
@@ -137,32 +137,7 @@ struct ContentView: View {
             
             // Begin 2nd Tab
             NavigationStack{
-                Form{
-                    Section{
-                        Button("Get New Task"){
-                            loadAllKTasks(updateCurrentTask)
-                        }.buttonStyle(.bordered)
-                    }
-                    Section{
-                        Text(currentTaskText).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    }
-                    
-                }.toolbar{
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("Daily Task")
-                            .font(.system(size: 22, weight: .bold))
-                    }
-                    
-                }.onAppear(){
-                    print("doing the thing!")
-                    print ("currentTaskText: \(currentTaskText)")
-                    if (currentTaskText == ""){
-                         loadAllKTasks( updateCurrentTask)
-                        print("globalTask is set!: \(currentTaskText)")
-                        print("### getRandomTask() ####")
-                        
-                    }
-                }
+                DailyTaskView(self)
             }
                 .tabItem{
                     Label("Daily Task", systemImage:"calendar")
