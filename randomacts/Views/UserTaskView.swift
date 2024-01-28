@@ -13,11 +13,11 @@ struct UserTaskView: View {
         
     var body: some View {
         Group{
+            
             Text("ID: \(userTask?.id ?? 0 )")
             Group{
                 TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
                     userTask?.note = $0
-                    print("userTask.note: \(userTask?.note)")
                 })
                 .padding(.all, 7.0)
                 .opacity(0.80)

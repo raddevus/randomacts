@@ -109,7 +109,10 @@ struct ContentView: View {
         }
         let localDark = UserDefaults.standard.bool(forKey: "isDarkMode")
         print("localDark : \(localDark)")
-        return try? JSONDecoder().decode(LocalUser.self, from: userData! )
+        if (userData != nil){
+            return try? JSONDecoder().decode(LocalUser.self, from: userData! )
+        }
+        return LocalUser()
     }
     
     func processGuidEntry(){
