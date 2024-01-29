@@ -10,6 +10,8 @@ import SwiftUI
 struct DailyTaskView: View {
     
     let parentView : ContentView
+    @State var isSavePresented = false
+    
     init(_ parentView: ContentView){
         self.parentView = parentView
     }
@@ -20,9 +22,6 @@ struct DailyTaskView: View {
                 
             }
             Section{
-                Text(parentView.currentTaskText)
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
                 HStack{
                     Image(systemName: "rosette")
                     Button("Get New Task"){
@@ -40,7 +39,15 @@ struct DailyTaskView: View {
                             }
                         }
                     }.buttonStyle(.bordered)
+                        .alert("Daily Task Saved", isPresented: $isSavePresented){
+                            Button("OK"){
+                            }
+                        } message:{
+                            Text("DailyTask was saved to your UserTask History")
+                        }
                 }
+                Text(parentView.currentTaskText)
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
             }
         }.toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
@@ -62,6 +69,7 @@ struct DailyTaskView: View {
     
     func ShowUserTaskResult(result: String){
         print("userTask Result: \(result)")
+        isSavePresented = true
     }
 }
 
