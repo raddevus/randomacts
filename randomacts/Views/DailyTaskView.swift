@@ -41,6 +41,11 @@ struct DailyTaskView: View {
                     }.buttonStyle(.bordered)
                         .alert("Daily Task Saved", isPresented: $isSavePresented){
                             Button("OK"){
+                                // set the currentUserTasks to nil
+                                // so they will be loaded again
+                                // with new one
+                                // history tab is clicked by user again.
+                                parentView.currentUserTasks = nil
                             }
                         } message:{
                             Text("DailyTask was saved to your UserTask History")

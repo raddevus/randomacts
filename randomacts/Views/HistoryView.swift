@@ -10,7 +10,6 @@ import SwiftUI
 struct HistoryView: View {
     let parentView : ContentView
     @State private var isUserTaskViewShown = false
-    @State public var userTasks: [UserTask]?
     @State var userTaskItem: UserTask?
 
     init(_ parentView: ContentView){
@@ -24,8 +23,8 @@ struct HistoryView: View {
                 Section{
                     VStack{
 
-                            if userTasks?.count ?? 0 > 0 {
-                                List(userTasks ?? [], id:\ .description){ item in
+                        if parentView.currentUserTasks?.count ?? 0 > 0 {
+                                List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
                                         HStack{
                                             Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
@@ -54,22 +53,35 @@ struct HistoryView: View {
                         }
                     }
                 }
-            }.onAppear(perform: {
-                let ut = LocalUserTask(parentView.localUser?.user.id ?? 0)
-                // only called if there is a valid userId
-                if ut.userId != 0{
-                    ut.GetAll(saveUserTasks: saveUserTasks)
-                }
-                print("### ONAPPEAR HISTORYVIEW  ####")
-                
-            })
-            //.navigationTitle("Task History")
+            }
+            .navigationTitle("Task History")
             .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Task History")
-                        .font(.system(size: 22, weight: .bold))
+                Button("Load Updates"){
+                    print("do a thing")
+                    loadUserTaskFromWebApi(forceLoad: true)
                 }
             }
+        }.onAppear(perform: {
+            loadUserTaskFromWebApi(forceLoad: false)
+            print("### ONAPPEAR HISTORYVIEW  ####")
+            
+        })
+    }
+    
+    func loadUserTaskFromWebApi(forceLoad: Bool){
+        if (!forceLoad){
+            // check currentUserTasks
+            // if they're already loaded then return
+            if parentView.currentUserTasks != nil{
+                print("No need to load userTasks from WebAPI")
+                return
+            }
+        }
+        print("### LOADING userTasks from WebAPI!")
+        let ut = LocalUserTask(parentView.localUser?.user.id ?? 0)
+        // only called if there is a valid userId
+        if ut.userId != 0{
+            ut.GetAll(saveUserTasks: saveUserTasks)
         }
     }
     
@@ -79,7 +91,7 @@ struct HistoryView: View {
     
     func saveUserTasks(userTasks: [UserTask]){
         print("I'm in SAVEUSERTASKS!")
-        self.userTasks = userTasks
+        parentView.currentUserTasks = userTasks
     }
 }
 

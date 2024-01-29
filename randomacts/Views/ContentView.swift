@@ -22,6 +22,7 @@ struct ContentView: View {
     @State private var isDarkMode = false
     @State private var guidForLoadUser = ""
     @State private var isShowingGuidError = false
+    @State public var currentUserTasks: [UserTask]? = nil
     
     private var sn = ""
     
@@ -123,6 +124,8 @@ struct ContentView: View {
         localUser = LocalUser(uuid:guidForLoadUser)
         guidForLoadUser = ""
         localUser?.Save(saveUser: saveUserToUserDefaults)
+        // empty userTasks so they'll be loaded again.
+        currentUserTasks = nil
     }
     
     var body: some View {
