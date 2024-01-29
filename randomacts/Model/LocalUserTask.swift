@@ -11,6 +11,11 @@ struct UserTasks : Decodable{
     let allUserTasks: [UserTask]
 }
 
+struct UserTaskResult: Decodable{
+    let success: Bool?
+    let ut: UserTask
+}
+
 struct UserTask: Codable{
     let id: Int64
     let userId: Int64

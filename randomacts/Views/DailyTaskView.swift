@@ -17,14 +17,31 @@ struct DailyTaskView: View {
     var body: some View {
         Form{
             Section{
-                Button("Get New Task"){
-                    loadAllKTasks(parentView.updateCurrentTask)
-                }.buttonStyle(.bordered)
+                
             }
             Section{
-                Text(parentView.currentTaskText).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Text(parentView.currentTaskText)
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                Spacer()
+                HStack{
+                    Image(systemName: "rosette")
+                    Button("Get New Task"){
+                        loadAllKTasks(parentView.updateCurrentTask)
+                    }.buttonStyle(.bordered)
+                    Spacer()
+                    Image(systemName: "square.and.arrow.up")
+                    Button("Accept Task"){
+                        if (parentView.localUser != nil){
+                            let currentUserId = parentView.localUser?.user.id ?? 0
+                            let currentTaskId = parentView.currentTask?.id ?? 0
+                            if currentUserId > 0 && currentTaskId > 0{
+                                acceptUserTask(ShowUserTaskResult, userId: currentUserId,
+                                               taskId: currentTaskId)
+                            }
+                        }
+                    }.buttonStyle(.bordered)
+                }
             }
-            
         }.toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("Daily Task")
@@ -41,6 +58,10 @@ struct DailyTaskView: View {
                 
             }
         }
+    }
+    
+    func ShowUserTaskResult(result: String){
+        print("userTask Result: \(result)")
     }
 }
 

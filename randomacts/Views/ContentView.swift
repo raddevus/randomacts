@@ -11,7 +11,7 @@ struct ContentView: View {
     
     @State public var isShowingDetailView = false
     @State public var currentTaskText = ""
-    @State private var currentTask: KTask? = nil
+    @State public var currentTask: KTask? = nil
     @State public var customTaskDescription = ""
     @State public var isQuoteDisplayed = true
     @State private var friendsAreDisplayed = true
