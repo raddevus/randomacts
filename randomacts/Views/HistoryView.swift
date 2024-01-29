@@ -27,9 +27,8 @@ struct HistoryView: View {
                                 List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
                                         HStack{
-                                            Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
+                                            Text("\(String(item.created?.prefix(10) ?? "")) " ).foregroundStyle( Color.blue)
                                                 .fontWeight(.bold)
-                                            Text("\(item.subcategory ?? "")").foregroundStyle(Color.blue)
                                             Text("\(item.description ?? "")")
                                             Spacer()
                                             
