@@ -29,7 +29,7 @@ struct HistoryView: View {
                                 List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
                                         HStack{
-                                            Text("\(String(item.created?.prefix(10) ?? "")) " ).foregroundStyle( Color.blue)
+                                            Text("\(String(item.created?.prefix(10) ?? "")) " ).foregroundStyle(getCompletedTaskStatus(userTask:item))
                                                 .fontWeight(.bold)
                                             Text("\(item.description ?? "")")
                                             Spacer()
@@ -74,6 +74,15 @@ struct HistoryView: View {
             print("### ONAPPEAR HISTORYVIEW  ####")
             
         })
+    }
+    
+    func getCompletedTaskStatus(userTask: UserTask) -> Color{
+        if userTask.completed != nil && userTask.completed != ""{
+            return Color.blue
+        }
+        else{
+            return Color.green
+        }
     }
     
     func loadUserTaskFromWebApi(forceLoad: Bool){
