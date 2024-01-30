@@ -155,3 +155,47 @@ func acceptUserTask(_ reportResult: @escaping (String)->(),userId: Int64, taskId
     
     return true
 }
+
+func updateUserTask(_ reportResult: @escaping (String)->(),userTaskId: Int64, note: String, completed: String="") -> Bool{
+    let destinationUrl = "https://newlibre.com/kind/api/UserTask/Update"
+    
+    guard let url = URL(string: destinationUrl ) else {
+        print("Invalid URL")
+        return false
+    }
+    var request = URLRequest(url: url)
+    
+    request.httpMethod = "POST"
+    let finalData = "userTaskId=\(userTaskId)&note=\(note)&completed=\(completed)"
+    request.httpBody = finalData.data(using: String.Encoding.utf8)
+    
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let data = data {
+            
+            print("data: \(data) \(Date())")
+                        do {
+                            let response = try JSONDecoder().decode(UserTaskResult.self, from: data)
+                            print("Decoded UserTasks properly.")
+                            
+                            print("Successfully UPDATED! \(String(decoding: data, as: UTF8.self))")
+
+                            reportResult("Successfully updated UserTask")
+                            
+                            DispatchQueue.main.async {
+                                print ("response: \(data)")
+                                print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                            }
+                            return
+                        }catch {
+                            print("\(error)")
+                            print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                        }
+        }
+        else{
+            print("I failed")
+            
+        }
+    }.resume()
+    
+    return true
+}
