@@ -11,21 +11,63 @@ struct UserTaskView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var userTask : UserTask?
     @Binding var didUpdate: Bool
+    private var selectedDate: Date? {
+        if userTask?.completed != nil && userTask?.completed != ""{
+            let altTaskDate: String = (userTask?.completed!)! + "Z"
+            var taskDate =  try! Date(altTaskDate, strategy: .iso8601)
+            return Calendar.current.date(byAdding: .day, value: 1, to: taskDate)!
+        }
+        else{
+            return nil
+        }
+    }
+    
+    private var selectedDateString: String{
+        if selectedDate != nil{
+            let formatter = DateFormatter()
+            formatter.dateFormat = "YYYY-MM-DD"
+            return formatter.string(from: selectedDate!)
+        }
+        else{
+            return ""
+        }
+    }
+    
+    @State private var dateHolder: Date = Date()
         
     var body: some View {
         VStack
         {
-            Text(userTask?.category ?? "")
-                .foregroundStyle(Color.blue)
-                .font(.subheadline)
-            Spacer()
-            Text(userTask?.subcategory ?? "")
-                .foregroundStyle(Color.blue)
-                .font(.subheadline)
-            
+            HStack{
+                Text(userTask?.category ?? "")
+                    .foregroundStyle(Color.blue)
+                    .font(.subheadline)
+                Spacer()
+                Text(userTask?.subcategory ?? "")
+                    .foregroundStyle(Color.blue)
+                    .font(.subheadline)
+            }
+            .padding()
             Text("\(userTask?.description ?? "" )")
                 .foregroundStyle(Color.gray)
+                .padding()
             Divider()
+            if (selectedDateString != ""){
+                HStack{
+                    Label("Completed:", systemImage: "calendar")
+                    Text("\(selectedDateString)")
+                }.padding()
+                Divider()
+            }
+            else{
+                Group{
+                    DatePicker(selection: $dateHolder, in: ...Date.now, displayedComponents: .date) {
+                        Text("Select a date")
+                    }.onAppear(){
+                        
+                    }
+                }.padding()
+            }
             
             TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
                             userTask?.note = $0

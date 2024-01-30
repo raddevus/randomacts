@@ -25,7 +25,7 @@ struct UserTask: Codable{
     let subcategory: String?
     let description: String?
     let created: String?
-    let completed: String?
+    var completed: String?
     let active: Bool
     
     init(){
