@@ -33,6 +33,13 @@ struct HistoryView: View {
                                             Spacer()
                                             
                                         }
+                                        if item.note == ""{
+                                            Label("\(item.note ?? "")", systemImage: "note")
+                                        }
+                                        else{
+                                            Label("\(item.note ?? "")", systemImage: "note.text")
+                                        }
+                                        
                                         Divider()
                                     }.onTapGesture {
                                         print("item: \(item.id)")
