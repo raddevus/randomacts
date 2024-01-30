@@ -10,6 +10,7 @@ import SwiftUI
 struct UserTaskView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var userTask : UserTask?
+    @Binding var didUpdate: Bool
         
     var body: some View {
         VStack
@@ -38,9 +39,11 @@ struct UserTaskView: View {
                     if (userTask?.note != ""){
                         updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!)
                     }
+                    didUpdate = true
                     dismiss()
                 }.buttonStyle(.bordered)
                 Button("Cancel"){
+                    didUpdate = false
                     dismiss()
                 }.buttonStyle(.bordered)
             }
@@ -57,8 +60,9 @@ struct UserTaskView: View {
 
 struct PreviewHelper{
     @State static var ut1: UserTask? = UserTask() // this is used for the preview
+    @State static var isUpdated: Bool = false
 }
 
 #Preview {
-    UserTaskView(userTask: PreviewHelper.$ut1)
+    UserTaskView(userTask: PreviewHelper.$ut1, didUpdate: PreviewHelper.$isUpdated)
 }

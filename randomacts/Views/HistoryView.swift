@@ -11,6 +11,8 @@ struct HistoryView: View {
     let parentView : ContentView
     @State private var isUserTaskViewShown = false
     @State var userTaskItem: UserTask?
+    @State var didUpdate: Bool = false
+    @State var currentSelectedItemId : Int64 = -1
 
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -49,7 +51,7 @@ struct HistoryView: View {
                                     
                                     .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
                                            content: {
-                                        UserTaskView(userTask: $userTaskItem)
+                                        UserTaskView(userTask: $userTaskItem, didUpdate: $didUpdate )
                                     })
                                 }
                                 
@@ -92,12 +94,33 @@ struct HistoryView: View {
     }
     
     func didDismiss(){
+        
         print("userTaskItem : \(userTaskItem?.note ?? "")")
+        if didUpdate{
+            if (userTaskItem?.id != nil){
+                let removeId : Int = removeItemFromCurrentTasks(idToRemove: userTaskItem?.id ?? -1)
+                
+                if (removeId > -1){
+                    parentView.currentUserTasks?.insert(userTaskItem!, at:removeId)
+                    loadUserTaskFromWebApi(forceLoad: false)
+                }
+            }
+        }
     }
     
     func saveUserTasks(userTasks: [UserTask]){
         print("I'm in SAVEUSERTASKS!")
         parentView.currentUserTasks = userTasks
+    }
+    
+    func removeItemFromCurrentTasks(idToRemove: Int64) -> Int{
+        for x:Int in 0...(parentView.currentUserTasks?.count ?? 0){
+            if (parentView.currentUserTasks?[x].id == idToRemove){
+                parentView.currentUserTasks?.remove(at:x)
+                return x
+            }
+        }
+        return -1
     }
 }
 
