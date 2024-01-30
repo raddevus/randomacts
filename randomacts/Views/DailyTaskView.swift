@@ -23,13 +23,14 @@ struct DailyTaskView: View {
             }
             Section{
                 HStack{
-                    Image(systemName: "rosette")
-                    Button("Get New Task"){
+                    
+                    Button("New Task", systemImage:"rosette"){
                         loadAllKTasks(parentView.updateCurrentTask)
                     }.buttonStyle(.bordered)
+                    
                     Spacer()
-                    Image(systemName: "square.and.arrow.up")
-                    Button("Accept Task"){
+                    
+                    Button("Accept Task", systemImage:"square.and.arrow.up"){
                         if (parentView.localUser != nil){
                             let currentUserId = parentView.localUser?.user.id ?? 0
                             let currentTaskId = parentView.currentTask?.id ?? 0

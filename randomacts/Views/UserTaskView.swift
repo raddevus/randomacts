@@ -14,7 +14,17 @@ struct UserTaskView: View {
     var body: some View {
         Group{
             
-            Text("ID: \(userTask?.id ?? 0 )")
+            HStack{
+                Text(userTask?.category ?? "")
+                    .foregroundStyle(Color.blue)
+                    .font(.subheadline)
+                Spacer()
+                Text(userTask?.subcategory ?? "")
+                    .foregroundStyle(Color.blue)
+                    .font(.subheadline)
+            }
+            .padding()
+            Text("\(userTask?.description ?? "" )")
             Group{
                 TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
                     userTask?.note = $0
