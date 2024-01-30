@@ -11,6 +11,7 @@ struct UserTaskView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var userTask : UserTask?
     @Binding var didUpdate: Bool
+    @State var isCalendarVisible = false
     private var selectedDate: Date? {
         if userTask?.completed != nil && userTask?.completed != ""{
             let altTaskDate: String = (userTask?.completed!)! + "Z"
@@ -32,9 +33,8 @@ struct UserTaskView: View {
             return ""
         }
     }
+    @State public var dateHolder: Date = Date()
     
-    @State private var dateHolder: Date = Date()
-        
     var body: some View {
         VStack
         {
@@ -61,10 +61,11 @@ struct UserTaskView: View {
             }
             else{
                 Group{
-                    DatePicker(selection: $dateHolder, in: ...Date.now, displayedComponents: .date) {
-                        Text("Select a date")
-                    }.onAppear(){
-                        
+                    Toggle(isOn: $isCalendarVisible){
+                        Text("Set Completed Date?")
+                    }
+                    if (isCalendarVisible){
+                        DatePickerView()
                     }
                 }.padding()
             }
@@ -95,6 +96,15 @@ struct UserTaskView: View {
     
     func updateComplete(result: String){
         print("update completed: \(result)")
+    }
+}
+
+struct DatePickerView: View {
+    @State private var dateHolder: Date = Date()
+    var body: some View{
+        DatePicker(selection: $dateHolder, in: ...Date.now, displayedComponents: .date) {
+            Text("Select a date")
+        }
     }
 }
                     
