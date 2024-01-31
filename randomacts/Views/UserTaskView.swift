@@ -12,6 +12,8 @@ struct UserTaskView: View {
     @Binding var userTask : UserTask?
     @Binding var didUpdate: Bool
     @State var isCalendarVisible = false
+    @State public var dateHolder: Date = Date()
+    
     private var selectedDate: Date? {
         if userTask?.completed != nil && userTask?.completed != ""{
             let altTaskDate: String = (userTask?.completed!)! + "Z"
@@ -33,7 +35,6 @@ struct UserTaskView: View {
             return ""
         }
     }
-    @State public var dateHolder: Date = Date()
     
     var body: some View {
         VStack
@@ -65,7 +66,7 @@ struct UserTaskView: View {
                         Text("Set Completed Date?")
                     }
                     if (isCalendarVisible){
-                        DatePickerView()
+                        DatePickerView(self)
                     }
                 }.padding()
             }
@@ -80,7 +81,16 @@ struct UserTaskView: View {
             HStack{
                 Button("Save"){
                     if (userTask?.note != ""){
-                        updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!)
+                        if isCalendarVisible{
+                            let formatter = DateFormatter()
+                            formatter.dateFormat = "YYYY-MM-DD"
+                            let finalDate = formatter.string(from: dateHolder)
+                            updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!, completed: finalDate)
+                        }
+                        else
+                        {
+                            updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!)
+                        }
                     }
                     didUpdate = true
                     dismiss()
@@ -100,10 +110,16 @@ struct UserTaskView: View {
 }
 
 struct DatePickerView: View {
-    @State private var dateHolder: Date = Date()
+    let parentView: UserTaskView
+    init(_ parentView: UserTaskView){
+        self.parentView = parentView
+    }
+    
     var body: some View{
-        DatePicker(selection: $dateHolder, in: ...Date.now, displayedComponents: .date) {
+        DatePicker(selection: parentView.$dateHolder, in: ...Date.now, displayedComponents: .date) {
             Text("Select Completed Date")
+        }.onAppear(){
+            print("parentView.dateHolder - \(parentView.dateHolder)")
         }
     }
 }
