@@ -34,7 +34,7 @@ struct UserTaskView: View {
     private var selectedDateString: String{
         if selectedDate != nil{
             let formatter = DateFormatter()
-            formatter.dateFormat = "YYYY-MM-DD"
+            formatter.dateFormat = "YYYY-MM-dd"
             return formatter.string(from: selectedDate!)
         }
         else{
@@ -89,7 +89,7 @@ struct UserTaskView: View {
                     if (userTask?.note != ""){
                         if isCalendarVisible{
                             let formatter = DateFormatter()
-                            formatter.dateFormat = "YYYY-MM-DD"
+                            formatter.dateFormat = "YYYY-MM-dd"
                             let finalDate = formatter.string(from: dateHolder)
                             userTask!.completed = finalDate
                             updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!, completed: finalDate)
