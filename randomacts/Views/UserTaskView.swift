@@ -16,7 +16,13 @@ struct UserTaskView: View {
     
     private var selectedDate: Date? {
         if userTask?.completed != nil && userTask?.completed != ""{
-            let altTaskDate: String = (userTask?.completed!)! + "Z"
+            var altTaskDate: String = (userTask?.completed!)!
+            if (userTask!.completed!.contains("T")){
+                altTaskDate += "Z"
+            }
+            else{
+                altTaskDate += "T00:00:00Z"
+            }
             var taskDate =  try! Date(altTaskDate, strategy: .iso8601)
             return Calendar.current.date(byAdding: .day, value: 1, to: taskDate)!
         }
@@ -85,6 +91,7 @@ struct UserTaskView: View {
                             let formatter = DateFormatter()
                             formatter.dateFormat = "YYYY-MM-DD"
                             let finalDate = formatter.string(from: dateHolder)
+                            userTask!.completed = finalDate
                             updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!, completed: finalDate)
                         }
                         else

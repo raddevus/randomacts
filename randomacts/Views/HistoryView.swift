@@ -13,7 +13,7 @@ struct HistoryView: View {
     @State var userTaskItem: UserTask?
     @State var didUpdate: Bool = false
     @State var currentSelectedItemId : Int64 = -1
-
+    
     init(_ parentView: ContentView){
         self.parentView = parentView
     }
@@ -105,15 +105,16 @@ struct HistoryView: View {
     func didDismiss(){
         
         print("userTaskItem : \(userTaskItem?.note ?? "")")
+        print ("## !!!COMPLETED!!! ## \(userTaskItem?.completed)")
         if didUpdate{
             if (userTaskItem?.id != nil){
                 let removeId : Int = removeItemFromCurrentTasks(idToRemove: userTaskItem?.id ?? -1)
                 
                 if (removeId > -1){
                     parentView.currentUserTasks?.insert(userTaskItem!, at:removeId)
-                    loadUserTaskFromWebApi(forceLoad: false)
                 }
             }
+            loadUserTaskFromWebApi(forceLoad: false)
         }
     }
     
