@@ -28,20 +28,23 @@ struct HistoryView: View {
                         if parentView.currentUserTasks?.count ?? 0 > 0 {
                                 List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
-                                        HStack{
-                                            Text("\(String(item.created?.prefix(10) ?? "")) " ).foregroundStyle(getCompletedTaskStatus(userTask:item))
-                                                .fontWeight(.bold)
-                                            Text("\(item.description ?? "")")
-                                            Spacer()
-                                            
+                                        Group{
+                                            HStack{
+                                                Text("\(String(item.created?.prefix(10) ?? "")) " )
+                                                    .fontWeight(.bold)
+                                                Text("\(item.description ?? "")")
+                                                    .foregroundStyle(Color.black)
+                                                Spacer()
+                                                
+                                            }
+                                            if item.note == ""{
+                                                Label("\(item.note ?? "")", systemImage: "note")
+                                           }
+                                            else{
+                                                Label("\(item.note ?? "")", systemImage: "note.text")
+                                            }
                                         }
-                                        if item.note == ""{
-                                            Label("\(item.note ?? "")", systemImage: "note")
-                                        }
-                                        else{
-                                            Label("\(item.note ?? "")", systemImage: "note.text")
-                                        }
-                                        
+                                        .foregroundStyle(getCompletedTaskStatus(userTask:item))
                                         Divider()
                                     }.onTapGesture {
                                         print("item: \(item.id)")
