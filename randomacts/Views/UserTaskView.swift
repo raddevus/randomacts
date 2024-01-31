@@ -103,7 +103,7 @@ struct DatePickerView: View {
     @State private var dateHolder: Date = Date()
     var body: some View{
         DatePicker(selection: $dateHolder, in: ...Date.now, displayedComponents: .date) {
-            Text("Select a date")
+            Text("Select Completed Date")
         }
     }
 }
