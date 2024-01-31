@@ -9,10 +9,14 @@ import SwiftUI
 
 struct HistoryView: View {
     let parentView : ContentView
+    
+    @Environment(\.colorScheme) var colorScheme
     @State private var isUserTaskViewShown = false
     @State var userTaskItem: UserTask?
     @State var didUpdate: Bool = false
     @State var currentSelectedItemId : Int64 = -1
+    @State var textColor: Color = Color.black
+    
     
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -33,7 +37,10 @@ struct HistoryView: View {
                                                 Text("\(String(item.created?.prefix(10) ?? "")) " )
                                                     .fontWeight(.bold)
                                                 Text("\(item.description ?? "")")
-                                                    .foregroundStyle(Color.black)
+                                                    .foregroundStyle(textColor)
+                                                    .onAppear(){
+                                                        setColorMode()
+                                                    }
                                                 Spacer()
                                                 
                                             }
@@ -77,6 +84,12 @@ struct HistoryView: View {
             print("### ONAPPEAR HISTORYVIEW  ####")
             
         })
+    }
+    
+    func setColorMode(){
+        self.textColor = { if (colorScheme == .dark){ return Color.white}
+            else{ return Color.black}
+        }()
     }
     
     func getCompletedTaskStatus(userTask: UserTask) -> Color{
