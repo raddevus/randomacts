@@ -216,6 +216,7 @@ struct ContentView: View {
                             Button("Delete", role:.destructive){}
                             Button("Cancel", role:.cancel){}
                         } message:{
+                            Spacer()
                             Text("Click any button, just a test")
                         }
                         

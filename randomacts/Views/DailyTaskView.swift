@@ -11,6 +11,7 @@ struct DailyTaskView: View {
     
     let parentView : ContentView
     @State var isSavePresented = false
+    @State private var userSelectedTask = false
     
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -26,6 +27,7 @@ struct DailyTaskView: View {
                     
                     Button("New Task", systemImage:"rosette"){
                         loadAllKTasks(parentView.updateCurrentTask)
+                        userSelectedTask = false
                     }.buttonStyle(.bordered)
                     
                     Spacer()
@@ -37,6 +39,7 @@ struct DailyTaskView: View {
                             if currentUserId > 0 && currentTaskId > 0{
                                 acceptUserTask(ShowUserTaskResult, userId: currentUserId,
                                                taskId: currentTaskId)
+                                userSelectedTask = true
                             }
                         }
                     }.buttonStyle(.bordered)
@@ -53,7 +56,14 @@ struct DailyTaskView: View {
                         }
                 }
                 Text(parentView.currentTaskText)
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    .font(.title )
+                    .fontWeight(userSelectedTask ? .ultraLight : .regular)
+                    .foregroundStyle(userSelectedTask ? Color.gray : .primary )
+                if userSelectedTask {
+                    Text(Image(systemName:"checkmark.circle"))
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                    
             }
         }.toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
