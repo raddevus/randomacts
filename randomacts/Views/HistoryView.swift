@@ -33,7 +33,7 @@ struct HistoryView: View {
                                 List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
                                         Group{
-                                            HStack{
+                                            VStack{
                                                 Text("\(String(item.created?.prefix(10) ?? "")) " )
                                                     .fontWeight(.bold)
                                                 Text("\(item.description ?? "")")
@@ -42,6 +42,7 @@ struct HistoryView: View {
                                                         setColorMode()
                                                     }
                                                 Spacer()
+                                                
                                                 
                                             }
                                             if item.note == ""{
@@ -52,12 +53,15 @@ struct HistoryView: View {
                                             }
                                         }
                                         .foregroundStyle(getCompletedTaskStatus(userTask:item))
+                                        Spacer()
                                         Divider()
                                     }.onTapGesture {
                                         print("item: \(item.id)")
                                         isUserTaskViewShown = true
                                         userTaskItem = item
-                                    }
+                                    }.padding()
+                                    .border(getCompletedTaskStatus(userTask: item))
+                                    
                                     
                                     .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
                                            content: {
