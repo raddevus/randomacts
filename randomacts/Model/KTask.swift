@@ -26,7 +26,7 @@ struct KTasks: Decodable{
 
 var allKTasks = [KTask]()
 
-func  loadAllKTasks(_ updateTask: @escaping (KTask?)->() ) -> [KTask] {
+func  loadAllKTasks(_ updateTask: @escaping (KTask?, Bool)->() ) -> [KTask] {
     
     var task: KTask? = nil
     print("loadData()...")
@@ -40,7 +40,7 @@ func  loadAllKTasks(_ updateTask: @escaping (KTask?)->() ) -> [KTask] {
             print("### KTASKS ARE ALREADY LOADED ######")
             
                 task = getRandomTask()
-                updateTask(task)
+                updateTask(task, false)
             
             return []
         }
@@ -59,7 +59,7 @@ func  loadAllKTasks(_ updateTask: @escaping (KTask?)->() ) -> [KTask] {
                                     addCat()
                                     task = getRandomTask()
                                     
-                                    updateTask(task)
+                                    updateTask(task, true)
                                     
                                 }
                                 // print("response: \(response)")
@@ -89,4 +89,35 @@ func getRandomTask() -> KTask?{
     currentTask = Array(allKTasks)[idx]
     print ("KTask: \(String(describing: currentTask))")
     return currentTask
+}
+
+func removeUserSelectedTasks(allUserTasks: [UserTask])->Int{
+    
+    print("## BEFORE ## task removal, count: \(allKTasks.count)")
+    
+    if (allUserTasks.count <= 0){return 0}
+    
+    for idx in 0..<allUserTasks.count{
+        guard let foundIdx = allKTasks.firstIndex(where: { $0.id == allUserTasks[idx].taskId }) 
+        else{
+            continue
+        }
+        allKTasks.remove(at: foundIdx)
+    }
+    print("## AFTER ## task removal, count: \(allKTasks.count)")
+    return allKTasks.count
+}
+
+func removeUserTaskById(taskId: Int64)->Int{
+    
+    print("## BEFORE ## task removal, count: \(allKTasks.count)")
+    
+    if (allKTasks.count <= 0){return 0}
+    guard let foundIdx = allKTasks.firstIndex(where: { $0.id == taskId })
+    else{
+        return allKTasks.count
+    }
+    allKTasks.remove(at: foundIdx)
+    print("## AFTER ## task removal, count: \(allKTasks.count)")
+    return allKTasks.count
 }

@@ -12,6 +12,7 @@ struct DailyTaskView: View {
     let parentView : ContentView
     @State var isSavePresented = false
     @State private var userSelectedTask = false
+    @State private var dailyTasksAvailable: Int = 0
     
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -40,7 +41,9 @@ struct DailyTaskView: View {
                                 acceptUserTask(ShowUserTaskResult, userId: currentUserId,
                                                taskId: currentTaskId)
                                 userSelectedTask = true
+                                parentView.availTaskCount = removeUserTaskById(taskId: currentTaskId)
                             }
+                            
                         }
                     }.buttonStyle(.bordered)
                         .alert("Daily Task Saved", isPresented: $isSavePresented){
@@ -63,6 +66,11 @@ struct DailyTaskView: View {
                     Text(Image(systemName:"checkmark.circle"))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
+                if (parentView.availTaskCount > -1){
+                    Text(Image(systemName:"tray.full"))
+                    + Text("  There are \(allKTasks.count) tasks available for selection.")
+                        .font(.footnote)
+                }
                     
             }
         }.toolbar{
@@ -75,6 +83,10 @@ struct DailyTaskView: View {
             print("doing the thing!")
             print ("currentTaskText: \(parentView.currentTaskText)")
             if (parentView.currentTaskText == ""){
+                if (parentView.currentUserTasks == nil){
+                    print(" ##### CURRENTUSERTASKS is NIL!!!!!! ######")
+                    loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
+                }
                 loadAllKTasks( parentView.updateCurrentTask)
                 print("globalTask is set!: \(parentView.currentTaskText)")
                 print("### getRandomTask() ####")

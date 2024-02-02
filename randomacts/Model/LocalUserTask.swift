@@ -52,7 +52,7 @@ class LocalUserTask : ObservableObject, Codable, Identifiable{
         self.userTasks = [UserTask]()
     }
     
-    func GetAll(saveUserTasks: @escaping (_ userTasks: [UserTask]) ->(), isScreenName: Bool = false) -> Bool{
+    func GetAll(pView: ContentView, saveUserTasks: @escaping (_ pView: ContentView, _ userTasks: [UserTask]) ->(), isScreenName: Bool = false) -> Bool{
         let destinationUrl : String = "https://newlibre.com/kind/api/UserTask/GetAll"
         
         guard let url = URL(string: destinationUrl ) else {
@@ -69,19 +69,19 @@ class LocalUserTask : ObservableObject, Codable, Identifiable{
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
                 
-                print("data: \(data) \(Date())")
+                // print("data: \(data) \(Date())")
                             do {
                                 let response = try JSONDecoder().decode(UserTasks.self, from: data)
                                 print("Decoded UserTasks properly.")
                                 self.userTasks = response.allUserTasks
-                                print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
+                                //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                 print("SAVING SELF!!")
 
-                                saveUserTasks(self.userTasks)
+                                saveUserTasks(pView, self.userTasks)
                                 
                                 DispatchQueue.main.async {
-                                    print ("response: \(data)")
-                                    print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                    // print ("response: \(data)")
+                                    // print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
                                     
                                 }
                                 

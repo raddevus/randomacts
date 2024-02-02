@@ -80,11 +80,11 @@ struct HistoryView: View {
             .toolbar{
                 Button("Load Updates"){
                     print("do a thing")
-                    loadUserTaskFromWebApi(forceLoad: true)
+                    loadUserTaskFromWebApi(pView: parentView,forceLoad: true)
                 }
             }
         }.onAppear(perform: {
-            loadUserTaskFromWebApi(forceLoad: false)
+            loadUserTaskFromWebApi(pView: parentView,forceLoad: false)
             print("### ONAPPEAR HISTORYVIEW  ####")
             
         })
@@ -105,23 +105,6 @@ struct HistoryView: View {
         }
     }
     
-    func loadUserTaskFromWebApi(forceLoad: Bool){
-        if (!forceLoad){
-            // check currentUserTasks
-            // if they're already loaded then return
-            if parentView.currentUserTasks != nil{
-                print("No need to load userTasks from WebAPI")
-                return
-            }
-        }
-        print("### LOADING userTasks from WebAPI!")
-        let ut = LocalUserTask(parentView.localUser?.user.id ?? 0)
-        // only called if there is a valid userId
-        if ut.userId != 0{
-            ut.GetAll(saveUserTasks: saveUserTasks)
-        }
-    }
-    
     func didDismiss(){
         
         print("userTaskItem : \(userTaskItem?.note ?? "")")
@@ -134,13 +117,8 @@ struct HistoryView: View {
                     parentView.currentUserTasks?.insert(userTaskItem!, at:removeId)
                 }
             }
-            loadUserTaskFromWebApi(forceLoad: false)
+            loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
         }
-    }
-    
-    func saveUserTasks(userTasks: [UserTask]){
-        print("I'm in SAVEUSERTASKS!")
-        parentView.currentUserTasks = userTasks
     }
     
     func removeItemFromCurrentTasks(idToRemove: Int64) -> Int{
@@ -152,6 +130,28 @@ struct HistoryView: View {
         }
         return -1
     }
+}
+
+func loadUserTaskFromWebApi(pView: ContentView, forceLoad: Bool){
+    if (!forceLoad){
+        // check currentUserTasks
+        // if they're already loaded then return
+        if pView.currentUserTasks != nil{
+            print("No need to load userTasks from WebAPI")
+            return
+        }
+    }
+    print("### LOADING userTasks from WebAPI!")
+    let ut = LocalUserTask(pView.localUser?.user.id ?? 0)
+    // only called if there is a valid userId
+    if ut.userId != 0{
+        ut.GetAll(pView: pView, saveUserTasks: saveUserTasks)
+    }
+}
+
+func saveUserTasks(pView: ContentView, userTasks: [UserTask]){
+    print("I'm in SAVEUSERTASKS!")
+    pView.currentUserTasks = userTasks
 }
 
 #Preview {

@@ -23,6 +23,7 @@ struct ContentView: View {
     @State private var guidForLoadUser = ""
     @State private var isShowingGuidError = false
     @State public var currentUserTasks: [UserTask]? = nil
+    @State public var availTaskCount: Int = -1
     
     private var sn = ""
     
@@ -50,10 +51,14 @@ struct ContentView: View {
         }
     }
     
-    func updateCurrentTask(_ ktask: KTask?){
+    func updateCurrentTask(_ ktask: KTask?, _ removeTasks: Bool=false){
         currentTask = ktask
         print ("currentTask items: \(String(describing: currentTask?.id)) - \(String(describing: currentTask?.description))")
-    currentTaskText = currentTask?.description ?? ""
+        currentTaskText = currentTask?.description ?? ""
+        
+        if removeTasks && currentUserTasks != nil{
+            availTaskCount = removeUserSelectedTasks(allUserTasks: currentUserTasks!)
+        }
     }
         
     func createLocalUser() -> LocalUser{

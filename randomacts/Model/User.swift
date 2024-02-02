@@ -103,7 +103,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")
-                                    print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                    //print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
                                     
                                 }
                                 
