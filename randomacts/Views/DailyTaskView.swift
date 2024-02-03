@@ -21,11 +21,13 @@ struct DailyTaskView: View {
     var body: some View {
         Form{
             Section{
-                
+                if parentView.isRetrievingData{
+                    ProgressView("Retrieving Tasks...")
+                }
             }
             Section{
                 HStack{
-                    
+
                     Button("New Task", systemImage:"rosette"){
                         loadAllKTasks(parentView.updateCurrentTask)
                         userSelectedTask = false

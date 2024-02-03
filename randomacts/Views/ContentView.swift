@@ -23,6 +23,7 @@ struct ContentView: View {
     @State private var guidForLoadUser = ""
     @State private var isShowingGuidError = false
     @State public var currentUserTasks: [UserTask]? = nil
+    @State public var isRetrievingData = false
     
     @State public var localUser: LocalUser?
         

@@ -17,7 +17,6 @@ struct HistoryView: View {
     @State var currentSelectedItemId : Int64 = -1
     @State var textColor: Color = Color.black
     
-    
     init(_ parentView: ContentView){
         self.parentView = parentView
     }
@@ -29,6 +28,10 @@ struct HistoryView: View {
                 Section{
                     VStack{
 
+                        if parentView.isRetrievingData{
+                            ProgressView("Retrieving UserTasks...")
+                        }
+                        
                         if parentView.currentUserTasks?.count ?? 0 > 0 {
                                 List(parentView.currentUserTasks ?? [], id:\ .description){ item in
                                     VStack(alignment: .leading){
@@ -142,6 +145,7 @@ func loadUserTaskFromWebApi(pView: ContentView, forceLoad: Bool){
         }
     }
     print("### LOADING userTasks from WebAPI!")
+    pView.isRetrievingData = true
     let ut = LocalUserTask(pView.localUser?.user.id ?? 0)
     // only called if there is a valid userId
     if ut.userId != 0{
@@ -158,6 +162,7 @@ func saveUserTasks(pView: ContentView, userTasks: [UserTask]){
     loadAllKTasks(pView.updateCurrentTask)
     print("globalTask is set!: \(pView.currentTaskText)")
     print("### getRandomTask() ####")
+    pView.isRetrievingData = false
 }
 
 #Preview {
