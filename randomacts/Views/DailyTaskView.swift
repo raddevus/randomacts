@@ -87,10 +87,6 @@ struct DailyTaskView: View {
                     print(" ##### CURRENTUSERTASKS is NIL!!!!!! ######")
                     loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
                 }
-                loadAllKTasks( parentView.updateCurrentTask)
-                print("globalTask is set!: \(parentView.currentTaskText)")
-                print("### getRandomTask() ####")
-                
             }
         }
     }

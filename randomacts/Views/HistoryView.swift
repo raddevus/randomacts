@@ -152,6 +152,12 @@ func loadUserTaskFromWebApi(pView: ContentView, forceLoad: Bool){
 func saveUserTasks(pView: ContentView, userTasks: [UserTask]){
     print("I'm in SAVEUSERTASKS!")
     pView.currentUserTasks = userTasks
+    // Since we've saved all the UserTasks we now need to
+    // load all the KTasks so we can remove the ones (UserTasks)
+    // which the user has already selected.
+    loadAllKTasks(pView.updateCurrentTask)
+    print("globalTask is set!: \(pView.currentTaskText)")
+    print("### getRandomTask() ####")
 }
 
 #Preview {

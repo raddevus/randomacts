@@ -126,8 +126,12 @@ struct ContentView: View {
         localUser = LocalUser(uuid:guidForLoadUser)
         guidForLoadUser = ""
         localUser?.Save(saveUser: saveUserToUserDefaults)
+        
         // empty userTasks so they'll be loaded again.
         currentUserTasks = nil
+        // empty the currentTaskText & KTasks so all will be reloaded
+        currentTaskText = ""
+        allKTasks.removeAll()
     }
     
     var body: some View {
