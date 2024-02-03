@@ -11,7 +11,7 @@ struct DailyTaskView: View {
     
     let parentView : ContentView
     @State var isSavePresented = false
-    @State private var userSelectedTask = false
+    @State private var userHasSelectedTask = false
     @State private var dailyTasksAvailable: Int = 0
     
     init(_ parentView: ContentView){
@@ -30,7 +30,7 @@ struct DailyTaskView: View {
 
                     Button("New Task", systemImage:"rosette"){
                         loadAllKTasks(parentView.updateCurrentTask)
-                        userSelectedTask = false
+                        userHasSelectedTask = false
                     }.buttonStyle(.bordered)
                     
                     Spacer()
@@ -42,7 +42,7 @@ struct DailyTaskView: View {
                             if currentUserId > 0 && currentTaskId > 0{
                                 acceptUserTask(ShowUserTaskResult, userId: currentUserId,
                                                taskId: currentTaskId)
-                                userSelectedTask = true
+                                userHasSelectedTask = true
                                 removeUserTaskById(taskId: currentTaskId)
                             }
                             
@@ -62,9 +62,9 @@ struct DailyTaskView: View {
                 }
                 Text(parentView.currentTaskText)
                     .font(.title )
-                    .fontWeight(userSelectedTask ? .ultraLight : .regular)
-                    .foregroundStyle(userSelectedTask ? Color.gray : .primary )
-                if userSelectedTask {
+                    .fontWeight(userHasSelectedTask ? .ultraLight : .regular)
+                    .foregroundStyle(userHasSelectedTask ? Color.gray : .primary )
+                if userHasSelectedTask {
                     Text(Image(systemName:"checkmark.circle"))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
@@ -90,6 +90,7 @@ struct DailyTaskView: View {
                     loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
                 }
             }
+            
         }
     }
     
