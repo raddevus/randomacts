@@ -41,7 +41,7 @@ struct DailyTaskView: View {
                                 acceptUserTask(ShowUserTaskResult, userId: currentUserId,
                                                taskId: currentTaskId)
                                 userSelectedTask = true
-                                parentView.availTaskCount = removeUserTaskById(taskId: currentTaskId)
+                                removeUserTaskById(taskId: currentTaskId)
                             }
                             
                         }
@@ -66,11 +66,11 @@ struct DailyTaskView: View {
                     Text(Image(systemName:"checkmark.circle"))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-                if (parentView.availTaskCount > -1){
-                    Text(Image(systemName:"tray.full"))
-                    + Text("  There are \(allKTasks.count) tasks available for selection.")
-                        .font(.footnote)
-                }
+                
+                Text(Image(systemName:"tray.full"))
+                + Text("  There are \(allKTasks.count) tasks available for selection.")
+                    .font(.footnote)
+            
                     
             }
         }.toolbar{

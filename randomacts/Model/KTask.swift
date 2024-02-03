@@ -91,11 +91,11 @@ func getRandomTask() -> KTask?{
     return currentTask
 }
 
-func removeUserSelectedTasks(allUserTasks: [UserTask])->Int{
+func removeUserSelectedTasks(allUserTasks: [UserTask]){
     
     print("## BEFORE ## task removal, count: \(allKTasks.count)")
     
-    if (allUserTasks.count <= 0){return 0}
+    if (allUserTasks.count <= 0){return}
     
     for idx in 0..<allUserTasks.count{
         guard let foundIdx = allKTasks.firstIndex(where: { $0.id == allUserTasks[idx].taskId }) 
@@ -105,19 +105,17 @@ func removeUserSelectedTasks(allUserTasks: [UserTask])->Int{
         allKTasks.remove(at: foundIdx)
     }
     print("## AFTER ## task removal, count: \(allKTasks.count)")
-    return allKTasks.count
 }
 
-func removeUserTaskById(taskId: Int64)->Int{
+func removeUserTaskById(taskId: Int64){
     
     print("## BEFORE ## task removal, count: \(allKTasks.count)")
     
-    if (allKTasks.count <= 0){return 0}
+    if (allKTasks.count <= 0){return}
     guard let foundIdx = allKTasks.firstIndex(where: { $0.id == taskId })
     else{
-        return allKTasks.count
+        return
     }
     allKTasks.remove(at: foundIdx)
     print("## AFTER ## task removal, count: \(allKTasks.count)")
-    return allKTasks.count
 }

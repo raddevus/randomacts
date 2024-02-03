@@ -23,9 +23,6 @@ struct ContentView: View {
     @State private var guidForLoadUser = ""
     @State private var isShowingGuidError = false
     @State public var currentUserTasks: [UserTask]? = nil
-    @State public var availTaskCount: Int = -1
-    
-    private var sn = ""
     
     @State public var localUser: LocalUser?
         
@@ -57,7 +54,7 @@ struct ContentView: View {
         currentTaskText = currentTask?.description ?? ""
         
         if removeTasks && currentUserTasks != nil{
-            availTaskCount = removeUserSelectedTasks(allUserTasks: currentUserTasks!)
+            removeUserSelectedTasks(allUserTasks: currentUserTasks!)
         }
     }
         
