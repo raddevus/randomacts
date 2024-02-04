@@ -173,7 +173,6 @@ struct ContentView: View {
             // Begin 5th tab
             NavigationStack{
                 Form{
-                    Text("Profile")
                     Text("ScreenName: \(screenName)")
                     
                     Text("userid: \(self.localUser?.user.guid ?? "")")
