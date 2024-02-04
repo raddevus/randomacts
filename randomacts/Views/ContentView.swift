@@ -18,6 +18,8 @@ struct ContentView: View {
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
     @State public var screenName = ""
+    @State public var email = ""
+    @State public var password = ""
     @State private var colorTheme = ColorScheme.light
     @State private var isDarkMode = false
     @State private var guidForLoadUser = ""
@@ -179,7 +181,18 @@ struct ContentView: View {
                             "screenName",
                             text: $screenName)
                     }
-                    Text("userid: \(self.localUser?.user.guid ?? "")")
+                    HStack{
+                        Label("UserId:", systemImage: "person.text.rectangle")
+                        Text("\(self.localUser?.user.guid ?? "")")
+                    }
+                    HStack{
+                        Label("Email:", systemImage: "mail")
+                        TextField("email", text:$email)
+                    }
+                    HStack{
+                        Label("Password:", systemImage:"lock.shield")
+                        TextField("password", text: $password)
+                    }
                     
                     Button("Save User Data"){
                         // localUser?.Save()
