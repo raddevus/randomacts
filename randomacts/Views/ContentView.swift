@@ -173,12 +173,14 @@ struct ContentView: View {
             // Begin 5th tab
             NavigationStack{
                 Form{
-                    Text("ScreenName: \(screenName)")
-                    
+                    HStack{
+                        Label("Screen Name", systemImage: "person.crop.circle")
+                        TextField(
+                            "screenName",
+                            text: $screenName)
+                    }
                     Text("userid: \(self.localUser?.user.guid ?? "")")
-                    TextField(
-                        "screenName",
-                        text: $screenName)
+                    
                     Button("Save User Data"){
                         // localUser?.Save()
                         localUser!.user.screenName=screenName
