@@ -30,6 +30,7 @@ struct HistoryView: View {
 
                         if parentView.isRetrievingData{
                             ProgressView("Retrieving UserTasks...")
+                            Spacer()
                         }
                         
                         if parentView.currentUserTasks?.count ?? 0 > 0 {

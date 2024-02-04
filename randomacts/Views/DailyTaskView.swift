@@ -23,6 +23,7 @@ struct DailyTaskView: View {
             Section{
                 if parentView.isRetrievingData{
                     ProgressView("Retrieving Tasks...")
+                    Spacer()
                 }
             }
             Section{
@@ -72,8 +73,6 @@ struct DailyTaskView: View {
                 Text(Image(systemName:"tray.full"))
                 + Text("  There are \(allKTasks.count) tasks available for selection.")
                     .font(.footnote)
-            
-                    
             }
         }.toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
@@ -90,7 +89,9 @@ struct DailyTaskView: View {
                     loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
                 }
             }
-            
+            let ctt = parentView.currentTaskText
+            parentView.currentTaskText = ""
+            parentView.currentTaskText = ctt
         }
     }
     
