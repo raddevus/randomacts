@@ -103,6 +103,8 @@ struct ContentView: View {
         } 
         
         user?.user.screenName = inUser.user.screenName
+        user?.user.email = inUser.user.email
+        user?.user.pwdHash = inUser.user.pwdHash
         self.screenName = user?.user.screenName ?? ""
         saveUserToUserDefaults(inUser: user!)
     }
@@ -198,8 +200,8 @@ struct ContentView: View {
                         // localUser?.Save()
                         localUser!.user.screenName=screenName
                         //saveUserToUserDefaults(user: localUser!)
-                        localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
-                        //localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
+                        //localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
+                        localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
                         //screenName = localUser?.user.screenName ?? ""
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)

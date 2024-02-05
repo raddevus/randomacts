@@ -134,7 +134,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         
         request.httpMethod = "POST"
             
-        let finalData = "{\"user\":{\"id\":\(user.id),\"roleId\":0,\"guid\":\"\(uuid.uuidString.lowercased())\",\"screenName\":\"\(user.screenName)\",\"pwdHash\":\"\(pwd)\",\"email\":\"\(email)\",\"created\":\"2023-11-15\",\"updated\":\"\",\"active\":true}}"
+        let finalData = "{\"Id\":\(user.id),\"roleId\":0,\"guid\":\"\(uuid.uuidString.lowercased())\",\"screenName\":\"\(user.screenName)\",\"pwdHash\":\"\(pwd)\",\"email\":\"\(email)\",\"created\":\"2023-11-15\",\"updated\":\"2024-01-23\",\"active\":true}"
         request.httpBody = finalData.data(using: String.Encoding.utf8)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
