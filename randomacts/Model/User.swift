@@ -122,4 +122,61 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         
         return true
     }
+    
+    func Save(saveUser: @escaping (_ user: LocalUser) ->(), pwd: String, email: String) -> Bool{
+        let destinationUrl : String = "https://newlibre.com/kind/api/User/SetUser"
+        
+        guard let url = URL(string: destinationUrl ) else {
+            print("Invalid URL")
+            return false
+        }
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+            
+        let finalData = "{\"user\":{\"id\":\(user.id),\"roleId\":0,\"guid\":\"\(uuid.uuidString.lowercased())\",\"screenName\":\"\(user.screenName)\",\"pwdHash\":\"\(pwd)\",\"email\":\"\(email)\",\"created\":\"2023-11-15\",\"updated\":\"\",\"active\":true}}"
+        request.httpBody = finalData.data(using: String.Encoding.utf8)
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                
+                print("data: \(data) \(Date())")
+                            do {
+                                let response = try JSONDecoder().decode(RetVal.self, from: data)
+                                print("calling user.Save()...")
+                                self.user.id = response.user.id
+                                print("got userId = \(self.user.id)")
+                                // print("self.user.id ====> \(self.user.id)")
+                                self.user.roleId = response.user.roleId
+                                self.user.screenName = response.user.screenName
+                                self.user.pwdHash = response.user.pwdHash
+                                self.user.email = response.user.email
+                                self.user.created = response.user.created
+                                self.user.updated = response.user.updated
+                                print("SAVING SELF!!")
+
+                                saveUser(self)
+                                
+                                DispatchQueue.main.async {
+                                    print ("response: \(data)")
+                                    //print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                    
+                                }
+                                
+                                return
+                                
+                            }catch {
+                                print("\(error)")
+                                print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                            }
+            }
+            else{
+                print("I failed")
+                
+            }
+        }.resume()
+        
+        return true
+    }
 }

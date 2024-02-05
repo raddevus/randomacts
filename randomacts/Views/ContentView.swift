@@ -199,7 +199,8 @@ struct ContentView: View {
                         localUser!.user.screenName=screenName
                         //saveUserToUserDefaults(user: localUser!)
                         localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
-                        screenName = localUser?.user.screenName ?? ""
+                        //localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
+                        //screenName = localUser?.user.screenName ?? ""
                     }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
                         .textInputAutocapitalization(.never)
