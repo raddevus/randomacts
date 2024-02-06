@@ -89,6 +89,8 @@ struct ContentView: View {
             UserDefaults.standard.set(data, forKey: "localUser")
         }
         self.screenName = inUser.user.screenName
+        self.email = inUser.user.email ?? ""
+        self.password = inUser.user.pwdHash ?? ""
     }
     
     func updateUserScreenName(inUser: LocalUser){
@@ -106,6 +108,8 @@ struct ContentView: View {
         user?.user.email = inUser.user.email
         user?.user.pwdHash = inUser.user.pwdHash
         self.screenName = user?.user.screenName ?? ""
+        self.email = user?.user.email ?? ""
+        self.password = user?.user.pwdHash ?? ""
         saveUserToUserDefaults(inUser: user!)
     }
     
@@ -177,33 +181,33 @@ struct ContentView: View {
             // Begin 5th tab
             NavigationStack{
                 Form{
-                    HStack{
-                        Label("Screen Name", systemImage: "person.crop.circle")
-                        TextField(
-                            "screenName",
-                            text: $screenName)
+                    Section{
+                        HStack{
+                            Label("Screen Name", systemImage: "person.crop.circle")
+                            TextField(
+                                "screenName",
+                                text: $screenName)
+                        }
+                        HStack{
+                            Label("UserId:", systemImage: "person.text.rectangle")
+                            Text("\(self.localUser?.user.guid ?? "")")
+                        }
+                        HStack{
+                            Label("Email:", systemImage: "mail")
+                            TextField("email", text:$email)
+                        }
+                        HStack{
+                            Label("Password:", systemImage:"lock.shield")
+                            TextField("password", text: $password)
+                        }
+                        
+                        Button("Save User Data"){
+                            localUser!.user.screenName=screenName
+                            localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
+                        }.buttonStyle(.bordered)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        
                     }
-                    HStack{
-                        Label("UserId:", systemImage: "person.text.rectangle")
-                        Text("\(self.localUser?.user.guid ?? "")")
-                    }
-                    HStack{
-                        Label("Email:", systemImage: "mail")
-                        TextField("email", text:$email)
-                    }
-                    HStack{
-                        Label("Password:", systemImage:"lock.shield")
-                        TextField("password", text: $password)
-                    }
-                    
-                    Button("Save User Data"){
-                        // localUser?.Save()
-                        localUser!.user.screenName=screenName
-                        //saveUserToUserDefaults(user: localUser!)
-                        //localUser!.Save(saveUser:updateUserScreenName, isScreenName: true)
-                        localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
-                        //screenName = localUser?.user.screenName ?? ""
-                    }.buttonStyle(.bordered)
                     TextField("GUID", text: $guidForLoadUser)
                         .textInputAutocapitalization(.never)
                         .onSubmit{
@@ -276,6 +280,8 @@ struct ContentView: View {
                 localUser = getUserInfo()
             }
             screenName = localUser?.user.screenName ?? ""
+            password = localUser?.user.pwdHash ?? ""
+            email = localUser?.user.email ?? ""
             print ("PROFILE screenName: \(screenName)")
         }
         .environment(\.colorScheme, $colorTheme.wrappedValue)
