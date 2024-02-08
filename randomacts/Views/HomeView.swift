@@ -14,18 +14,6 @@ struct HomeView: View {
     }
     var body: some View {
         Form{
-            Button("Remove UserData"){
-                UserDefaults.standard
-                    .removeObject(forKey: "localUser")
-                print("removed the localUser")
-            }
-            Button("Create User"){
-                parentView.createLocalUser()
-            }
-            Button("Get User Info"){
-                parentView.getUserInfo()
-                print("screenName 1: \(parentView.screenName)")
-            }
             DisclosureGroup("Random Acts Info"){
                 Text("Random Acts of Kindness helps create the opportunity to be more intentional about completing small, positive tasks that benefit others.")
                 
@@ -46,16 +34,6 @@ struct HomeView: View {
                 .sheet(isPresented: parentView.$isShowingDetailView, content: {
                     RaokItemView( )
                 })
-            Text("Allowing users to view the list of tasks will help them decide if they want to use the app. -- but they will also be")
-            //                    Section{
-            //                        Button("Show Current Task"){
-            //                            loadData(updateLocal)
-            //                        }.buttonStyle(.bordered)
-            //                        Text("Test -> \(currentTaskText)")
-            //
-            //                    }
-            
-            
         }.toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Text("Random Acts of Kindness")
