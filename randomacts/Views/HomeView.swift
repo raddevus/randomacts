@@ -26,12 +26,12 @@ struct HomeView: View {
             DisclosureGroup("Random Acts Tasks Explained"){
                 Text("While each individual task might only take a few moments or cost a few dollars, the cumulative impact of your efforts, and the efforts of others using this app, will undoubtedly make the world a more positive place! In addition, research suggests completing tasks like these is likely to strength your connections with others, improve your mood, and possibly your health. If you are ready, then let's get started!")
             }
-            Text(Date.now.formatted())
+            
             DisclosureGroup("Quote of the Day", isExpanded: parentView.$isQuoteDisplayed){
-                Text(currentQuote).font(.callout)
+                Text(currentQuote).font(.title)
                 Text(quoteAuthor).font(.title2)
-            }.font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                .onAppear(){
+            }
+            .onAppear(){
                     
                     let formatter = DateFormatter()
                     formatter.dateFormat = "YYYY-MM-dd"
@@ -58,7 +58,7 @@ struct HomeView: View {
     
     func setQuoteText(quote: String, author: String){
         currentQuote = quote
-        quoteAuthor = author
+        quoteAuthor = "~ " + author
     }
 }
 
