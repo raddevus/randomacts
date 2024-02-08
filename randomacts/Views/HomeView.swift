@@ -32,7 +32,13 @@ struct HomeView: View {
                 Text(quoteAuthor).font(.title2)
             }.font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                 .onAppear(){
-                    //check for quote
+                    
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "YYYY-MM-dd"
+                    let currentDate = formatter.string(from: Date.now)
+                    print("currentDate: \(currentDate)")
+                    let q = QuoteX()
+                    q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
                 }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
@@ -48,6 +54,11 @@ struct HomeView: View {
             }
         }.font(.system(size:20))
         
+    }
+    
+    func setQuoteText(quote: String, author: String){
+        currentQuote = quote
+        quoteAuthor = author
     }
 }
 

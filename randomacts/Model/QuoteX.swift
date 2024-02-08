@@ -14,8 +14,8 @@ struct thing : Decodable{
 
 struct quote: Decodable{
     let id: Int64
-    let fname: String
-    let lname: String
+    let fName: String
+    let lName: String
     let category: String
     let content: String
     let dayNumber: Int
@@ -48,10 +48,10 @@ struct gen3Reply : Decodable{
 }
 
 class QuoteX{
-    func GetQuote(iso8601Date: String) -> Bool{
+    func GetQuote(setQuote: @escaping (_ quoteText: String, _ author: String) ->(), iso8601Date: String) -> Bool{
         
         let destinationUrl : String = {
-            "https://newlibre.com/kind/api/Quote/GetDailyQuote"
+            "https://newlibre.com/kind/api/Quote/GetDailyQuote?iso8601Date=\(iso8601Date)"
         }()
         
         guard var url = URL(string: destinationUrl ) else {
@@ -62,7 +62,7 @@ class QuoteX{
         
         request.httpMethod = "GET"
         //let req = "iso8601Date=\(iso8601Date)"
-        url.append(queryItems:  [URLQueryItem(name: "iso8601Date", value: "\(iso8601Date)")])
+        //url.append(queryItems:  [URLQueryItem(name: "iso8601Date", value: "\(iso8601Date)")])
         //request.httpBody = req.data(using: String.Encoding.utf8)
         print ("quote URL: \(url)")
         
@@ -75,6 +75,8 @@ class QuoteX{
                                 print("\(data.debugDescription)")
                                 let response = try JSONDecoder().decode(thing.self, from: data)
                                 print("GetQuote!!")
+                                
+                                setQuote(response.quote.content, response.quote.fName)
                                 
                                 DispatchQueue.main.async {
                                     
@@ -89,6 +91,7 @@ class QuoteX{
                                 
                             }catch {
                                 print ("\(error)")
+                                print("CATCH: \(String(decoding: data, as: UTF8.self))")
                             }
             }
             else{
