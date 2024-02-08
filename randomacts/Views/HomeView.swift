@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var currentQuote = ""
+    @State private var lastQuoteDate = ""
+    @State private var quoteAuthor = ""
+    
+    
     let parentView : ContentView
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -23,10 +28,12 @@ struct HomeView: View {
             }
             Text(Date.now.formatted())
             DisclosureGroup("Quote of the Day", isExpanded: parentView.$isQuoteDisplayed){
-                Text("The reasonable man adapts himself to the world: the unreasonable one persists in trying to adapt the world to himself. Therefore all progress depends on the unreasonable man.").font(.callout)
-                Text("~George Bernard Shaw").font(.title2)
-                Text("NOTE: a new quote will be retrieved from the WebAPI every day (12am local time) and displayed here.").font(.footnote)
+                Text(currentQuote).font(.callout)
+                Text(quoteAuthor).font(.title2)
             }.font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                .onAppear(){
+                    //check for quote
+                }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
                 
