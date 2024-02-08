@@ -234,34 +234,6 @@ struct ContentView: View {
                         }
                         UserDefaults.standard.setValue(isDarkMode, forKey: "isDarkMode")
                     }
-                    Section{
-                        Button("Add Friend"){
-                            isShowingAlert = true
-                        }.alert("TBD - Add Friend Code", isPresented: $isShowingAlert){
-                            Button("OK"){
-                                
-                            }
-                            Button("Delete", role:.destructive){}
-                            Button("Cancel", role:.cancel){}
-                        } message:{
-                            Spacer()
-                            Text("Click any button, just a test")
-                        }
-                        
-                        DisclosureGroup("List of Friends", isExpanded: $friendsAreDisplayed){
-                            DisclosureGroup("Billy-Bob Haskell"){
-                                Text("Member since: 2023-05-11")
-                                Text("Tasks completed: 0")
-                                Text("Last task copleted: ")
-                                
-                            }
-                            DisclosureGroup("John Johnason"){
-                                Text("Member since: 2023-09-24")
-                                Text("Tasks completed: 12")
-                                Text("Last task completed: ")
-                            }
-                        }
-                    }
                 }
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {
