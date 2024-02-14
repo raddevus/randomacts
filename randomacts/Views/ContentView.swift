@@ -119,8 +119,7 @@ struct ContentView: View {
         if (userData != nil){
             print("userData: \(String(decoding: userData ?? Data(), as: UTF8.self))")
         }
-        let localDark = UserDefaults.standard.bool(forKey: "isDarkMode")
-        print("localDark : \(localDark)")
+
         if (userData != nil){
             return try? JSONDecoder().decode(LocalUser.self, from: userData! )
         }
