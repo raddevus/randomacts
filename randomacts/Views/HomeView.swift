@@ -11,6 +11,7 @@ struct HomeView: View {
     @State private var currentQuote = ""
     @State private var lastQuoteDate = ""
     @State private var quoteAuthor = ""
+    @State private var lastGotQuoteDate: String? = nil
     
     
     let parentView : ContentView
@@ -37,8 +38,20 @@ struct HomeView: View {
                     formatter.dateFormat = "YYYY-MM-dd"
                     let currentDate = formatter.string(from: Date.now)
                     print("currentDate: \(currentDate)")
-                    let q = QuoteX()
-                    q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
+                    if !HasDailyQuoteBeenRetrieved(currentDate:currentDate){
+                        print("Retrieving quote for \(currentDate)")
+                        let q = QuoteX()
+                        q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
+                    }
+                    else{
+                        currentQuote = UserDefaults.standard.string(forKey: "currentQuote") ?? ""
+                        quoteAuthor = UserDefaults.standard.string(forKey: "quoteAuthor") ?? ""
+                        // handle situation if the user defaults are set wrong
+                        if currentQuote == "" && quoteAuthor == ""{
+                            let q = QuoteX()
+                            q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
+                        }
+                    }
                 }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
@@ -53,12 +66,27 @@ struct HomeView: View {
                     .font(.system(size: 22, weight: .bold))
             }
         }.font(.system(size:20))
-        
+    }
+    
+    func HasDailyQuoteBeenRetrieved(currentDate: String) -> Bool{
+        lastGotQuoteDate = UserDefaults.standard.string(forKey: "gotQuoteDate")
+        if (lastGotQuoteDate == nil){
+            UserDefaults.standard.setValue(currentDate, forKey: "gotQuoteDate")
+            return false
+        }
+        print("last: \(lastGotQuoteDate ?? "") -- current: \(currentDate)")
+        if lastGotQuoteDate == currentDate{
+            return true
+        }
+        UserDefaults.standard.setValue(currentDate, forKey: "gotQuoteDate")
+        return false
     }
     
     func setQuoteText(quote: String, author: String){
         currentQuote = quote
         quoteAuthor = "~ " + author
+        UserDefaults.standard.setValue(currentQuote, forKey:"currentQuote")
+        UserDefaults.standard.setValue(quoteAuthor, forKey:"quoteAuthor")
     }
 }
 
