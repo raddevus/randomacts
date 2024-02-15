@@ -86,19 +86,18 @@ struct UserTaskView: View {
                         .background(Color.yellow)
             HStack{
                 Button("Save"){
-                    if (userTask?.note != ""){
-                        if isCalendarVisible{
-                            let formatter = DateFormatter()
-                            formatter.dateFormat = "YYYY-MM-dd"
-                            let finalDate = formatter.string(from: dateHolder)
-                            userTask!.completed = finalDate
-                            updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!, completed: finalDate)
-                        }
-                        else
-                        {
-                            updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!)
-                        }
+                    if isCalendarVisible{
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "YYYY-MM-dd"
+                        let finalDate = formatter.string(from: dateHolder)
+                        userTask!.completed = finalDate
+                        updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!, completed: finalDate)
                     }
+                    else
+                    {
+                        updateUserTask(updateComplete, userTaskId: userTask!.id, note: userTask!.note!)
+                    }
+                    
                     didUpdate = true
                     dismiss()
                 }.buttonStyle(.bordered)
