@@ -21,17 +21,17 @@ struct RaokItemView: View {
                     VStack{
                         List(results, id:\ .description){ item in
                             VStack(alignment: .leading){
-                                HStack{
-                                    Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
-                                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                                    Text("\(item.subCategory ?? "")").foregroundStyle(Color.blue)
-                                    Text("\(item.description ?? "")")
-                                    Spacer()
-                                    
+                                Group{
+                                    VStack{
+                                        Text("\(item.category ?? "") " ).foregroundStyle( Color.red)
+                                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                                        Text("\(item.subCategory ?? "")").foregroundStyle(Color.blue)
+                                        Text("\(item.description ?? "")")
+                                    }
                                 }
-                                Divider()
-                            }
-                            
+                                .padding()
+                            }.border(Color.black)
+                            Divider()
                         }
                     }
                 }
