@@ -65,6 +65,11 @@ struct HistoryView: View {
                                         userTaskItem = item
                                     }.padding()
                                     .border(getCompletedTaskStatus(userTask: item))
+                                    .onLongPressGesture{
+                                        // Added this code for later user
+                                        // with rating tasks.
+                                        print("item.description: \(item.description) - \(item.id)")
+                                    }
                                     
                                     
                                     .sheet(isPresented: $isUserTaskViewShown, onDismiss: didDismiss,
