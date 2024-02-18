@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var isShowingGuidError = false
     @State public var currentUserTasks: [UserTask]? = nil
     @State public var isRetrievingData = false
+    @State private var groupName = ""
     
     @State public var localUser: LocalUser?
         
@@ -206,6 +207,22 @@ struct ContentView: View {
                         }.buttonStyle(.bordered)
                             .frame(maxWidth: .infinity, alignment: .center)
                         
+                    }
+                    Section{
+                        DisclosureGroup("Group Membership"){
+                            HStack{
+                                Text("Create")
+                                TextField("Name", text: $groupName)
+                                Button("Create"){
+                                    
+                                }
+                            }
+                            HStack{
+                                Text("Your Groups")
+                                
+                            }
+
+                        }
                     }
                     TextField("GUID", text: $guidForLoadUser)
                         .textInputAutocapitalization(.never)

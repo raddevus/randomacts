@@ -43,6 +43,12 @@ struct HomeView: View {
                     setQuote()
                 }
             }
+            DisclosureGroup("Group Statistics"){
+                Text("There were X Tasks completed by Y Users yesterday.")
+                Text("There were X Tasks completed by Y Users in the last 7 days.")
+                Text("LeaderBoard")
+                Text("User ZZZ has completed X Tasks in the last 7 days.")
+            }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
                 
