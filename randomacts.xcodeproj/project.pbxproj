@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7A82B0C070B00400842 /* RaokItemView.swift */; };
 		A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7AC2B0C0A7900400842 /* Actions.swift */; };
+		A6B883662B8412F6001A64C7 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B883652B8412F6001A64C7 /* Stats.swift */; };
 		A6BD30A12B6069010080FCB4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A02B6069010080FCB4 /* HomeView.swift */; };
 		A6BD30A32B6072390080FCB4 /* CustomTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A22B6072390080FCB4 /* CustomTaskView.swift */; };
 		A6BD30A52B6074790080FCB4 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BD30A42B6074790080FCB4 /* HistoryView.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		A6ACF7A82B0C070B00400842 /* RaokItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaokItemView.swift; sourceTree = "<group>"; };
 		A6ACF7AC2B0C0A7900400842 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
+		A6B883652B8412F6001A64C7 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
 		A6BD30A02B6069010080FCB4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A6BD30A22B6072390080FCB4 /* CustomTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskView.swift; sourceTree = "<group>"; };
 		A6BD30A42B6074790080FCB4 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				A6C279902B3F4CF30099C8DA /* QuoteX.swift */,
 				A6C279922B44D5A00099C8DA /* KTask.swift */,
 				A6BD30A62B607A4D0080FCB4 /* LocalUserTask.swift */,
+				A6B883652B8412F6001A64C7 /* Stats.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				A6D5F9C42B07B9960047C7A1 /* ContentView.swift in Sources */,
 				A6BD30AB2B670C220080FCB4 /* DailyTaskView.swift in Sources */,
 				A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */,
+				A6B883662B8412F6001A64C7 /* Stats.swift in Sources */,
 				A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */,
 				A6C279912B3F4CF30099C8DA /* QuoteX.swift in Sources */,
 				A6C2798F2B3CE12C0099C8DA /* User.swift in Sources */,
