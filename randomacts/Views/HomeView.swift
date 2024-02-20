@@ -47,29 +47,28 @@ struct HomeView: View {
                 }
             }
             DisclosureGroup("Usage Statistics"){
-                Text("Completed Tasks")
+                Text("Your Completed Task Counts")
                 Grid {
                     GridRow {
                         Image(systemName: "checkmark.square")
                         Text("7 Days")
-                        Text("\(Days7)")
+                        Text("     \(Days7)")
                     }
                     GridRow {
                         Image(systemName: "checkmark.square")
                         Text("30 Days")
-                        Text("\(Days30)")
+                        Text("     \(Days30)")
                     }
                     GridRow{
                         Image(systemName: "checkmark.square")
                         Text("90 Days")
-                        Text("\(Days90)")
+                        Text("     \(Days90)")
                     }
                 }.onAppear{
                     let stats = Statitiscs()
                     stats.GetUserStats(displayUserStats: displayUserStats, userId: parentView.localUser?.user.id ?? 0)
                 }
-                Text("There were X Tasks completed by Y Users in the last 7 days.")
-                Text("LeaderBoard")
+                Text("Group Stats")
                 Text("User ZZZ has completed X Tasks in the last 7 days.")
             }
             .onTapGesture {
