@@ -30,7 +30,9 @@ class Statitiscs {
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
-        let finalData = "userId=\(userId)"
+        print("userId: \(userId)")
+        let finalData = "\(userId)"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField:"Content-Type")
         request.httpBody = finalData.data(using: String.Encoding.utf8)
     
         

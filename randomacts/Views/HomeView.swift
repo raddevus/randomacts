@@ -51,6 +51,8 @@ struct HomeView: View {
             }
             .onTapGesture {
                 print("you been tapped!")
+                let stats = Statitiscs()
+                stats.GetUserStats(displayUserStats: displayUserStats, userId: parentView.localUser?.user.id ?? 0)
             }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
