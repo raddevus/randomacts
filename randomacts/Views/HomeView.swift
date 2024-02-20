@@ -14,6 +14,9 @@ struct HomeView: View {
     @State private var lastQuoteDate = ""
     @State private var quoteAuthor = ""
     @State private var lastGotQuoteDate: String? = nil
+    @State private var Days7 = 0
+    @State private var Days30 = 0
+    @State private var Days90 = 0
     
     
     let parentView : ContentView
@@ -44,15 +47,34 @@ struct HomeView: View {
                 }
             }
             DisclosureGroup("Usage Statistics"){
-                Text("There were X Tasks completed by Y Users yesterday.")
+                Text("Completed Tasks")
+                Grid {
+                    GridRow {
+                        Image(systemName: "checkmark.square")
+                        Text("7 Days")
+                        Text("\(Days7)")
+                    }
+                    GridRow {
+                        Image(systemName: "checkmark.square")
+                        Text("30 Days")
+                        Text("\(Days30)")
+                    }
+                    GridRow{
+                        Image(systemName: "checkmark.square")
+                        Text("90 Days")
+                        Text("\(Days90)")
+                    }
+                }.onAppear{
+                    let stats = Statitiscs()
+                    stats.GetUserStats(displayUserStats: displayUserStats, userId: parentView.localUser?.user.id ?? 0)
+                }
                 Text("There were X Tasks completed by Y Users in the last 7 days.")
                 Text("LeaderBoard")
                 Text("User ZZZ has completed X Tasks in the last 7 days.")
             }
             .onTapGesture {
                 print("you been tapped!")
-                let stats = Statitiscs()
-                stats.GetUserStats(displayUserStats: displayUserStats, userId: parentView.localUser?.user.id ?? 0)
+                
             }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
@@ -113,6 +135,9 @@ struct HomeView: View {
     
     func displayUserStats(taskCounts: [Int]){
         print("taskCounts: \(taskCounts)")
+        Days7 = taskCounts[0]
+        Days30 = taskCounts[1]
+        Days90 = taskCounts[2]
     }
 }
 
