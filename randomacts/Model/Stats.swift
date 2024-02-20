@@ -20,7 +20,7 @@ struct UserStats: Codable{
 class Statitiscs {
     var userStats: UserStats? = nil
         
-    func GetUserStats(pView: ContentView, saveUserTasks: @escaping (_ pView: ContentView, _ userTasks: [UserTask]) ->(), userId: Int64) -> Bool{
+    func GetUserStats(displayUserStats: @escaping (_ userStats: [Int]) ->(), userId: Int64) -> Bool{
         let destinationUrl : String = "https://newlibre.com/kind/api/Stats/GetUserStats"
         
         guard let url = URL(string: destinationUrl ) else {
@@ -45,7 +45,7 @@ class Statitiscs {
                                 //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                 print("SAVING SELF!!")
 
-//                                saveUserTasks(pView, self.userStats)
+                                displayUserStats(self.userStats?.counts ?? [])
                                 
                                 DispatchQueue.main.async {
                                     // print ("response: \(data)")

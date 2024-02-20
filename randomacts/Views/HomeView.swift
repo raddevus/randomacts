@@ -49,6 +49,9 @@ struct HomeView: View {
                 Text("LeaderBoard")
                 Text("User ZZZ has completed X Tasks in the last 7 days.")
             }
+            .onTapGesture {
+                print("you been tapped!")
+            }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
                 
@@ -104,6 +107,10 @@ struct HomeView: View {
         quoteAuthor = "~ " + author
         UserDefaults.standard.setValue(currentQuote, forKey:"currentQuote")
         UserDefaults.standard.setValue(quoteAuthor, forKey:"quoteAuthor")
+    }
+    
+    func displayUserStats(taskCounts: [Int]){
+        print("taskCounts: \(taskCounts)")
     }
 }
 
