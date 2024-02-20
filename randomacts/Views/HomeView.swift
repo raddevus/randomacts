@@ -43,7 +43,7 @@ struct HomeView: View {
                     setQuote()
                 }
             }
-            DisclosureGroup("Group Statistics"){
+            DisclosureGroup("Usage Statistics"){
                 Text("There were X Tasks completed by Y Users yesterday.")
                 Text("There were X Tasks completed by Y Users in the last 7 days.")
                 Text("LeaderBoard")
