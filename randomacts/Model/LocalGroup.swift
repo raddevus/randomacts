@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Group: Codable{
+struct KGroup: Codable{
     var id: Int64
     var ownerId: Int64
     var memberId: Int64
@@ -32,11 +32,11 @@ struct Group: Codable{
 }
 
     class LocalGroup{
-        var group: Group
+        var group: KGroup
         private let uuid: UUID
         
         init(){
             uuid = UUID()
-            group = Group(uuid.uuidString.lowercased())
+            group = KGroup(uuid.uuidString.lowercased())
         }
     }
