@@ -27,6 +27,8 @@ struct ContentView: View {
     @State public var currentUserTasks: [UserTask]? = nil
     @State public var isRetrievingData = false
     @State private var groupName = ""
+    @State private var groupPwd = ""
+    @State private var isGroupCreateError = false
     
     @State public var localUser: LocalUser?
         
@@ -210,12 +212,24 @@ struct ContentView: View {
                     }
                     Section{
                         DisclosureGroup("Group Membership"){
-                            HStack{
-                                Text("Create")
+                            Text("Add A Group")
+                            VStack{
+                                
                                 TextField("Name", text: $groupName)
+                                TextField("Password", text:$groupPwd)
                                 Button("Create"){
-                                    
+                                    if groupName == "" || groupPwd == ""{
+                                        isGroupCreateError = true
+                                    }
                                 }
+                                .alert("Name or Password Not Set!", isPresented: $isGroupCreateError){
+                                                Button("OK"){
+                                                    //add extra functionality when user clicks OK
+                                                }
+                                                                                   } message:{
+                                                Text("Please make sure you provide a group anme and password.  Try again.")
+                                            }
+
                             }
                             HStack{
                                 Text("Your Groups")
