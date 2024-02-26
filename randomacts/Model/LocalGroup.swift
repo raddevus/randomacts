@@ -52,7 +52,7 @@ struct KGroup: Codable{
             
             request.httpMethod = "POST"
             
-            let finalData = "{\"OwnerId\":\(userId),\"MemberId\":\(userId),\"Guid\":\"\(uuid.uuidString.lowercased())\",\"Name\":\"\(groupName)\",\"PwdHash\":\"\(pwd)\",\"Created\":null,\"Updated\":null,\"Active\":true}"
+            let finalData = "{\"id\":0,\"OwnerId\":\(userId),\"MemberId\":\(userId),\"Guid\":\"\(uuid.uuidString.lowercased())\",\"Name\":\"\(groupName)\",\"PwdHash\":\"\(pwd)\",\"Created\":null,\"Updated\":null,\"Active\":true}"
             request.httpBody = finalData.data(using: String.Encoding.utf8)
             request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
