@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 struct KGroup: Codable{
     var id: Int64
     var ownerId: Int64
@@ -41,7 +42,7 @@ struct KGroup: Codable{
         }
         
         func CreateGroup(GroupCreated: @escaping (_ group: KGroup) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
-            let destinationUrl : String = "https://newlibre.com/kind/api/Stats/GetUserStats"
+            let destinationUrl : String = "https://newlibre.com/kind/api/Group/Create"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")
@@ -51,14 +52,13 @@ struct KGroup: Codable{
             
             request.httpMethod = "POST"
             
-            let finalData = "{\"ownerId\":\(userId),\"memberId\":\(userId),\"guid\":\"\(uuid.uuidString.lowercased())\",\"name\":\"\(groupName)\",\"pwdHash\":\"\(pwd)\",\"created\":null,\"updated\":null,\"active\":true}"
+            let finalData = "{\"OwnerId\":\(userId),\"MemberId\":\(userId),\"Guid\":\"\(uuid.uuidString.lowercased())\",\"Name\":\"\(groupName)\",\"PwdHash\":\"\(pwd)\",\"Created\":null,\"Updated\":null,\"Active\":true}"
             request.httpBody = finalData.data(using: String.Encoding.utf8)
             request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
             
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if let data = data {
-                    
                     // print("data: \(data) \(Date())")
                                 do {
                                     let response = try JSONDecoder().decode(KGroup.self, from: data)
