@@ -40,7 +40,7 @@ struct KGroup: Codable{
             group = KGroup(uuid.uuidString.lowercased())
         }
         
-        func CreateGroup(displayUserStats: @escaping (_ userStats: [Int]) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
+        func CreateGroup(GroupCreated: @escaping (_ group: KGroup) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
             let destinationUrl : String = "https://newlibre.com/kind/api/Stats/GetUserStats"
             
             guard let url = URL(string: destinationUrl ) else {
@@ -67,7 +67,7 @@ struct KGroup: Codable{
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
-//                                    displayUserStats(self.group. ?? [])
+                                    GroupCreated(self.group)
                                     
                                     DispatchQueue.main.async {
                                         // print ("response: \(data)")

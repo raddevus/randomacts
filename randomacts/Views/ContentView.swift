@@ -221,6 +221,8 @@ struct ContentView: View {
                                     if groupName == "" || groupPwd == ""{
                                         isGroupCreateError = true
                                     }
+                                    var group = LocalGroup()
+                                    group.CreateGroup(GroupCreated: GroupCreated, userId: localUser?.user.id ?? 0, groupName: groupName, pwd: groupPwd)
                                 }
                                 .alert("Name or Password Not Set!", isPresented: $isGroupCreateError){
                                                 Button("OK"){
@@ -288,6 +290,9 @@ struct ContentView: View {
         }
         .environment(\.colorScheme, $colorTheme.wrappedValue)
         }
+    func GroupCreated(group: KGroup){
+        print("## group ##  --> \(group)")
+    }
 }
 
 #Preview {
