@@ -165,13 +165,15 @@ struct ContentView: View {
             // END 2nd TAB
             
             // ## CUSTOM TASK VIEW - tab 3
-            NavigationStack{
+// ###################################################
+// 2025-04-19 - REMOVING Tab 3 will add back in later
+/*            NavigationStack{
                 CustomTaskView(self)
             }.tabItem{
                 Label("Custom Task", systemImage:"note.text.badge.plus")
             }
-            // End 3rd Tab
-            
+ */           // End 3rd Tab
+// ########  END OF REMOVED TAB CODE ################            
             // HISTORY VIEW - tab 4
             NavigationStack{
                 HistoryView(self)
