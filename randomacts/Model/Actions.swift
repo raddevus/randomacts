@@ -160,7 +160,7 @@ func acceptUserTask(_ reportResult: @escaping (String)->(),userId: Int64, taskId
 }
 
 func updateUserTask(_ reportResult: @escaping (String)->(),userTaskId: Int64, note: String, completed: String="") -> Bool{
-    let destinationUrl = "https://newlibre.com/kind/api/UserTask/Update"
+    let destinationUrl = "\(baseUrl)UserTask/Update"
     
     guard let url = URL(string: destinationUrl ) else {
         print("Invalid URL")
