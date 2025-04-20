@@ -42,7 +42,7 @@ struct KGroup: Codable{
         }
         
         func CreateGroup(GroupCreated: @escaping (_ group: KGroup) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
-            let destinationUrl : String = "https://newlibre.com/kind/api/Group/Create"
+            let destinationUrl : String = "\(baseUrl)Group/Create"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")

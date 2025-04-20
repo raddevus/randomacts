@@ -53,7 +53,7 @@ class LocalUserTask : ObservableObject, Codable, Identifiable{
     }
     
     func GetAll(pView: ContentView, saveUserTasks: @escaping (_ pView: ContentView, _ userTasks: [UserTask]) ->(), isScreenName: Bool = false) -> Bool{
-        let destinationUrl : String = "https://newlibre.com/kind/api/UserTask/GetAll"
+        let destinationUrl : String = "\(baseUrl)UserTask/GetAll"
         
         guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")

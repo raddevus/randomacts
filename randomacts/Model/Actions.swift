@@ -29,12 +29,15 @@ var allDescriptions = Set<String>()
 
 var results = [Action]()
 
+var prodBaseUrl = "https://newlibre.com/kind/api/";
+var devBaseUrl = "http://192.168.5.185:7103/";
+var baseUrl = devBaseUrl;
 
 func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
     
     var taskText = ""
     print("loadData()...")
-        guard let url = URL(string: "https://newlibre.com/kind/api/KTask/GetAll" ) else {
+        guard let url = URL(string: "\(baseUrl)KTask/GetAll" ) else {
             print("Invalid URL")
             return []
         }
@@ -112,7 +115,7 @@ func getRandomTaskText() -> String{
 }
 
 func acceptUserTask(_ reportResult: @escaping (String)->(),userId: Int64, taskId: Int64) -> Bool{
-    let destinationUrl = "https://newlibre.com/kind/api/UserTask/Save"
+    let destinationUrl = "\(baseUrl)UserTask/Save"
     
     guard let url = URL(string: destinationUrl ) else {
         print("Invalid URL")

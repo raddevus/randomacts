@@ -51,7 +51,7 @@ class QuoteX{
     func GetQuote(setQuote: @escaping (_ quoteText: String, _ author: String) ->(), iso8601Date: String) -> Bool{
         
         let destinationUrl : String = {
-            "https://newlibre.com/kind/api/Quote/GetDailyQuote?iso8601Date=\(iso8601Date)"
+            "\(baseUrl)Quote/GetDailyQuote?iso8601Date=\(iso8601Date)"
         }()
         
         guard var url = URL(string: destinationUrl ) else {
@@ -104,7 +104,7 @@ class QuoteX{
     func Gen1() -> Bool{
         
         let destinationUrl : String = {
-            "https://newlibre.com/kind/api/Quote/Gen1"
+            "\(baseUrl)Quote/Gen1"
         }()
         
         guard let url = URL(string: destinationUrl ) else {
@@ -149,7 +149,7 @@ class QuoteX{
     func Gen2() -> Bool{
         
         let destinationUrl : String = {
-            "https://newlibre.com/kind/api/Quote/Gen2"
+            "\(baseUrl)Quote/Gen2"
         }()
         
         guard let url = URL(string: destinationUrl ) else {
@@ -194,7 +194,7 @@ class QuoteX{
     func Gen3() -> Bool{
         
         let destinationUrl : String = {
-            "https://newlibre.com/kind/api/Quote/Gen3"
+            "\(baseUrl)Quote/Gen3"
         }()
         
         guard let url = URL(string: destinationUrl ) else {

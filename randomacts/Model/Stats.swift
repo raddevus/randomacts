@@ -21,7 +21,7 @@ class Statitiscs {
     var userStats: UserStats? = nil
         
     func GetUserStats(displayUserStats: @escaping (_ userStats: [Int]) ->(), userId: Int64) -> Bool{
-        let destinationUrl : String = "https://newlibre.com/kind/api/Stats/GetUserStats"
+        let destinationUrl : String = "\(baseUrl)Stats/GetUserStats"
         
         guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")

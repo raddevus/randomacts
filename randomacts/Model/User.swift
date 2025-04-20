@@ -56,10 +56,10 @@ class LocalUser: ObservableObject, Codable, Identifiable{
     func Save(saveUser: @escaping (_ user: LocalUser) ->(), isScreenName: Bool = false) -> Bool{
         let destinationUrl : String = {
             if isScreenName{
-                "https://newlibre.com/kind/api/User/SetScreenName"
+                "\(baseUrl)User/SetScreenName"
             }
             else{
-                "https://newlibre.com/kind/api/User/Save"
+                "\(baseUrl)User/Save"
             }
         }()
         
@@ -124,7 +124,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
     }
     
     func Save(saveUser: @escaping (_ user: LocalUser) ->(), pwd: String, email: String) -> Bool{
-        let destinationUrl : String = "https://newlibre.com/kind/api/User/SetUser"
+        let destinationUrl : String = "\(baseUrl)/User/SetUser"
         
         guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
