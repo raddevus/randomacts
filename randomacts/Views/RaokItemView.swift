@@ -61,7 +61,7 @@ struct RaokItemView: View {
     
     func loadData() ->[Action] {
         print("loadData()...")
-            guard let url = URL(string: "https://newlibre.com/kind/api/KTask/GetAll" ) else {
+            guard let url = URL(string: "\(baseUrl)KTask/GetAll" ) else {
                 print("Invalid URL")
                 return []
             }
