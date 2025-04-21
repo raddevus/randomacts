@@ -90,4 +90,55 @@ struct KGroup: Codable{
             
             return true
         }
+        
+        func GetMemberGroups(GroupCreated: @escaping (_ group: KGroup) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/Create"
+            
+            guard let url = URL(string: destinationUrl ) else {
+                print("Invalid URL")
+                return false
+            }
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "POST"
+            
+            let finalData = "{\"id\":0,\"OwnerId\":\(userId),\"MemberId\":\(userId),\"Guid\":\"\(uuid.uuidString.lowercased())\",\"Name\":\"\(groupName)\",\"PwdHash\":\"\(pwd)\",\"Created\":null,\"Updated\":null,\"Active\":true}"
+            request.httpBody = finalData.data(using: String.Encoding.utf8)
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let data = data {
+                    // print("data: \(data) \(Date())")
+                                do {
+                                    let response = try JSONDecoder().decode(KGroup.self, from: data)
+                                    print("Decoded UserStats properly.")
+                                    self.group = response
+                                    //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
+                                    print("SAVING SELF!!")
+
+                                    GroupCreated(self.group)
+                                    
+                                    DispatchQueue.main.async {
+                                        // print ("response: \(data)")
+                                        // print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                        
+                                    }
+                                    
+                                    return
+                                    
+                                }catch {
+                                    print("\(error)")
+                                    print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                                }
+                }
+                else{
+                    print("I failed")
+                    
+                }
+            }.resume()
+            
+            return true
+        }
+        
     }
