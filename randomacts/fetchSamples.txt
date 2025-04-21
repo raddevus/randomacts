@@ -1,0 +1,5 @@
+// retrieve all groups that specific user is part of 
+fetch("http://192.168.5.185:7103/Group/GetMemberGroups?guid=ad1f2ed8-f8f6-455f-bf50-dbc0130f026e&pwd=Allgood")
+      .then(response => response.json())
+  .then(data => console.log(data));
+
