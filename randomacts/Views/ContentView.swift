@@ -17,18 +17,20 @@ struct ContentView: View {
     @State private var friendsAreDisplayed = true
     @State private var isShowingAlert = false
     @State private var dayNumber = 0
+    
+    @State public var colorTheme = ColorScheme.light
+    @State public var isDarkMode = false
+    @State public var guidForLoadUser = ""
+    @State public var isShowingGuidError = false
+    @State public var currentUserTasks: [UserTask]? = nil
+    @State public var isRetrievingData = false
+ 
     @State public var screenName = ""
     @State public var email = ""
     @State public var password = ""
-    @State private var colorTheme = ColorScheme.light
-    @State private var isDarkMode = false
-    @State private var guidForLoadUser = ""
-    @State private var isShowingGuidError = false
-    @State public var currentUserTasks: [UserTask]? = nil
-    @State public var isRetrievingData = false
-    @State private var groupName = ""
-    @State private var groupPwd = ""
-    @State private var isGroupCreateError = false
+    @State public var groupName = ""
+    @State public var groupPwd = ""
+    @State public var isGroupCreateError = false
     
     @State public var localUser: LocalUser?
         
@@ -184,99 +186,7 @@ struct ContentView: View {
             
             // Begin 5th tab
             NavigationStack{
-                Form{
-                    Section{
-                        HStack{
-                            Label("Screen Name", systemImage: "person.crop.circle")
-                            TextField(
-                                "screenName",
-                                text: $screenName)
-                        }
-                        HStack{
-                            Label("UserId:", systemImage: "person.text.rectangle")
-                            Text("\(self.localUser?.user.guid ?? "")")
-                        }
-                        HStack{
-                            Label("Email:", systemImage: "mail")
-                            TextField("email", text:$email)
-                        }
-                        HStack{
-                            Label("Password:", systemImage:"lock.shield")
-                            TextField("password", text: $password)
-                        }
-                        
-                        Button("Save User Data"){
-                            localUser!.user.screenName=screenName
-                            localUser!.Save(saveUser: updateUserScreenName, pwd: password, email: email)
-                        }.buttonStyle(.bordered)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                        
-                    }
-                    Section{
-                        DisclosureGroup("Group Membership"){
-                            Text("Add A Group")
-                            VStack{
-                                
-                                TextField("Name", text: $groupName)
-                                TextField("Password", text:$groupPwd)
-                                Button("Create"){
-                                    if groupName == "" || groupPwd == ""{
-                                        isGroupCreateError = true
-                                    }
-                                    var group = LocalGroup()
-                                    group.CreateGroup(GroupCreated: GroupCreated, userId: localUser?.user.id ?? 0, groupName: groupName, pwd: groupPwd)
-                                }
-                                .alert("Name or Password Not Set!", isPresented: $isGroupCreateError){
-                                                Button("OK"){
-                                                    //add extra functionality when user clicks OK
-                                                }
-                                                                                   } message:{
-                                                Text("Please make sure you provide a group anme and password.  Try again.")
-                                            }
-
-                            }
-                            DisclosureGroup("Member Groups"){
-                                HStack{
-                                    Text("Your Groups")
-                                    
-                                }
-                            }
-
-                        }
-                    }
-                    TextField("GUID", text: $guidForLoadUser)
-                        .textInputAutocapitalization(.never)
-                        .onSubmit{
-                            processGuidEntry()
-                        }
-                    Button("Load User From GUID"){
-                        processGuidEntry()
-                    }.buttonStyle(.bordered)
-                        .alert("GUID Is Invalid!", isPresented: $isShowingGuidError){
-                            Button("OK"){
-                                guidForLoadUser = ""
-                            }
-                        } message:{
-                            Text("Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)")
-                        }
-                    Toggle(isOn: $isDarkMode){
-                        Text("Dark Mode")
-                    }.onChange(of: isDarkMode){
-                        if (isDarkMode){
-                            colorTheme = .dark
-                        }
-                        else{
-                            colorTheme = .light
-                        }
-                        UserDefaults.standard.setValue(isDarkMode, forKey: "isDarkMode")
-                    }
-                }
-                .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("Profile")
-                            .font(.system(size: 22, weight: .bold))
-                    }
-                }
+                ProfileView(self)
             }.tabItem{
                 Label("Profile", systemImage: "person")
             }

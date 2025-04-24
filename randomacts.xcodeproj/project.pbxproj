@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A626626E2DBABCC3002B708D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626626D2DBABCC3002B708D /* ProfileView.swift */; };
 		A62AEED72B86B83E003ECB8E /* LocalGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62AEED62B86B83E003ECB8E /* LocalGroup.swift */; };
 		A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7A82B0C070B00400842 /* RaokItemView.swift */; };
 		A6ACF7AD2B0C0A7900400842 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ACF7AC2B0C0A7900400842 /* Actions.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A626626D2DBABCC3002B708D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A62AEED62B86B83E003ECB8E /* LocalGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGroup.swift; sourceTree = "<group>"; };
 		A6ACF7A82B0C070B00400842 /* RaokItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaokItemView.swift; sourceTree = "<group>"; };
 		A6ACF7AC2B0C0A7900400842 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				A6BD30A22B6072390080FCB4 /* CustomTaskView.swift */,
 				A6BD30A42B6074790080FCB4 /* HistoryView.swift */,
 				A6BD30A82B6404060080FCB4 /* UserTaskView.swift */,
+				A626626D2DBABCC3002B708D /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				A6ACF7A92B0C070B00400842 /* RaokItemView.swift in Sources */,
 				A6C279912B3F4CF30099C8DA /* QuoteX.swift in Sources */,
 				A6C2798F2B3CE12C0099C8DA /* User.swift in Sources */,
+				A626626E2DBABCC3002B708D /* ProfileView.swift in Sources */,
 				A6BD30A12B6069010080FCB4 /* HomeView.swift in Sources */,
 				A6BD30A92B6404060080FCB4 /* UserTaskView.swift in Sources */,
 				A6BD30A32B6072390080FCB4 /* CustomTaskView.swift in Sources */,
