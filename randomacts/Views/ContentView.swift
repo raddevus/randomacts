@@ -235,9 +235,11 @@ struct ContentView: View {
                                             }
 
                             }
-                            HStack{
-                                Text("Your Groups")
-                                
+                            DisclosureGroup("Member Groups"){
+                                HStack{
+                                    Text("Your Groups")
+                                    
+                                }
                             }
 
                         }
