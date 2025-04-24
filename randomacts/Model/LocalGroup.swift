@@ -34,6 +34,7 @@ struct KGroup: Codable{
 
     class LocalGroup{
         var group: KGroup
+        var groups: [KGroup] = []
         private let uuid: UUID
         
         init(){
@@ -91,8 +92,8 @@ struct KGroup: Codable{
             return true
         }
         
-        func GetMemberGroups(GroupCreated: @escaping (_ group: KGroup) ->(), userId: Int64, groupName: String, pwd: String) -> Bool{
-            let destinationUrl : String = "\(baseUrl)Group/Create"
+        func GetMemberGroups(RetrievedGroups: @escaping (_ groups: [KGroup]) ->(), userGuid: String, pwd: String) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/GetMemberGroups?guid=\(userGuid.lowercased())&pwd=\(pwd)"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")
@@ -100,24 +101,19 @@ struct KGroup: Codable{
             }
             var request = URLRequest(url: url)
             
-            request.httpMethod = "POST"
-            
-            let finalData = "{\"id\":0,\"OwnerId\":\(userId),\"MemberId\":\(userId),\"Guid\":\"\(uuid.uuidString.lowercased())\",\"Name\":\"\(groupName)\",\"PwdHash\":\"\(pwd)\",\"Created\":null,\"Updated\":null,\"Active\":true}"
-            request.httpBody = finalData.data(using: String.Encoding.utf8)
-            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        
+            request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if let data = data {
                     // print("data: \(data) \(Date())")
                                 do {
-                                    let response = try JSONDecoder().decode(KGroup.self, from: data)
+                                    let response = try JSONDecoder().decode([KGroup].self, from: data)
                                     print("Decoded UserStats properly.")
-                                    self.group = response
+                                    self.groups = response
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
-                                    GroupCreated(self.group)
+                                    RetrievedGroups(self.groups)
                                     
                                     DispatchQueue.main.async {
                                         // print ("response: \(data)")

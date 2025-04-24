@@ -67,10 +67,17 @@ struct ProfileView: View {
 
                     }
                     DisclosureGroup("Member Groups"){
-                        HStack{
-                            Text("Your Groups")
+                        VStack{
                             
+                        }.onAppear(perform:{
+                            print("test")
+                            var group = LocalGroup()
+                            var allGroups: [KGroup] = []
+                            group.GetMemberGroups(RetrievedGroups:self.RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "", pwd: "Allgood")
                         }
+                                   
+                        )
+                        
                     }
 
                 }
@@ -108,6 +115,10 @@ struct ProfileView: View {
                     .font(.system(size: 22, weight: .bold))
             }
         }
+    }
+    
+    func RetrievedGroups(allGroups: [KGroup]){
+        print("I'm doone!")
     }
 }
 
