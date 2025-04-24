@@ -133,9 +133,12 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
-            
-        let finalData = "{\"Id\":\(user.id),\"roleId\":0,\"guid\":\"\(uuid.uuidString.lowercased())\",\"screenName\":\"\(user.screenName)\",\"pwdHash\":\"\(pwd)\",\"email\":\"\(email)\",\"created\":null,\"updated\":null,\"active\":true}"
-        request.httpBody = finalData.data(using: String.Encoding.utf8)
+        user.email = email
+        let finalData = try? JSONEncoder().encode(user)
+        // Finally cleaned all this up - the real issue is that the WebAPI method must not be marked [FromBody]
+        // or [FromForm] !! It has to be be just a normal method with none of these decorators
+        // Example: SetUser(User user) -- works great. 
+        request.httpBody = finalData
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
