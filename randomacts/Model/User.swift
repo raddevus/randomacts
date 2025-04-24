@@ -124,7 +124,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
     }
     
     func Save(saveUser: @escaping (_ user: LocalUser) ->(), pwd: String, email: String) -> Bool{
-        let destinationUrl : String = "\(baseUrl)/User/SetUser"
+        let destinationUrl : String = "\(baseUrl)User/SetUser"
         
         guard let url = URL(string: destinationUrl ) else {
             print("Invalid URL")
@@ -167,7 +167,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 return
                                 
                             }catch {
-                                print("\(error)")
+                                print("\(error) \(response ?? URLResponse())")
                                 print("CATCH: \(String(decoding: data, as: UTF8.self))")
                             }
             }
