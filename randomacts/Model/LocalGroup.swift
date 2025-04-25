@@ -96,8 +96,8 @@ struct KGroup: Codable, Identifiable{
             return true
         }
         
-        func GetMemberGroups(RetrievedGroups: @escaping (_ groups: [KGroup]) ->(), userGuid: String, pwd: String) -> Bool{
-            let destinationUrl : String = "\(baseUrl)Group/GetMemberGroups?guid=\(userGuid.lowercased())&pwd=\(pwd)"
+        func GetMemberGroups(RetrievedGroups: @escaping (_ groups: [KGroup]) ->(), userGuid: String) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/GetMemberGroups?guid=\(userGuid.lowercased())"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")

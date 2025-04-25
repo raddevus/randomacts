@@ -81,7 +81,7 @@ struct ProfileView: View {
                             print("test")
                             var group = LocalGroup()
                             var allGroups: [KGroup] = []
-                            group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "", pwd: "Allgood")
+                            group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "")
                         }
                                    
                         )
