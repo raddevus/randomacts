@@ -33,7 +33,7 @@ var prodBaseUrl = "https://newlibre.com/kind/api/";
 var macminiIp = "151";
 var maclaptopIp = "185";
 var devBaseUrl = "http://192.168.5.\(macminiIp):7103/";
-var baseUrl = devBaseUrl;
+var baseUrl = prodBaseUrl;
 
 func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {
     
