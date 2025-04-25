@@ -68,11 +68,10 @@ struct ProfileView: View {
                                     }
 
                     }
-                    DisclosureGroup("Member Groups"){
+                    DisclosureGroup("Member Groups (* Owner)"){
                         VStack{
                             List(currentGroups){ item in
-                                    //print("\(item.name)")
-                                        Text(item.name)
+                                Text("\(item.name)\(item.ownerId == (pv.localUser?.user.id ?? 0) ? " *" : "")")
                                         
                                 
                             }
