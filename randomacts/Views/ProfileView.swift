@@ -10,6 +10,8 @@ import SwiftUI
 struct ProfileView: View {
     
     let pv : ContentView
+    @State var currentGroups = [KGroup]()
+    
     init(_ parentView: ContentView){
         self.pv = parentView
     }
@@ -68,12 +70,18 @@ struct ProfileView: View {
                     }
                     DisclosureGroup("Member Groups"){
                         VStack{
+                            List(currentGroups){ item in
+                                    //print("\(item.name)")
+                                        Text(item.name)
+                                        
+                                
+                            }
                             
                         }.onAppear(perform:{
                             print("test")
                             var group = LocalGroup()
                             var allGroups: [KGroup] = []
-                            group.GetMemberGroups(RetrievedGroups:self.RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "", pwd: "Allgood")
+                            group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "", pwd: "Allgood")
                         }
                                    
                         )
@@ -118,7 +126,9 @@ struct ProfileView: View {
     }
     
     func RetrievedGroups(allGroups: [KGroup]){
-        print("I'm doone!")
+        print("allGroups: \(allGroups.count) : \(allGroups[0].name)")
+        currentGroups = allGroups
+
     }
 }
 

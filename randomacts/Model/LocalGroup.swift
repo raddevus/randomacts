@@ -7,8 +7,12 @@
 
 import Foundation
 
+struct KGroupResponse : Decodable{
+    let success: Bool?
+    public let allGroups: [KGroup]
+}
 
-struct KGroup: Codable{
+struct KGroup: Codable, Identifiable{
     var id: Int64
     var ownerId: Int64
     var memberId: Int64
@@ -107,9 +111,9 @@ struct KGroup: Codable{
                 if let data = data {
                     // print("data: \(data) \(Date())")
                                 do {
-                                    let response = try JSONDecoder().decode([KGroup].self, from: data)
-                                    print("Decoded UserStats properly.")
-                                    self.groups = response
+                                    let response = try JSONDecoder().decode(KGroupResponse.self, from: data)
+                                    print("Decoded Groups properly.")
+                                    self.groups = response.allGroups
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
