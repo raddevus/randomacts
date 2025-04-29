@@ -30,9 +30,9 @@ var allDescriptions = Set<String>()
 var results = [Action]()
 
 var prodBaseUrl = "https://newlibre.com/kind/api/";
-var macminiIp = "151";
+var macminiIp = "176";
 var maclaptopIp = "186";
-var devBaseUrl = "http://192.168.5.\(maclaptopIp):7103/";
+var devBaseUrl = "http://192.168.5.\(macminiIp):7103/";
 var baseUrl = devBaseUrl;
 
 func  loadData(_ updateTaskText: @escaping (String)->() ) -> [Action] {

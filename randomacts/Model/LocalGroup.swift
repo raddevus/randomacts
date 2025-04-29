@@ -7,6 +7,19 @@
 
 import Foundation
 
+struct KGroupStatsResponse: Decodable{
+    let success: Bool?
+    public let groupStats: [KGroupStats]
+}
+
+struct KGroupStats: Codable, Identifiable{
+    var userId: Int64
+    var groupName: String
+    var screenName: String
+    var counts: [Int]
+    var id: Int64 { userId } // Conforming to Identifiable using userId
+}
+
 struct KGroupResponse : Decodable{
     let success: Bool?
     public let allGroups: [KGroup]
@@ -39,6 +52,7 @@ struct KGroup: Codable, Identifiable{
     class LocalGroup{
         var group: KGroup
         var groups: [KGroup] = []
+        var groupStats: [KGroupStats] = []
         private let uuid: UUID
         
         init(){
@@ -140,5 +154,55 @@ struct KGroup: Codable, Identifiable{
             
             return true
         }
+        
+        func GetMemberGroupsForStats(RetrievedGroups: @escaping (_ groups: [KGroupStats]) ->(), ownerId: Int) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/GetMemberGroupsForStats?ownerId=\(ownerId)"
+            
+            guard let url = URL(string: destinationUrl ) else {
+                print("Invalid URL")
+                return false
+            }
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "GET"
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let data = data {
+                    // print("data: \(data) \(Date())")
+                                do {
+                                    let response = try JSONDecoder().decode(KGroupStatsResponse.self, from: data)
+                                    print("Decoded Groups properly.")
+                                    self.groupStats = response.groupStats
+                                    //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
+                                    print("SAVING SELF!!")
+
+                                    RetrievedGroups(self.groupStats)
+                                    
+                                    DispatchQueue.main.async {
+                                        // print ("response: \(data)")
+                                        // print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                        
+                                    }
+                                    
+                                    return
+                                    
+                                }catch {
+                                    print("\(error)")
+                                    print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                                }
+                }
+                else{
+                    print("I failed")
+                    
+                }
+            }.resume()
+            
+            return true
+        }
+        
+//        fetch(`http://192.168.5.176:7103/Group/GetMemberGroupsForStats?ownerId=54`)
+//        .then(response => response.json())
+//        .then(data => console.log(data));
+        
         
     }
