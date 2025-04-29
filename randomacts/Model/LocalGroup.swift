@@ -9,7 +9,7 @@ import Foundation
 
 struct KGroupStatsResponse: Decodable{
     let success: Bool?
-    public let groupStats: [KGroupStats]
+    public let allGroups: [KGroupStats]
 }
 
 struct KGroupStats: Codable, Identifiable{
@@ -155,7 +155,7 @@ struct KGroup: Codable, Identifiable{
             return true
         }
         
-        func GetMemberGroupsForStats(RetrievedGroups: @escaping (_ groups: [KGroupStats]) ->(), ownerId: Int) -> Bool{
+        func GetMemberGroupsForStats(GroupStatsCompleted: @escaping (_ groups: [KGroupStats]) ->(), ownerId: Int64) -> Bool{
             let destinationUrl : String = "\(baseUrl)Group/GetMemberGroupsForStats?ownerId=\(ownerId)"
             
             guard let url = URL(string: destinationUrl ) else {
@@ -172,11 +172,11 @@ struct KGroup: Codable, Identifiable{
                                 do {
                                     let response = try JSONDecoder().decode(KGroupStatsResponse.self, from: data)
                                     print("Decoded Groups properly.")
-                                    self.groupStats = response.groupStats
+                                    self.groupStats = response.allGroups
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
-                                    RetrievedGroups(self.groupStats)
+                                    GroupStatsCompleted(self.groupStats)
                                     
                                     DispatchQueue.main.async {
                                         // print ("response: \(data)")

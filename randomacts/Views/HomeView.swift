@@ -17,7 +17,7 @@ struct HomeView: View {
     @State private var Days7 = 0
     @State private var Days30 = 0
     @State private var Days90 = 0
-    
+    @State private var groupStats: [KGroupStats] = []
     
     let parentView : ContentView
     init(_ parentView: ContentView){
@@ -67,13 +67,36 @@ struct HomeView: View {
                 }.onAppear{
                     let stats = Statitiscs()
                     stats.GetUserStats(displayUserStats: displayUserStats, userId: parentView.localUser?.user.id ?? 0)
+                    let group = LocalGroup()
+                    group.GetMemberGroupsForStats(GroupStatsCompleted: displayUserGroupStats, ownerId: parentView.localUser?.user.id ?? 0)
                 }
-                Text("Group Stats")
-                Text("User ZZZ has completed X Tasks in the last 7 days.")
-            }
-            .onTapGesture {
-                print("you been tapped!")
-                
+                VStack{
+                    Text("Group Stats").bold()
+                    HStack{
+                        
+                        Text("7-D")
+                        Text("30-D")
+                        Text("90-D")
+                    }.frame(maxWidth: .infinity, alignment: .trailing)
+                        .font(.title3)
+                        
+                        .foregroundColor(Color.green)
+                        .bold()
+                    List(groupStats){ item in
+                        
+                        HStack{
+                            Text("\(item.screenName)  -- ")
+                            Text("\(item.counts[0])")
+                            Text(" | ")
+                            Text("\(item.counts[1])")
+                            Text(" | ")
+                            Text("\(item.counts[2])")
+                        }
+                                
+                        
+                    }
+                    
+                }
             }
             Button("View Master List of KTasks"){
                 parentView.isShowingDetailView.toggle()
@@ -137,6 +160,13 @@ struct HomeView: View {
         Days7 = taskCounts[0]
         Days30 = taskCounts[1]
         Days90 = taskCounts[2]
+    }
+    
+    func displayUserGroupStats(groupStats: [KGroupStats]){
+        self.groupStats = groupStats
+        for groupStat in groupStats{
+            print("groupStat: \(groupStat)")
+        }
     }
 }
 
