@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct UserTaskView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @State var textColor: Color = Color.black
     @Environment(\.dismiss) var dismiss
     @Binding var userTask : UserTask?
     @Binding var didUpdate: Bool
@@ -59,22 +61,29 @@ struct UserTaskView: View {
                 .foregroundStyle(Color.gray)
                 .padding()
             Divider()
-            if (selectedDateString != ""){
-                HStack{
-                    Label("Completed:", systemImage: "calendar")
-                    Text("\(selectedDateString)")
-                }.padding()
-                Divider()
-            }
-            else{
-                Group{
-                    Toggle(isOn: $isCalendarVisible){
-                        Text("Set Completed Date?")
-                    }
-                    if (isCalendarVisible){
-                        DatePickerView(self)
-                    }
-                }.padding()
+            Group{
+                if (selectedDateString != ""){
+                    HStack{
+                        Label("Completed:", systemImage: "calendar")
+                        Text("\(selectedDateString)")
+                    }.padding()
+                    Divider()
+                }
+                else{
+                    Group{
+                        Toggle(isOn: $isCalendarVisible){
+                            Text("Set Completed Date?")
+                        }
+                        if (isCalendarVisible){
+                            DatePickerView(self)
+                        }
+                    }.padding()
+                }
+            }.foregroundStyle(textColor)
+                .onAppear(){
+                    setColorMode()
+                }.onAppear{
+                setColorMode()
             }
             
             TextEditor(text: Binding(get: { userTask?.note ?? "" }) {
@@ -112,6 +121,12 @@ struct UserTaskView: View {
     
     func updateComplete(result: String){
         print("update completed: \(result)")
+    }
+    
+    func setColorMode(){
+        self.textColor = { if (colorScheme == .dark){ return Color.white}
+            else{ return Color.black}
+        }()
     }
 }
 
