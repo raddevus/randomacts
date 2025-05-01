@@ -38,8 +38,12 @@ struct HistoryView: View {
                                     VStack(alignment: .leading){
                                         Group{
                                             VStack{
-                                                Text("\(String(item.created?.prefix(10) ?? "")) " )
-                                                    .fontWeight(.bold)
+                                                HStack{
+                                                    Text("\(String(item.created?.prefix(10) ?? ""))")
+                                                        .fontWeight(.bold)
+                                                    Spacer()
+                                                    Text("\(String(item.completed?.prefix(10) ?? ""))").fontWeight(.bold)
+                                                }
                                                 Text("\(item.description ?? "")")
                                                     .foregroundStyle(textColor)
                                                     .onAppear(){
