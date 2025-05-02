@@ -40,9 +40,9 @@ struct HistoryView: View {
                                             VStack{
                                                 HStack{
                                                     Text("\(String(item.created?.prefix(10) ?? ""))")
-                                                        .fontWeight(.bold)
+                                                        .fontWeight(.bold).font(.caption)
                                                     Spacer()
-                                                    Text("\(String(item.completed?.prefix(10) ?? ""))").fontWeight(.bold)
+                                                    Text("\(String(item.completed?.prefix(10) ?? ""))").fontWeight(.bold).font(.caption)
                                                 }
                                                 Text("\(item.description ?? "")")
                                                     .foregroundStyle(textColor)
