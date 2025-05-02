@@ -11,6 +11,7 @@ struct ProfileView: View {
     
     let pv : ContentView
     @State var currentGroups = [KGroup]()
+    @State var groupGuid : String = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -49,23 +50,31 @@ struct ProfileView: View {
                 DisclosureGroup("Group Membership"){
                     Text("Add A Group")
                     VStack{
-                        
                         TextField("Name", text: pv.$groupName)
                         TextField("Password", text:pv.$groupPwd)
-                        Button("Create"){
-                            if pv.groupName == "" || pv.groupPwd == ""{
-                                pv.isGroupCreateError = true
-                            }
-                            var group = LocalGroup()
-                            group.CreateGroup(GroupCreated: pv.GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
+                        TextField("Group Guid", text:$groupGuid);
+                        HStack{
+                            Button("Create"){
+                                if pv.groupName == "" || pv.groupPwd == ""{
+                                    pv.isGroupCreateError = true
+                                }
+                                var group = LocalGroup()
+                                group.CreateGroup(GroupCreated: pv.GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
+                            }.buttonStyle(.bordered)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            Spacer()
+                            Button("Join"){
+                                print("Join group ...")
+                            }.buttonStyle(.bordered)
+                                .frame(maxWidth: .infinity, alignment: .center)
                         }
                         .alert("Name or Password Not Set!", isPresented: pv.$isGroupCreateError){
-                                        Button("OK"){
-                                            //add extra functionality when user clicks OK
-                                        }
-                                                                           } message:{
-                                        Text("Please make sure you provide a group anme and password.  Try again.")
-                                    }
+                            Button("OK"){
+                                //add extra functionality when user clicks OK
+                            }
+                                                               } message:{
+                            Text("Please make sure you provide a group name and password.  Try again.")
+                        }
 
                     }
                     DisclosureGroup("Member Groups (* Owner)"){
