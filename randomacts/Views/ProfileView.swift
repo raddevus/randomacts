@@ -89,25 +89,31 @@ struct ProfileView: View {
                         VStack{
                             List( currentGroups.indices,id: \.self){ index in
                                 let item = currentGroups[index]
-                                Text("\(item.name)\(item.ownerId == (pv.localUser?.user.id ?? 0) ? " *" : "")").onAppear{
-                                    print("counting : \(hiddenGroupGuid.count)")
-                                    hiddenGroupGuid.insert("\(item.guid):\(item.name)",at:0)
-                                }.onTapGesture {
-                                    setGroupValues(hiddenGroupGuid, index)
+                                HStack{
+                                    Text("\(item.name)\(item.ownerId == (pv.localUser?.user.id ?? 0) ? " *" : "")").onAppear{
+                                        print("counting : \(hiddenGroupGuid.count)")
+                                        hiddenGroupGuid.insert("\(item.guid):\(item.name)",at:0)
+                                    }.onTapGesture {
+                                        setGroupValues(hiddenGroupGuid, index)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "barcode.viewfinder")
+                                        .font(.system(size: 20)).onTapGesture {
+                                            displayGroupGuidQRCode(hiddenGroupGuid, index)
+                                        }
+                                        .padding(2)
+                                            .background(Color.green)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
                                 }
-                                
                             }
                             
                         }.onAppear(perform:{
                             var group = LocalGroup()
                             var allGroups: [KGroup] = []
                             group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "")
-                        }
-                                   
-                        )
-                        
+                        })
                     }
-
                 }
             }
             TextField("GUID", text: pv.$guidForLoadUser)
@@ -162,6 +168,14 @@ struct ProfileView: View {
         print("index: \(index) : \(hiddenGroupGuid[index])")
         UIPasteboard.general.string = String(hiddenGroupGuid[index].split(separator: ":")[0])
         showToastWithMessage("Copied Group GUID for  \(hiddenGroupGuid[index].split(separator: ":")[1]) to clipboard.")
+    }
+    
+    func displayGroupGuidQRCode(_ hiddenGroupGuid: [String], _ index: Int){
+        print("index: \(index) : \(hiddenGroupGuid[index])")
+    }
+    
+    func SetAlert(){
+        pv.isGroupCreateError = true
     }
     
     func getColorsForToast(){
