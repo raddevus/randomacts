@@ -12,6 +12,9 @@ struct ProfileView: View {
     let pv : ContentView
     @State var currentGroups = [KGroup]()
     @State var groupGuid : String = ""
+    @State private var hiddenGroupGuid: [String] = []
+    @State private var showGuidCopyToast = false
+    @State private var toastMessage = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -79,14 +82,21 @@ struct ProfileView: View {
                     }
                     DisclosureGroup("Member Groups (* Owner)"){
                         VStack{
-                            List(currentGroups){ item in
-                                Text("\(item.name)\(item.ownerId == (pv.localUser?.user.id ?? 0) ? " *" : "")")
-                                        
+                            List( currentGroups.indices,id: \.self){ index in
+                                let item = currentGroups[index]
+                                Text("\(item.name)\(item.ownerId == (pv.localUser?.user.id ?? 0) ? " *" : "")").onAppear{
+                                    print("counting : \(hiddenGroupGuid.count)")
+                                    hiddenGroupGuid.insert("\(item.guid):\(item.name)",at:0)
+                                }.onTapGesture {
+                                    print("index: \(index) : \(hiddenGroupGuid[index])")
+                                    UIPasteboard.general.string = hiddenGroupGuid[index]
+                                    showToastWithMessage("got \(hiddenGroupGuid[index].split(separator: ":")[1])")
+                                    
+                                }
                                 
                             }
                             
                         }.onAppear(perform:{
-                            print("test")
                             var group = LocalGroup()
                             var allGroups: [KGroup] = []
                             group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "")
@@ -94,7 +104,19 @@ struct ProfileView: View {
                                    
                         )
                         
-                    }
+                    }.overlay(
+                        Group {
+                            if showGuidCopyToast {
+                                Text(toastMessage)
+                                    .padding()
+                                    .background(Color.black.opacity(0.8))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                                    .transition(.opacity)
+                                    .animation(.easeInOut, value: showGuidCopyToast)
+                            }
+                        }
+                    )
 
                 }
             }
@@ -130,6 +152,14 @@ struct ProfileView: View {
                 Text("Profile")
                     .font(.system(size: 22, weight: .bold))
             }
+        }
+    }
+    
+    func showToastWithMessage(_ message: String) {
+        toastMessage = message
+        showGuidCopyToast = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            showGuidCopyToast = false
         }
     }
     
