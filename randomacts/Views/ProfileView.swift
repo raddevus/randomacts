@@ -15,9 +15,14 @@ struct ProfileView: View {
     @State private var hiddenGroupGuid: [String] = []
     @State private var showGuidCopyToast = false
     @State private var toastMessage = ""
+    @State private var bgColor : Color
+    @State private var fgColor : Color
     
     init(_ parentView: ContentView){
         self.pv = parentView
+        bgColor = Color.blue
+        fgColor = Color.white
+        print("\(bgColor) : \(fgColor) ")
     }
     
     var body: some View {
@@ -88,10 +93,7 @@ struct ProfileView: View {
                                     print("counting : \(hiddenGroupGuid.count)")
                                     hiddenGroupGuid.insert("\(item.guid):\(item.name)",at:0)
                                 }.onTapGesture {
-                                    print("index: \(index) : \(hiddenGroupGuid[index])")
-                                    UIPasteboard.general.string = hiddenGroupGuid[index]
-                                    showToastWithMessage("got \(hiddenGroupGuid[index].split(separator: ":")[1])")
-                                    
+                                    setGroupValues(hiddenGroupGuid, index)
                                 }
                                 
                             }
@@ -104,19 +106,7 @@ struct ProfileView: View {
                                    
                         )
                         
-                    }.overlay(
-                        Group {
-                            if showGuidCopyToast {
-                                Text(toastMessage)
-                                    .padding()
-                                    .background(Color.black.opacity(0.8))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(8)
-                                    .transition(.opacity)
-                                    .animation(.easeInOut, value: showGuidCopyToast)
-                            }
-                        }
-                    )
+                    }
 
                 }
             }
@@ -152,19 +142,52 @@ struct ProfileView: View {
                 Text("Profile")
                     .font(.system(size: 22, weight: .bold))
             }
-        }
+        }.overlay(
+            Group {
+                if showGuidCopyToast {
+                    
+                    Text(toastMessage)
+                        .padding()
+                        .background(self.bgColor)
+                        .foregroundColor(self.fgColor)
+                        .cornerRadius(8)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: showGuidCopyToast)
+                }
+            }
+        )
     }
     
+    func setGroupValues(_ hiddenGroupGuid: [String], _ index: Int){
+        print("index: \(index) : \(hiddenGroupGuid[index])")
+        UIPasteboard.general.string = String(hiddenGroupGuid[index].split(separator: ":")[0])
+        showToastWithMessage("Copied Group GUID for  \(hiddenGroupGuid[index].split(separator: ":")[1]) to clipboard.")
+    }
+    
+    func getColorsForToast(){
+        print("pv.colorTheme: \(pv.colorTheme)")
+        if pv.colorTheme == .dark {
+            print("it's dark - setting white")
+            self.bgColor = Color.white.opacity(0.8)
+            self.fgColor = Color.black
+        }
+        else{
+            self.bgColor = Color.black.opacity(0.8)
+            self.fgColor = Color.white
+        }
+    }
     func showToastWithMessage(_ message: String) {
         toastMessage = message
         showGuidCopyToast = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             showGuidCopyToast = false
         }
     }
     
     func RetrievedGroups(allGroups: [KGroup]){
-        print("allGroups: \(allGroups.count) : \(allGroups[0].name)")
+        if allGroups.count > 0 {
+            print("allGroups: \(allGroups.count) : \(allGroups[0].name)")
+        }
         currentGroups = allGroups
 
     }
