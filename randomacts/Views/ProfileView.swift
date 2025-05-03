@@ -17,6 +17,8 @@ struct ProfileView: View {
     @State private var toastMessage = ""
     @State private var bgColor : Color
     @State private var fgColor : Color
+    @State private var showBarcode = false
+    @State private var currentGroupGuid: String = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -100,11 +102,15 @@ struct ProfileView: View {
                                     Image(systemName: "barcode.viewfinder")
                                         .font(.system(size: 20)).onTapGesture {
                                             displayGroupGuidQRCode(hiddenGroupGuid, index)
+                                            showBarcode.toggle()
                                         }
                                         .padding(2)
                                             .background(Color.green)
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
+                                            .sheet(isPresented: $showBarcode) {
+                                                BarcodePopupView(currentGroupGuid)
+                                            }
                                 }
                             }
                             
@@ -172,6 +178,7 @@ struct ProfileView: View {
     
     func displayGroupGuidQRCode(_ hiddenGroupGuid: [String], _ index: Int){
         print("index: \(index) : \(hiddenGroupGuid[index])")
+        currentGroupGuid = String(hiddenGroupGuid[index].split(separator: ":")[0])
     }
     
     func SetAlert(){
@@ -204,6 +211,52 @@ struct ProfileView: View {
         }
         currentGroups = allGroups
 
+    }
+}
+import CoreImage.CIFilterBuiltins
+struct BarcodePopupView: View {
+    var qrCodeText: String
+    init(_ text: String) {
+        qrCodeText = text
+    }
+    func generateQRCode(from string: String) -> UIImage? {
+        let context = CIContext()
+        let filter = CIFilter.qrCodeGenerator()
+        filter.message = Data(string.utf8)
+        
+        if let outputImage = filter.outputImage {
+            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+                return UIImage(cgImage: cgImage)
+            }
+        }
+        return nil
+    }
+    var body: some View {
+        
+        
+        VStack {
+            if let qrCodeImage = generateQRCode(from: qrCodeText) {
+                Image(uiImage: qrCodeImage)
+                    .resizable()
+                    .interpolation(.none)
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+            } else {
+                Text("Failed to generate QR code")
+            }
+                }
+        VStack {
+            Text("Scan this Barcode")
+                .font(.headline)
+                .padding()
+            Image(systemName: "barcode.viewfinder")
+                .font(.system(size: 100))
+                .padding()
+            Button("Close") {
+                // Dismiss the sheet
+            }
+            .padding()
+        }
     }
 }
 
