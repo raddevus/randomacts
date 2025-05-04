@@ -96,7 +96,7 @@ struct ProfileView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                             Spacer()
                             Button("Join"){
-                                if pv.groupName == "" || pv.groupPwd == ""{
+                                if groupGuid == "" || pv.groupPwd == ""{
                                     groupErrorAlertTitle = "GUID or Password Not Set!"
                                     groupErrorMsg = "Please make sure you provide a group GUID and PASSWORD and try again."
                                     pv.isGroupCreateError = true
