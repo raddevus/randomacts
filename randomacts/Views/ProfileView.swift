@@ -270,11 +270,15 @@ struct BarcodePopupView: View {
                     Text("Failed to generate QR code \nPlease close & try again.")
                 }
             }
-            Section{
-                Text(message)
-                    .font(.headline)
-                    .foregroundStyle(.black)
-                    .padding()
+            VStack{
+                HStack{
+                    Text(message)
+                        .font(.headline)
+                        .foregroundStyle(.black)
+                        .padding(.horizontal).padding(50)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
                 Button("Close") {
                     dismiss()
                 }
