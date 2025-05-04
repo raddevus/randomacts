@@ -21,6 +21,8 @@ struct ProfileView: View {
     @State private var showUserIdBarcode = false
     @State public var currentGroupGuid: String = ""
     @State public var guidPopupMessage: String = ""
+    @State public var groupErrorMsg: String = ""
+    @State public var groupErrorAlertTitle = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -79,10 +81,12 @@ struct ProfileView: View {
                     VStack{
                         TextField("Name", text: pv.$groupName)
                         TextField("Password", text:pv.$groupPwd)
-                        TextField("Group Guid", text:$groupGuid);
+                        TextField("Group GUID", text:$groupGuid);
                         HStack{
                             Button("Create"){
                                 if pv.groupName == "" || pv.groupPwd == ""{
+                                    groupErrorAlertTitle = "Name or Password Not Set!"
+                                    groupErrorMsg = "Please make sure you provide a group NAME and PASSWORD and try again. \nThe GUID will be generated for you."
                                     pv.isGroupCreateError = true
                                     return
                                 }
@@ -92,16 +96,22 @@ struct ProfileView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                             Spacer()
                             Button("Join"){
+                                if pv.groupName == "" || pv.groupPwd == ""{
+                                    groupErrorAlertTitle = "GUID or Password Not Set!"
+                                    groupErrorMsg = "Please make sure you provide a group GUID and PASSWORD and try again."
+                                    pv.isGroupCreateError = true
+                                    return
+                                }
                                 print("Join group ...")
                             }.buttonStyle(.bordered)
                                 .frame(maxWidth: .infinity, alignment: .center)
                         }
-                        .alert("Name or Password Not Set!", isPresented: pv.$isGroupCreateError){
+                        .alert(groupErrorAlertTitle, isPresented: pv.$isGroupCreateError){
                             Button("OK"){
                                 //add extra functionality when user clicks OK
                             }
-                                                               } message:{
-                            Text("Please make sure you provide a group name and password.  Try again.")
+                                                       } message:{
+                            Text(groupErrorMsg)
                         }
 
                     }
