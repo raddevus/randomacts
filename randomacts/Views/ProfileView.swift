@@ -282,10 +282,6 @@ struct BarcodePopupView: View {
                 .padding()
             }
         }
-        VStack {
-           Text("TEST")
-        }
-        
     }
 }
 
