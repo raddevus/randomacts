@@ -251,6 +251,10 @@ struct ProfileView: View {
         currentGroups = allGroups
 
     }
+    
+    func JoinGroup(success: Bool){
+        print("completed the join group: \(success)")
+    }
 }
 import CoreImage.CIFilterBuiltins
 struct BarcodePopupView: View {

@@ -25,6 +25,11 @@ struct KGroupResponse : Decodable{
     public let allGroups: [KGroup]
 }
 
+struct JoinGroupResponse: Decodable{
+    let success: Bool?
+    public let group: KGroup
+}
+
 struct KGroup: Codable, Identifiable{
     var id: Int64
     var ownerId: Int64
@@ -200,8 +205,8 @@ struct KGroup: Codable, Identifiable{
             return true
         }
         
-        func Join(RetrievedGroups: @escaping (_ groups: [KGroup]) ->(), userGuid: String) -> Bool{
-            let destinationUrl : String = "\(baseUrl)Group/GetMemberGroups?guid=\(userGuid.lowercased())"
+        func Join(JoinGroup: @escaping (_ success: Bool) ->(), userGuid: String, pwd: String) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/Join?guid=\(userGuid.lowercased())&pwd=\(pwd)"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")
@@ -215,13 +220,13 @@ struct KGroup: Codable, Identifiable{
                 if let data = data {
                     // print("data: \(data) \(Date())")
                                 do {
-                                    let response = try JSONDecoder().decode(KGroupResponse.self, from: data)
-                                    print("Decoded Groups properly.")
-                                    self.groups = response.allGroups
+                                    let response = try JSONDecoder().decode(JoinGroupResponse.self, from: data)
+                                    print("Joined Group")
+                                    //self.groups = response.success
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
-                                    RetrievedGroups(self.groups)
+                                    JoinGroup(response.success!)
                                     
                                     DispatchQueue.main.async {
                                         // print ("response: \(data)")
