@@ -84,6 +84,7 @@ struct ProfileView: View {
                             Button("Create"){
                                 if pv.groupName == "" || pv.groupPwd == ""{
                                     pv.isGroupCreateError = true
+                                    return
                                 }
                                 var group = LocalGroup()
                                 group.CreateGroup(GroupCreated: pv.GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
