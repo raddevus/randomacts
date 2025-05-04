@@ -18,7 +18,9 @@ struct ProfileView: View {
     @State private var bgColor : Color
     @State private var fgColor : Color
     @State private var showBarcode = false
-    @State public var currentGroupGuid: String = "jajaja"
+    @State private var showUserIdBarcode = false
+    @State public var currentGroupGuid: String = ""
+    @State public var guidPopupMessage: String = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -39,6 +41,21 @@ struct ProfileView: View {
                 HStack{
                     Label("UserId:", systemImage: "person.text.rectangle")
                     Text("\(pv.localUser?.user.guid ?? "")")
+                    Image(systemName: "barcode.viewfinder")
+                        .onTapGesture {
+                            currentGroupGuid = "\(pv.localUser?.user.guid ?? "")"
+                            guidPopupMessage = "Scan QR Code to share your UserId with another device."
+                            showUserIdBarcode.toggle()
+                            
+                        }.sheet(isPresented: $showUserIdBarcode) {
+                            BarcodePopupView(qrCodeText: $currentGroupGuid ,message: $guidPopupMessage)
+                            
+                        }
+                        .font(.system(size: 20))
+                        .padding(2)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
                 HStack{
                     Label("Email:", systemImage: "mail")
@@ -103,9 +120,14 @@ struct ProfileView: View {
                                     Image(systemName: "barcode.viewfinder")
                                         .onTapGesture {
                                             displayGroupGuidQRCode(hiddenGroupGuid,index)
+                                            guidPopupMessage = "Scan this QR Code to join your friend's RAOK group."
+                                            
+                                           
+                                            showBarcode.toggle()
                                         }
                                         .sheet(isPresented: $showBarcode) {
-                                            BarcodePopupView(qrCodeText: $currentGroupGuid)
+                                           
+                                            BarcodePopupView(qrCodeText: $currentGroupGuid, message: $guidPopupMessage)
                                         }
                                         .font(.system(size: 20))
                                         .padding(2)
@@ -181,8 +203,7 @@ struct ProfileView: View {
     func displayGroupGuidQRCode(_ hiddenGroupGuid: [String], _ index: Int){
         print("dgqrcode - index: \(index) : \(hiddenGroupGuid[index])")
        currentGroupGuid = String(hiddenGroupGuid[index].split(separator: ":")[0])
-        showBarcode.toggle()
-        //BarcodePopupView(qrCodeText: $currentGroupGuid)
+        
     }
     
     func SetAlert(){
@@ -221,7 +242,8 @@ import CoreImage.CIFilterBuiltins
 struct BarcodePopupView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var qrCodeText: String
-
+    @Binding var message: String
+    
     func generateQRCode(from string: String) -> UIImage? {
         let context = CIContext()
         let filter = CIFilter.qrCodeGenerator()
@@ -249,7 +271,7 @@ struct BarcodePopupView: View {
                 }
             }
             Section{
-                Text("Scan this QR Code to join your friend's RAOK group.")
+                Text(message)
                     .font(.headline)
                     .foregroundStyle(.black)
                     .padding()
