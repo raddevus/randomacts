@@ -205,8 +205,8 @@ struct KGroup: Codable, Identifiable{
             return true
         }
         
-        func Join(JoinGroup: @escaping (_ success: Bool) ->(), userGuid: String, pwd: String) -> Bool{
-            let destinationUrl : String = "\(baseUrl)Group/Join?guid=\(userGuid.lowercased())&pwd=\(pwd)"
+        func Join(JoinGroup: @escaping (_ success: Bool) ->(), userGuid: String, pwd: String, userId:Int64) -> Bool{
+            let destinationUrl : String = "\(baseUrl)Group/Join?guid=\(userGuid.lowercased())&pwd=\(pwd)&joinerId=\(userId)"
             
             guard let url = URL(string: destinationUrl ) else {
                 print("Invalid URL")
@@ -239,6 +239,7 @@ struct KGroup: Codable, Identifiable{
                                 }catch {
                                     print("\(error)")
                                     print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                                   JoinGroup(false)
                                 }
                 }
                 else{

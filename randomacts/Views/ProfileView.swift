@@ -95,6 +95,7 @@ struct ProfileView: View {
                                 }
                                 var group = LocalGroup()
                                 group.CreateGroup(GroupCreated: pv.GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
+                                ClearAllGroupTextEntry()
                             }.buttonStyle(.bordered)
                                 .frame(maxWidth: .infinity, alignment: .center)
                             Spacer()
@@ -104,8 +105,10 @@ struct ProfileView: View {
                                     groupErrorMsg = "Please make sure you provide a group GUID and PASSWORD and try again."
                                     pv.isGroupCreateError = true
                                     return
+                                    
                                 }
-                                print("Join group ...")
+                                JoinGroup()
+                                
                             }.buttonStyle(.bordered)
                                 .frame(maxWidth: .infinity, alignment: .center)
                         }
@@ -208,6 +211,11 @@ struct ProfileView: View {
         )
     }
     
+    func JoinGroup(){
+        var group = LocalGroup()
+        group.Join(JoinGroup: self.JoinGroup,userGuid: groupGuid, pwd: pv.groupPwd, userId: pv.localUser?.user.id ?? 0)
+    }
+    
     func setGroupValues(_ hiddenGroupGuid: [String], _ index: Int){
         print("setGroupValues - index: \(index) : \(hiddenGroupGuid[index])")
         UIPasteboard.general.string = String(hiddenGroupGuid[index].split(separator: ":")[0])
@@ -254,6 +262,20 @@ struct ProfileView: View {
     
     func JoinGroup(success: Bool){
         print("completed the join group: \(success)")
+        if (success){
+            showToastWithMessage( "Joined Group Successfully")
+            ClearAllGroupTextEntry()
+        }
+        else{
+            showToastWithMessage( "Failed to Join Group")
+        }
+    }
+    
+    func ClearAllGroupTextEntry(){
+        pv.groupName = ""
+        pv.groupPwd = ""
+        groupGuid = ""
+        
     }
 }
 import CoreImage.CIFilterBuiltins
