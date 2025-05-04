@@ -18,7 +18,7 @@ struct ProfileView: View {
     @State private var bgColor : Color
     @State private var fgColor : Color
     @State private var showBarcode = false
-    @State private var currentGroupGuid: String = ""
+    @State public var currentGroupGuid: String = "jajaja"
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -99,18 +99,19 @@ struct ProfileView: View {
                                         setGroupValues(hiddenGroupGuid, index)
                                     }
                                     Spacer()
+                                    
                                     Image(systemName: "barcode.viewfinder")
-                                        .font(.system(size: 20)).onTapGesture {
-                                            displayGroupGuidQRCode(hiddenGroupGuid, index)
-                                            showBarcode.toggle()
+                                        .onTapGesture {
+                                            displayGroupGuidQRCode(hiddenGroupGuid,index)
                                         }
+                                        .sheet(isPresented: $showBarcode) {
+                                            BarcodePopupView(qrCodeText: $currentGroupGuid)
+                                        }
+                                        .font(.system(size: 20))
                                         .padding(2)
-                                            .background(Color.green)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .sheet(isPresented: $showBarcode) {
-                                                BarcodePopupView(currentGroupGuid)
-                                            }
+                                        .background(Color.green)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
                                 }
                             }
                             
@@ -118,6 +119,7 @@ struct ProfileView: View {
                             var group = LocalGroup()
                             var allGroups: [KGroup] = []
                             group.GetMemberGroups(RetrievedGroups:RetrievedGroups, userGuid: pv.localUser?.user.guid ?? "")
+                            
                         })
                     }
                 }
@@ -171,14 +173,16 @@ struct ProfileView: View {
     }
     
     func setGroupValues(_ hiddenGroupGuid: [String], _ index: Int){
-        print("index: \(index) : \(hiddenGroupGuid[index])")
+        print("setGroupValues - index: \(index) : \(hiddenGroupGuid[index])")
         UIPasteboard.general.string = String(hiddenGroupGuid[index].split(separator: ":")[0])
         showToastWithMessage("Copied Group GUID for  \(hiddenGroupGuid[index].split(separator: ":")[1]) to clipboard.")
     }
     
     func displayGroupGuidQRCode(_ hiddenGroupGuid: [String], _ index: Int){
-        print("index: \(index) : \(hiddenGroupGuid[index])")
-        currentGroupGuid = String(hiddenGroupGuid[index].split(separator: ":")[0])
+        print("dgqrcode - index: \(index) : \(hiddenGroupGuid[index])")
+       currentGroupGuid = String(hiddenGroupGuid[index].split(separator: ":")[0])
+        showBarcode.toggle()
+        //BarcodePopupView(qrCodeText: $currentGroupGuid)
     }
     
     func SetAlert(){
@@ -215,10 +219,9 @@ struct ProfileView: View {
 }
 import CoreImage.CIFilterBuiltins
 struct BarcodePopupView: View {
-    var qrCodeText: String
-    init(_ text: String) {
-        qrCodeText = text
-    }
+    @Environment(\.dismiss) private var dismiss
+    @Binding var qrCodeText: String
+
     func generateQRCode(from string: String) -> UIImage? {
         let context = CIContext()
         let filter = CIFilter.qrCodeGenerator()
@@ -232,31 +235,35 @@ struct BarcodePopupView: View {
         return nil
     }
     var body: some View {
-        
-        
+
         VStack {
-            if let qrCodeImage = generateQRCode(from: qrCodeText) {
-                Image(uiImage: qrCodeImage)
-                    .resizable()
-                    .interpolation(.none)
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            } else {
-                Text("Failed to generate QR code")
-            }
+            Section{
+                if let qrCodeImage = generateQRCode(from: qrCodeText) {
+                    Image(uiImage: qrCodeImage)
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                } else {
+                    Text("Failed to generate QR code \nPlease close & try again.")
                 }
-        VStack {
-            Text("Scan this Barcode")
-                .font(.headline)
-                .padding()
-            Image(systemName: "barcode.viewfinder")
-                .font(.system(size: 100))
-                .padding()
-            Button("Close") {
-                // Dismiss the sheet
             }
-            .padding()
+            Section{
+                Text("Scan this QR Code to join your friend's RAOK group.")
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                    .padding()
+                Button("Close") {
+                    dismiss()
+                }
+                .foregroundStyle(.blue)
+                .padding()
+            }
         }
+        VStack {
+           Text("TEST")
+        }
+        
     }
 }
 
