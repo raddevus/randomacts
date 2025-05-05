@@ -136,6 +136,10 @@ struct ContentView: View {
             isShowingGuidError = true
             return
         }
+        if UUID(uuidString: self.guidForLoadUser) == nil{
+            isShowingGuidError = true
+            return
+        }
         localUser = LocalUser(uuid:guidForLoadUser)
         guidForLoadUser = ""
         localUser?.Save(saveUser: saveUserToUserDefaults)
