@@ -186,7 +186,9 @@ struct ProfileView: View {
                     
                     
                     Button("Load User From GUID"){
+                        pv.password = userPassword
                         pv.processGuidEntry()
+                        userPassword = ""
                     }.buttonStyle(.bordered)
                         .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
                             Button("OK"){

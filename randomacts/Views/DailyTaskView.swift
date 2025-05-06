@@ -16,6 +16,14 @@ struct DailyTaskView: View {
     
     init(_ parentView: ContentView){
         self.parentView = parentView
+        if (allKTasks.count == 0){
+            loadAllKTasks(parentView.updateCurrentTask)
+        }
+        if parentView.currentUserTasks != nil{
+            removeUserSelectedTasks(allUserTasks: parentView.currentUserTasks!)
+            print("KTask count: \(allKTasks.count)")
+        }
+        userHasSelectedTask = false
     }
     
     var body: some View {

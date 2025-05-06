@@ -38,6 +38,7 @@ struct ContentView: View {
         print("####### BEGIN ########")
         print("init() is RUNNING...")
         self.localUser = createLocalUser()
+        self.localUser = createLocalUser()
         print("getting localUser...")
         
         print("got localUser....")
@@ -142,7 +143,9 @@ struct ContentView: View {
         }
         localUser = LocalUser(uuid:guidForLoadUser)
         guidForLoadUser = ""
-        localUser?.Save(saveUser: saveUserToUserDefaults)
+        localUser?.Save(saveUser: saveUserToUserDefaults,
+                        isScreenName: false,
+                        password: password)
         
         // empty userTasks so they'll be loaded again.
         currentUserTasks = nil

@@ -53,7 +53,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         user = User(self.uuid.uuidString.lowercased())
     }
     
-    func Save(saveUser: @escaping (_ user: LocalUser) ->(), isScreenName: Bool = false) -> Bool{
+    func Save(saveUser: @escaping (_ user: LocalUser) ->(), isScreenName: Bool = false, password: String = "") -> Bool{
         let destinationUrl : String = {
             if isScreenName{
                 "\(baseUrl)User/SetScreenName"
@@ -76,7 +76,13 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         }
         else{
             request.httpMethod = "POST"
-            let req = "guid=\(uuid.uuidString.lowercased())"
+            var pwdData : String = ""
+            if (password != ""){
+                pwdData = "&pwd=\(password)"
+                print("pwdData: \(pwdData)")
+            }
+            let req = "guid=\(uuid.uuidString.lowercased())\(pwdData)"
+            print("req: \(req)")
             request.httpBody =  Data(req.utf8)// req.data(using: String.Encoding.utf8)
         }
         
@@ -104,7 +110,6 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")
                                     //print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
-                                    
                                 }
                                 
                                 return
