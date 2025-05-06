@@ -24,6 +24,7 @@ struct ProfileView: View {
     @State public var groupErrorMsg: String = ""
     @State public var groupErrorAlertTitle = ""
     @State public var groupPopupTitle: String = ""
+    @State public var userPassword: String = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -44,6 +45,8 @@ struct ProfileView: View {
                 HStack{
                     Label("UserId:", systemImage: "person.text.rectangle")
                     Text("\(pv.localUser?.user.guid ?? "")").onTapGesture{
+                        UIPasteboard.general.string = "\(pv.localUser?.user.guid ?? "")"
+                        showToastWithMessage("Copied user GUID to the clipboard.")
                     }
                     
                     Image(systemName: "barcode.viewfinder")
@@ -170,31 +173,42 @@ struct ProfileView: View {
                     }
                 }
             }
-            TextField("GUID", text: pv.$guidForLoadUser)
-                .textInputAutocapitalization(.never)
-                .onSubmit{
-                    pv.processGuidEntry()
+            Group{
+                VStack{
+                    TextField("GUID", text: pv.$guidForLoadUser)
+                        .textInputAutocapitalization(.never)
+                        .onSubmit{
+                            pv.processGuidEntry()
+                        }
+                    TextField("Password", text: $userPassword)
+//                        .textInputAutocapitalization(.never)
+//                        .textInputSuggestions(.never)
+                    
+                    
+                    Button("Load User From GUID"){
+                        pv.processGuidEntry()
+                    }.buttonStyle(.bordered)
+                        .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
+                            Button("OK"){
+                                pv.guidForLoadUser = ""
+                            }
+                        } message:{
+                            Text("Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)")
+                        }
                 }
-            Button("Load User From GUID"){
-                pv.processGuidEntry()
-            }.buttonStyle(.bordered)
-                .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
-                    Button("OK"){
-                        pv.guidForLoadUser = ""
+                Section{
+                    Toggle(isOn: pv.$isDarkMode){
+                        Text("Dark Mode")
+                    }.onChange(of: pv.isDarkMode){
+                        if (pv.isDarkMode){
+                            pv.colorTheme = .dark
+                        }
+                        else{
+                            pv.colorTheme = .light
+                        }
+                        UserDefaults.standard.setValue(pv.isDarkMode, forKey: "isDarkMode")
                     }
-                } message:{
-                    Text("Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)")
                 }
-            Toggle(isOn: pv.$isDarkMode){
-                Text("Dark Mode")
-            }.onChange(of: pv.isDarkMode){
-                if (pv.isDarkMode){
-                    pv.colorTheme = .dark
-                }
-                else{
-                    pv.colorTheme = .light
-                }
-                UserDefaults.standard.setValue(pv.isDarkMode, forKey: "isDarkMode")
             }
         }
         .toolbar{
@@ -293,59 +307,6 @@ struct ProfileView: View {
         pv.groupPwd = ""
         groupGuid = ""
         
-    }
-}
-import CoreImage.CIFilterBuiltins
-struct BarcodePopupView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Binding var qrCodeText: String
-    @Binding var message: String
-    @Binding var title: String
-    
-    func generateQRCode(from string: String) -> UIImage? {
-        let context = CIContext()
-        let filter = CIFilter.qrCodeGenerator()
-        filter.message = Data(string.utf8)
-        
-        if let outputImage = filter.outputImage {
-            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
-                return UIImage(cgImage: cgImage)
-            }
-        }
-        return nil
-    }
-    var body: some View {
-        
-        VStack {
-            Text(title).font(.title).foregroundColor(.black)
-            Section{
-                if let qrCodeImage = generateQRCode(from: qrCodeText) {
-                    Image(uiImage: qrCodeImage)
-                        .resizable()
-                        .interpolation(.none)
-                        .scaledToFit()
-                        .frame(width: 200, height: 200)
-                } else {
-                    Text("Failed to generate QR code \nPlease close & try again.")
-                }
-            }
-            VStack{
-                
-                HStack{
-                    Text(message)
-                        .font(.headline)
-                        .foregroundStyle(.black)
-                        .padding(.horizontal).padding(50)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-                Button("Close") {
-                    dismiss()
-                }
-                .foregroundStyle(.blue)
-                .padding()
-            }
-        }
     }
 }
 
