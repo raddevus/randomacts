@@ -43,7 +43,9 @@ struct ProfileView: View {
                 }
                 HStack{
                     Label("UserId:", systemImage: "person.text.rectangle")
-                    Text("\(pv.localUser?.user.guid ?? "")")
+                    Text("\(pv.localUser?.user.guid ?? "")").onTapGesture{
+                    }
+                    
                     Image(systemName: "barcode.viewfinder")
                         .onTapGesture {
                             currentGroupGuid = "\(pv.localUser?.user.guid ?? "")"
@@ -66,10 +68,6 @@ struct ProfileView: View {
                     Label("Email:", systemImage: "mail")
                     TextField("email", text:pv.$email)
                 }
-                HStack{
-                    Label("Password:", systemImage:"lock.shield")
-                    TextField("password", text: pv.$password)
-                }
                 
                 Button("Save User Data"){
                     pv.localUser!.user.screenName=pv.screenName
@@ -77,6 +75,15 @@ struct ProfileView: View {
                 }.buttonStyle(.bordered)
                     .frame(maxWidth: .infinity, alignment: .center)
                 
+            }
+            Section{
+                HStack{
+                    Label("Password:", systemImage:"lock.shield")
+                    TextField("password", text: pv.$password)
+                    Button("Save"){
+                        pv.localUser?.SetPassword(AfterPasswordSet: AfterPasswordSet, userGuid: pv.localUser!.user.guid, pwd: pv.password)
+                    }
+                }
             }
             Section{
                 DisclosureGroup("Group Membership"){
@@ -209,6 +216,16 @@ struct ProfileView: View {
                 }
             }
         )
+    }
+    
+    func AfterPasswordSet(isSuccess: Bool){
+        if (isSuccess){
+            showToastWithMessage("Password was successfully set.")
+            pv.$password.wrappedValue = pv.localUser!.user.pwdHash ?? "***"
+        }
+        else{
+            showToastWithMessage("Could not set the password, please try again.")
+        }
     }
     
     func JoinGroup(){

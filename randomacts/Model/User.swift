@@ -16,7 +16,7 @@ struct User: Codable{
     var id: Int64
     var roleId: Int64
     var guid: String
-    var screenName: String
+    var screenName: String?
     var pwdHash: String?
     var email: String?
     var created: String?
@@ -71,7 +71,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         if isScreenName{
             request.httpMethod = "POST"
             
-            let finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(user.screenName)"
+            let finalData = "guid=\(uuid.uuidString.lowercased())&screenName=\(user.screenName ?? "")"
             request.httpBody = finalData.data(using: String.Encoding.utf8)
         }
         else{
@@ -172,6 +172,52 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                             }catch {
                                 print("\(error) \(response ?? URLResponse())")
                                 print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                            }
+            }
+            else{
+                print("I failed")
+                
+            }
+        }.resume()
+        
+        return true
+    }
+    
+    func SetPassword(AfterPasswordSet: @escaping (_ isSaved: Bool) ->(), userGuid: String, pwd: String) -> Bool{
+        let destinationUrl : String = "\(baseUrl)User/SetPassword?guid=\(userGuid.lowercased())&pwd=\(pwd)"
+        
+        guard let url = URL(string: destinationUrl ) else {
+            print("Invalid URL")
+            return false
+        }
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                // print("data: \(data) \(Date())")
+                            do {
+                                let response = try JSONDecoder().decode(RetVal.self, from: data)
+                                print("Decoded Groups properly.")
+                                self.user = response.user
+                                //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
+                                print("SAVING SELF!!")
+
+                                AfterPasswordSet(response.success ?? false)
+                                
+                                DispatchQueue.main.async {
+                                    // print ("response: \(data)")
+                                    // print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                    
+                                }
+                                
+                                return
+                                
+                            }catch {
+                                print("\(error)")
+                                print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                                AfterPasswordSet(false)
                             }
             }
             else{

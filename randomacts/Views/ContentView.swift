@@ -93,7 +93,7 @@ struct ContentView: View {
         if let data = try? JSONEncoder().encode(inUser) {
             UserDefaults.standard.set(data, forKey: "localUser")
         }
-        self.screenName = inUser.user.screenName
+        self.screenName = inUser.user.screenName ?? ""
         self.email = inUser.user.email ?? ""
         self.password = inUser.user.pwdHash ?? ""
     }
