@@ -31,6 +31,8 @@ struct ContentView: View {
     @State public var groupName = ""
     @State public var groupPwd = ""
     @State public var isGroupCreateError = false
+    @State public var toastMessage = ""
+    @State public var displayToast = false
     
     @State public var localUser: LocalUser?
         
@@ -96,6 +98,18 @@ struct ContentView: View {
         self.screenName = inUser.user.screenName ?? ""
         self.email = inUser.user.email ?? ""
         self.password = inUser.user.pwdHash ?? ""
+        print("[[[[ user id: \(inUser.user.id) ]]]]")
+        if inUser.user.id == 0{
+            showToastWithMessage("No valid user was loaded. Please try again with valid GUID & Password.")
+        }
+    }
+    
+    func showToastWithMessage(_ message: String) {
+        toastMessage = message
+        displayToast = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            displayToast = false
+        }
     }
     
     func updateUserScreenName(inUser: LocalUser){
@@ -196,7 +210,20 @@ struct ContentView: View {
             }.tabItem{
                 Label("Profile", systemImage: "person")
             }
-        }
+        }.overlay(
+            Group {
+                if displayToast {
+                    
+                    Text(toastMessage)
+                        .padding()
+                        .background(.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: displayToast)
+                }
+            }
+        )
         .onAppear{
             setColorTheme()
             print("displaying PROFILE!")
