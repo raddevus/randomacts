@@ -38,7 +38,6 @@ struct ContentView: View {
         print("####### BEGIN ########")
         print("init() is RUNNING...")
         self.localUser = createLocalUser()
-        self.localUser = createLocalUser()
         print("getting localUser...")
         
         print("got localUser....")

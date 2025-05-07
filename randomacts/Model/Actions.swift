@@ -30,7 +30,7 @@ var allDescriptions = Set<String>()
 var results = [Action]()
 
 var prodBaseUrl = "https://newlibre.com/kind/api/";
-var macminiIp = "176";
+var macminiIp = "158";
 var maclaptopIp = "186";
 var devBaseUrl = "http://192.168.5.\(macminiIp):7103/";
 var baseUrl = devBaseUrl;
