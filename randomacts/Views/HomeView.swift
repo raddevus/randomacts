@@ -70,32 +70,46 @@ struct HomeView: View {
                     let group = LocalGroup()
                     group.GetMemberGroupsForStats(GroupStatsCompleted: displayUserGroupStats, ownerId: parentView.localUser?.user.id ?? 0)
                 }
-                VStack{
-                    Text("Group Stats").bold()
-                    HStack{
-                        
-                        Text("7-D")
-                        Text("30-D")
-                        Text("90-D")
-                    }.frame(maxWidth: .infinity, alignment: .trailing)
-                        .font(.title3)
-                        
+                if groupStats.count > 0{
+                    VStack{
+                        Text("Group Stats").bold()
+                        HStack {
+                            Text("User")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Text("7D")
+                                Spacer()
+                                Text("30D")
+                                Spacer()
+                                Text("90D")
+                            }
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .font(.caption)
                         .foregroundColor(Color.green)
                         .bold()
-                    List(groupStats){ item in
-                        
-                        HStack{
-                            Text("\(item.screenName)  -- ")
-                            Text("\(item.counts[0])")
-                            Text(" | ")
-                            Text("\(item.counts[1])")
-                            Text(" | ")
-                            Text("\(item.counts[2])")
+                        List(groupStats){ item in
+                            
+                            HStack{
+                                Text("\(item.screenName)")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                HStack{
+                                    Spacer()
+                                    Text("\(item.counts[0])")
+                                    Spacer()
+                                    Text("\(item.counts[1])")
+                                    Spacer()
+                                    Text("\(item.counts[2])")
+                                }.frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            
+                            
                         }
-                                
                         
                     }
-                    
                 }
             }
             Button("View Master List of KTasks"){
