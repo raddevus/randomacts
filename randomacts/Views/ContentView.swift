@@ -44,7 +44,6 @@ struct ContentView: View {
         
         print("got localUser....")
         print("screenName INIT(): \(screenName )")
-        
     }
     
     func setColorTheme(){

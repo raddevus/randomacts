@@ -7,6 +7,8 @@ struct BarcodePopupView: View {
     @Binding var message: String
     @Binding var title: String
     
+    @Binding var colorTheme: ColorScheme
+    
     func generateQRCode(from string: String) -> UIImage? {
         let context = CIContext()
         let filter = CIFilter.qrCodeGenerator()
@@ -22,7 +24,8 @@ struct BarcodePopupView: View {
     var body: some View {
         
         VStack {
-            Text(title).font(.title).foregroundColor(.black)
+            Text("Current mode: \(colorTheme == .light ? "Light" : "Dark")").foregroundColor(.black)
+            Text(title).font(.title).foregroundColor(colorTheme == .light ? .black : .white)
             Section{
                 if let qrCodeImage = generateQRCode(from: qrCodeText) {
                     Image(uiImage: qrCodeImage)
@@ -32,6 +35,7 @@ struct BarcodePopupView: View {
                         .frame(width: 200, height: 200)
                 } else {
                     Text("Failed to generate QR code \nPlease close & try again.")
+                        .foregroundColor(colorTheme == .light ? .black : .white)
                 }
             }
             VStack{
@@ -39,7 +43,7 @@ struct BarcodePopupView: View {
                 HStack{
                     Text(message)
                         .font(.headline)
-                        .foregroundStyle(.black)
+                        .foregroundColor(colorTheme == .light ? .black : .white)
                         .padding(.horizontal).padding(50)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -50,6 +54,6 @@ struct BarcodePopupView: View {
                 .foregroundStyle(.blue)
                 .padding()
             }
-        }
+        }.environment(\.colorScheme, $colorTheme.wrappedValue)
     }
 }
