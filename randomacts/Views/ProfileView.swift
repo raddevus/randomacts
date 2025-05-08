@@ -212,6 +212,10 @@ struct ProfileView: View {
                     }
                 }
             }
+            HStack {
+               Text("Current App Version:")
+               Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown")
+           }.font(.caption)
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {

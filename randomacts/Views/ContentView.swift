@@ -102,6 +102,9 @@ struct ContentView: View {
         if inUser.user.id == 0{
             showToastWithMessage("No valid user was loaded. Please try again with valid GUID & Password.")
         }
+        else{
+            showToastWithMessage("The account was successfully loaded.")
+        }
     }
     
     func showToastWithMessage(_ message: String) {
