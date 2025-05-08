@@ -57,3 +57,7 @@ struct BarcodePopupView: View {
         }.environment(\.colorScheme, $colorTheme.wrappedValue)
     }
 }
+
+#Preview{
+    BarcodePopupView(qrCodeText:.constant("test"), message:.constant("my message"),title:.constant("supreme"),colorTheme: .constant(.light))
+}
