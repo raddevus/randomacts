@@ -105,8 +105,7 @@ struct ProfileView: View {
                                     return
                                 }
                                 var group = LocalGroup()
-                                group.CreateGroup(GroupCreated: pv.GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
-                                ClearAllGroupTextEntry()
+                                group.CreateGroup(GroupCreated: GroupCreated, userId: pv.localUser?.user.id ?? 0, groupName: pv.groupName, pwd: pv.groupPwd)
                             }.buttonStyle(.bordered)
                                 .frame(maxWidth: .infinity, alignment: .center)
                             Spacer()
@@ -297,6 +296,17 @@ struct ProfileView: View {
         }
         currentGroups = allGroups
 
+    }
+    
+    func GroupCreated(group: KGroup){
+        if (group.id == 0){
+            // couldn't add the group
+            showToastWithMessage( "Failed to Create Group\nPlease try again.")
+            return
+        }
+        currentGroups.append(group)
+        showToastWithMessage( "Group Created Successfully")
+        ClearAllGroupTextEntry()
     }
     
     func JoinGroup(success: Bool){

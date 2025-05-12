@@ -239,9 +239,6 @@ struct ContentView: View {
         }
         .environment(\.colorScheme, $colorTheme.wrappedValue)
         }
-    func GroupCreated(group: KGroup){
-        print("## group ##  --> \(group)")
-    }
 }
 
 #Preview {

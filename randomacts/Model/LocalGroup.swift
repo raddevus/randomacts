@@ -85,9 +85,9 @@ struct KGroup: Codable, Identifiable{
                 if let data = data {
                     // print("data: \(data) \(Date())")
                                 do {
-                                    let response = try JSONDecoder().decode(KGroup.self, from: data)
+                                    let response = try JSONDecoder().decode(JoinGroupResponse.self, from: data)
                                     print("Decoded UserStats properly.")
-                                    self.group = response
+                                    self.group = response.group
                                     //print("Success retrieve! \(String(decoding: data, as: UTF8.self))")
                                     print("SAVING SELF!!")
 
@@ -108,6 +108,7 @@ struct KGroup: Codable, Identifiable{
                 }
                 else{
                     print("I failed")
+                    GroupCreated(KGroup("invalid-group"))
                     
                 }
             }.resume()
