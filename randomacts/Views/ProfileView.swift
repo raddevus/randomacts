@@ -58,8 +58,7 @@ struct ProfileView: View {
                             
                         }.sheet(isPresented: $showUserIdBarcode) {
                             BarcodePopupView(qrCodeText: $currentGroupGuid ,message: $guidPopupMessage,
-                                title: $groupPopupTitle,
-                                colorTheme:pv.$colorTheme)
+                                title: $groupPopupTitle)
                             
                         }
                         .font(.system(size: 20))
@@ -154,8 +153,7 @@ struct ProfileView: View {
                                         }
                                         .sheet(isPresented: $showBarcode) {
                                             BarcodePopupView(qrCodeText: $currentGroupGuid, message: $guidPopupMessage,
-                                            title: $groupPopupTitle,
-                                                             colorTheme:pv.$colorTheme)
+                                            title: $groupPopupTitle)
                                         }
                                         .font(.system(size: 20))
                                         .padding(2)
