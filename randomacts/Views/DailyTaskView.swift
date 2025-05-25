@@ -50,7 +50,9 @@ struct DailyTaskView: View {
                     Button("Accept Task", systemImage:"square.and.arrow.up"){
                         if (parentView.localUser != nil){
                             let currentUserId = parentView.localUser?.user.id ?? 0
+                            print ("#*#*#*#*  \(currentUserId) #*#*#*#*")
                             let currentTaskId = parentView.currentTask?.id ?? 0
+    
                             if currentUserId > 0 && currentTaskId > 0{
                                 acceptUserTask(ShowUserTaskResult, userId: currentUserId,
                                                taskId: currentTaskId)
@@ -58,6 +60,9 @@ struct DailyTaskView: View {
                                 removeUserTaskById(taskId: currentTaskId)
                             }
                             
+                        }
+                        else{
+                            print ("#*#*#*#*  it was freaking NULL #*#*#*#*")
                         }
                     }.buttonStyle(.bordered)
                         .alert("Daily Task Saved", isPresented: $isSavePresented){
@@ -92,6 +97,12 @@ struct DailyTaskView: View {
             }
             
         }.onAppear(){
+            let currentUserId = parentView.localUser?.user.id ?? 0
+            if currentUserId == 0{
+                parentView.localUser?.setNewAccount()
+                parentView.localUser?.Save(saveUser: parentView.saveUserToUserDefaults,
+                                isScreenName: false)
+            }
             print("doing the thing!")
             print ("currentTaskText: \(parentView.currentTaskText)")
             if (parentView.currentTaskText == ""){

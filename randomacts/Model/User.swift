@@ -13,7 +13,7 @@ struct RetVal : Decodable{
 }
 
 struct User: Codable{
-    var id: Int64
+    public var id: Int64
     var roleId: Int64
     var guid: String
     var screenName: String?
@@ -41,6 +41,11 @@ class LocalUser: ObservableObject, Codable, Identifiable{
     
     var user: User
     private let uuid: UUID
+    private var isNewAccount: Bool = false
+    
+    func setNewAccount(){
+        isNewAccount = true
+    }
     
     init(){
         uuid = UUID()
@@ -53,7 +58,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         user = User(self.uuid.uuidString.lowercased())
     }
     
-    func Save(saveUser: @escaping (_ user: LocalUser) ->(), isScreenName: Bool = false, password: String = "") -> Bool{
+    func Save(saveUser: @escaping (_ user: LocalUser, _ isNewUserId: Bool ) ->(), isScreenName: Bool = false, password: String = "") -> Bool{
         let destinationUrl : String = {
             if isScreenName{
                 "\(baseUrl)User/SetScreenName"
@@ -86,7 +91,6 @@ class LocalUser: ObservableObject, Codable, Identifiable{
             request.httpBody =  Data(req.utf8)// req.data(using: String.Encoding.utf8)
         }
         
-        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
                 
@@ -104,8 +108,12 @@ class LocalUser: ObservableObject, Codable, Identifiable{
                                 self.user.created = response.user.created
                                 self.user.updated = response.user.updated
                                 print("SAVING SELF!!")
-
-                                saveUser(self)
+                                
+                                if self.isNewAccount {
+                                    saveUser(self, true)
+                                }else{
+                                    saveUser(self, false)
+                                }
                                 
                                 DispatchQueue.main.async {
                                     print ("response: \(data)")

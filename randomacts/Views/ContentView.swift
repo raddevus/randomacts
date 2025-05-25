@@ -87,7 +87,7 @@ struct ContentView: View {
         return user!
     }
     
-    func saveUserToUserDefaults(inUser: LocalUser){
+    func saveUserToUserDefaults(inUser: LocalUser, isNewAccount: Bool = false){
         print (" ## saveUserToUserDefaults ##")
         let outdata = (try? JSONEncoder().encode(inUser)) ?? Data()
         print("saveUserToDefaults -> \(String(decoding: outdata, as: UTF8.self))")
@@ -98,11 +98,17 @@ struct ContentView: View {
         self.email = inUser.user.email ?? ""
         self.password = inUser.user.pwdHash ?? ""
         print("[[[[ user id: \(inUser.user.id) ]]]]")
+        localUser = inUser
         if inUser.user.id == 0{
             showToastWithMessage("No valid user was loaded. Please try again with valid GUID & Password.")
         }
         else{
-            showToastWithMessage("The account was successfully loaded.")
+            if isNewAccount{
+                showToastWithMessage("The new account was successfully created.")
+            }
+            else{
+                showToastWithMessage("The account was successfully loaded.")
+            }
         }
     }
     
