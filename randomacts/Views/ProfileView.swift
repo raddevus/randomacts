@@ -41,6 +41,9 @@ struct ProfileView: View {
                     TextField(
                         "screenName",
                         text: pv.$screenName)
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.default)
+                        .disableAutocorrection(true)
                 }
                 HStack{
                     Label("UserId:", systemImage: "person.text.rectangle")
@@ -70,6 +73,9 @@ struct ProfileView: View {
                 HStack{
                     Label("Email:", systemImage: "mail")
                     TextField("email", text:pv.$email)
+                        .textInputAutocapitalization(.never)
+                            .keyboardType(.default)
+                            .disableAutocorrection(true)
                 }
                 
                 Button("Save User Data"){
@@ -83,6 +89,9 @@ struct ProfileView: View {
                 HStack{
                     Label("Password:", systemImage:"lock.shield")
                     TextField("password", text: pv.$password)
+                        .textInputAutocapitalization(.never)
+                            .keyboardType(.default)
+                            .disableAutocorrection(true)
                     Button("Save"){
                         pv.localUser?.SetPassword(AfterPasswordSet: AfterPasswordSet, userGuid: pv.localUser!.user.guid, pwd: pv.password)
                     }
@@ -93,8 +102,17 @@ struct ProfileView: View {
                     Text("Add A Group")
                     VStack{
                         TextField("Name", text: pv.$groupName)
+                            .textInputAutocapitalization(.never)
+                                .keyboardType(.default)
+                                .disableAutocorrection(true)
                         TextField("Password", text:pv.$groupPwd)
-                        TextField("Group GUID", text:$groupGuid);
+                            .textInputAutocapitalization(.never)
+                                .keyboardType(.default)
+                                .disableAutocorrection(true)
+                        TextField("Group GUID", text:$groupGuid)
+                            .textInputAutocapitalization(.never)
+                                .keyboardType(.default)
+                                .disableAutocorrection(true)
                         HStack{
                             Button("Create"){
                                 if pv.groupName == "" || pv.groupPwd == ""{
@@ -180,6 +198,9 @@ struct ProfileView: View {
                             pv.processGuidEntry()
                         }
                     TextField("Password", text: $userPassword)
+                        .textInputAutocapitalization(.never)
+                            .keyboardType(.default)
+                            .disableAutocorrection(true)
 //                        .textInputAutocapitalization(.never)
 //                        .textInputSuggestions(.never)
                     
