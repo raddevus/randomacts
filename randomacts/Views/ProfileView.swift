@@ -201,9 +201,7 @@ struct ProfileView: View {
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
-//                        .textInputAutocapitalization(.never)
-//                        .textInputSuggestions(.never)
-                    
+                 
                     
                     Button("Load User From GUID"){
                         pv.password = userPassword
@@ -236,6 +234,18 @@ struct ProfileView: View {
                Text("Current App Version:")
                Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown")
            }.font(.caption)
+            DisclosureGroup("About..."){
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("•").bold().padding(.top, -12)
+                        Text("App idea and random tasks written by Dr. Stephen C. Smith - VA")
+                    }
+                    HStack{
+                        Text("•").bold()
+                        Text("App layout, code and webApi by Roger Deutsch - OH")
+                    }
+                }.font(.caption)
+            }
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
