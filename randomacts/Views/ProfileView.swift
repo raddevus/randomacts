@@ -201,12 +201,15 @@ struct ProfileView: View {
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
+                    TextField("email", text:pv.$email)
+                        .textInputAutocapitalization(.never)
+                            .keyboardType(.default)
+                            .disableAutocorrection(true)
                  
                     
-                    Button("Load User From GUID"){
-                        pv.password = userPassword
-                        pv.processGuidEntry()
-                        userPassword = ""
+                    Button("Load User"){
+    handleLoadUserButtonClick(isEmpty: pv.guidForLoadUser.isEmpty,                                                  email:pv.email)
+                        
                     }.buttonStyle(.bordered)
                         .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
                             Button("OK"){
@@ -266,6 +269,19 @@ struct ProfileView: View {
                 }
             }
         )
+    }
+    
+    func handleLoadUserButtonClick(isEmpty: Bool, email: String){
+        pv.password = userPassword
+        if (isEmpty){
+            // use the load by email method
+            pv.processGuidEntry(email:email)
+        }
+        else{
+            // attempt to load by guid
+            pv.processGuidEntry()
+        }
+        userPassword = ""
     }
     
     func AfterPasswordSet(isSuccess: Bool){

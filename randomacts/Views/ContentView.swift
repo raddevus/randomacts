@@ -153,21 +153,27 @@ struct ContentView: View {
         return LocalUser()
     }
     
-    func processGuidEntry(){
-        if guidForLoadUser.count != 36{
-            isShowingGuidError = true
-            return
+    func processGuidEntry(email: String? = nil){
+        if email != nil{
+            localUser?.RecoverAccount(saveUser: saveUserToUserDefaults,
+                email:email!,
+                password: password)
         }
-        if UUID(uuidString: self.guidForLoadUser) == nil{
-            isShowingGuidError = true
-            return
+        else{
+            if guidForLoadUser.count != 36{
+                isShowingGuidError = true
+                return
+            }
+            if UUID(uuidString: self.guidForLoadUser) == nil{
+                isShowingGuidError = true
+                return
+            }
+            localUser = LocalUser(uuid:guidForLoadUser)
+            guidForLoadUser = ""
+            localUser?.Save(saveUser: saveUserToUserDefaults,
+                            isScreenName: false,
+                            password: password)
         }
-        localUser = LocalUser(uuid:guidForLoadUser)
-        guidForLoadUser = ""
-        localUser?.Save(saveUser: saveUserToUserDefaults,
-                        isScreenName: false,
-                        password: password)
-        
         // empty userTasks so they'll be loaded again.
         currentUserTasks = nil
         // empty the currentTaskText & KTasks so all will be reloaded

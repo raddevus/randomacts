@@ -136,6 +136,69 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         return true
     }
     
+    func RecoverAccount(saveUser: @escaping (_ user: LocalUser, _ isNewUserId: Bool ) ->(), email: String, password: String) -> Bool{
+        let destinationUrl : String = {
+             "\(baseUrl)User/RecoverAccount"
+        }()
+        
+        guard let url = URL(string: destinationUrl ) else {
+            print("Invalid URL")
+            return false
+        }
+        var request = URLRequest(url: url)
+   
+        request.httpMethod = "POST"
+        var pwdData : String = ""
+        if (password != ""){
+            pwdData = "&pwd=\(password)"
+            print("pwdData: \(pwdData)")
+        }
+        let req = "&email=\(email)\(pwdData)"
+        print("req: \(req)")
+        request.httpBody =  Data(req.utf8)// req.data(using: String.Encoding.utf8)
+           
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                
+                print("data: \(data) \(Date())")
+                            do {
+                                let response = try JSONDecoder().decode(RetVal.self, from: data)
+                                print("calling user.Save()...")
+                                self.user.id = response.user.id
+                                print("got userId = \(self.user.id)")
+                                self.user.guid = response.user.guid
+                                // print("self.user.id ====> \(self.user.id)")
+                                self.user.roleId = response.user.roleId
+                                self.user.screenName = response.user.screenName
+                                self.user.pwdHash = response.user.pwdHash
+                                self.user.email = response.user.email
+                                self.user.created = response.user.created
+                                self.user.updated = response.user.updated
+                                print("SAVING SELF!!")
+                                //RecoverAccount sends false to saveuser, bec it is loaded an existing user.
+                                saveUser(self, false)
+                                                                
+                                DispatchQueue.main.async {
+                                    print ("response: \(data)")
+                                    //print("SUCCESS: \(String(decoding: data, as: UTF8.self))")
+                                }
+                                
+                                return
+                                
+                            }catch {
+                                print("\(error)")
+                                print("CATCH: \(String(decoding: data, as: UTF8.self))")
+                            }
+            }
+            else{
+                print("I failed")
+                
+            }
+        }.resume()
+        
+        return true
+    }
+    
     func Save(saveUser: @escaping (_ user: LocalUser) ->(), pwd: String, email: String) -> Bool{
         let destinationUrl : String = "\(baseUrl)User/SetUser"
         
@@ -195,7 +258,7 @@ class LocalUser: ObservableObject, Codable, Identifiable{
         
         return true
     }
-    
+        
     func SetPassword(AfterPasswordSet: @escaping (_ isSaved: Bool) ->(), userGuid: String, pwd: String) -> Bool{
         let destinationUrl : String = "\(baseUrl)User/SetPassword?guid=\(userGuid.lowercased())&pwd=\(pwd)"
         
