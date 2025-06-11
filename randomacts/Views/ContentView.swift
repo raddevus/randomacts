@@ -155,6 +155,7 @@ struct ContentView: View {
     
     func processGuidEntry(email: String? = nil){
         if email != nil{
+            localUser = LocalUser()
             localUser?.RecoverAccount(saveUser: saveUserToUserDefaults,
                 email:email!,
                 password: password)

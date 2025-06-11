@@ -25,6 +25,7 @@ struct ProfileView: View {
     @State public var groupErrorAlertTitle = ""
     @State public var groupPopupTitle: String = ""
     @State public var userPassword: String = ""
+    @State public var emailAddr: String = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -201,14 +202,14 @@ struct ProfileView: View {
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
-                    TextField("email", text:pv.$email)
+                    TextField("email", text:$emailAddr)
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
                  
                     
                     Button("Load User"){
-    handleLoadUserButtonClick(isEmpty: pv.guidForLoadUser.isEmpty,                                                  email:pv.email)
+    handleLoadUserButtonClick(isEmpty: pv.guidForLoadUser.isEmpty,                                                  email:emailAddr)
                         
                     }.buttonStyle(.bordered)
                         .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
@@ -282,6 +283,7 @@ struct ProfileView: View {
             pv.processGuidEntry()
         }
         userPassword = ""
+        emailAddr = ""
     }
     
     func AfterPasswordSet(isSuccess: Bool){
