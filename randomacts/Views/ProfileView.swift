@@ -26,6 +26,8 @@ struct ProfileView: View {
     @State public var groupPopupTitle: String = ""
     @State public var userPassword: String = ""
     @State public var emailAddr: String = ""
+    @State public var loadUserErrMsg = ""
+    @State public var loadUesTitleMsg = ""
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -212,12 +214,12 @@ struct ProfileView: View {
     handleLoadUserButtonClick(isEmpty: pv.guidForLoadUser.isEmpty,                                                  email:emailAddr)
                         
                     }.buttonStyle(.bordered)
-                        .alert("GUID Is Invalid!", isPresented: pv.$isShowingGuidError){
+                        .alert(loadUesTitleMsg, isPresented: pv.$isShowingGuidError){
                             Button("OK"){
                                 pv.guidForLoadUser = ""
                             }
                         } message:{
-                            Text("Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)")
+                            Text(loadUserErrMsg)
                         }
                 }
                 Section{
@@ -241,12 +243,10 @@ struct ProfileView: View {
             DisclosureGroup("About..."){
                 VStack(alignment: .leading){
                     HStack{
-                        Text("•").bold().padding(.top, -12)
-                        Text("App idea and random tasks written by Dr. Stephen C. Smith - VA")
+                        Text("✅ App idea and Daily Tasks written by Dr. Stephen C. Smith - VA")
                     }
                     HStack{
-                        Text("•").bold()
-                        Text("App layout, code and webApi by Roger Deutsch - OH")
+                        Text("✅ App layout, code and webApi by Roger Deutsch - OH")
                     }
                 }.font(.caption)
             }
@@ -273,12 +273,32 @@ struct ProfileView: View {
     }
     
     func handleLoadUserButtonClick(isEmpty: Bool, email: String){
+        if (emailAddr.isEmpty && userPassword.isEmpty && pv.guidForLoadUser.isEmpty ){
+            loadUserErrMsg = "Please provide a valid GUID and optional PASSWORD or a valid EMAIL address and a required PASSWORD"
+            loadUesTitleMsg = "Please Provide Values"
+            pv.isShowingGuidError = true
+            return
+        }
+        if (emailAddr.isEmpty && pv.guidForLoadUser.isEmpty ){
+            loadUserErrMsg = "Nothing can be accomplished with only a PASSWORD!\nPlease provide a valid GUID and optional PASSWORD or a valid EMAIL address and a required PASSWORD"
+            loadUesTitleMsg = "Please Provide Values"
+            pv.isShowingGuidError = true
+            return
+        }
+        if (!emailAddr.isEmpty && userPassword.isEmpty ){
+            loadUserErrMsg = "When trying to load the User Profile using an EMAIL address you must supply a PASSWORD."
+            loadUesTitleMsg = "Please Provide A Password"
+            pv.isShowingGuidError = true
+            return
+        }
         pv.password = userPassword
         if (isEmpty){
             // use the load by email method
             pv.processGuidEntry(email:email)
         }
         else{
+            loadUserErrMsg = "Please enter a valid GUID & try again. (A valid GUID will be exactly 36 characters long & contain numbers, dashes & only lowercase characters.)"
+            loadUesTitleMsg = "GUID Is Invalid!"
             // attempt to load by guid
             pv.processGuidEntry()
         }

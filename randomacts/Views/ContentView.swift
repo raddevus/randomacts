@@ -161,6 +161,7 @@ struct ContentView: View {
                 password: password)
         }
         else{
+            
             if guidForLoadUser.count != 36{
                 isShowingGuidError = true
                 return
