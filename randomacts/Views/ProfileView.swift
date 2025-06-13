@@ -28,6 +28,11 @@ struct ProfileView: View {
     @State public var emailAddr: String = ""
     @State public var loadUserErrMsg = ""
     @State public var loadUesTitleMsg = ""
+    @FocusState private var userPasswordHasFocus: Bool
+    @FocusState private var addGroupHasFocus: Bool
+    @FocusState private var userDataHasFocus: Bool
+    @FocusState private var loadUserHasFocus: Bool
+    
     
     init(_ parentView: ContentView){
         self.pv = parentView
@@ -44,6 +49,7 @@ struct ProfileView: View {
                     TextField(
                         "screenName",
                         text: pv.$screenName)
+                        .focused($userDataHasFocus)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.default)
                         .disableAutocorrection(true)
@@ -76,12 +82,14 @@ struct ProfileView: View {
                 HStack{
                     Label("Email:", systemImage: "mail")
                     TextField("email", text:pv.$email)
+                        .focused($userDataHasFocus)
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
                 }
                 
                 Button("Save User Data"){
+                    userDataHasFocus = false
                     pv.localUser!.user.screenName=pv.screenName
                     pv.localUser!.Save(saveUser: pv.updateUserScreenName, pwd: pv.password, email: pv.email)
                 }.buttonStyle(.bordered)
@@ -92,10 +100,12 @@ struct ProfileView: View {
                 HStack{
                     Label("Password:", systemImage:"lock.shield")
                     TextField("password", text: pv.$password)
+                        .focused($userPasswordHasFocus)
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
                     Button("Save"){
+                        userPasswordHasFocus = false
                         pv.localUser?.SetPassword(AfterPasswordSet: AfterPasswordSet, userGuid: pv.localUser!.user.guid, pwd: pv.password)
                     }
                 }
@@ -105,19 +115,23 @@ struct ProfileView: View {
                     Text("Add A Group")
                     VStack{
                         TextField("Name", text: pv.$groupName)
+                            .focused($addGroupHasFocus)
                             .textInputAutocapitalization(.never)
                                 .keyboardType(.default)
                                 .disableAutocorrection(true)
                         TextField("Password", text:pv.$groupPwd)
+                            .focused($addGroupHasFocus)
                             .textInputAutocapitalization(.never)
                                 .keyboardType(.default)
                                 .disableAutocorrection(true)
                         TextField("Group GUID", text:$groupGuid)
+                            .focused($addGroupHasFocus)
                             .textInputAutocapitalization(.never)
                                 .keyboardType(.default)
                                 .disableAutocorrection(true)
                         HStack{
                             Button("Create"){
+                                addGroupHasFocus = false
                                 if pv.groupName == "" || pv.groupPwd == ""{
                                     groupErrorAlertTitle = "Name or Password Not Set!"
                                     groupErrorMsg = "Please make sure you provide a group NAME and PASSWORD and try again. \nThe GUID will be generated for you."
@@ -196,21 +210,25 @@ struct ProfileView: View {
             Group{
                 VStack{
                     TextField("GUID", text: pv.$guidForLoadUser)
+                        .focused($loadUserHasFocus)
                         .textInputAutocapitalization(.never)
                         .onSubmit{
                             pv.processGuidEntry()
                         }
                     TextField("Password", text: $userPassword)
+                        .focused($loadUserHasFocus)
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
                     TextField("email", text:$emailAddr)
+                        .focused($loadUserHasFocus)
                         .textInputAutocapitalization(.never)
                             .keyboardType(.default)
                             .disableAutocorrection(true)
                  
                     
                     Button("Load User"){
+                        loadUserHasFocus = false
     handleLoadUserButtonClick(isEmpty: pv.guidForLoadUser.isEmpty,                                                  email:emailAddr)
                         
                     }.buttonStyle(.bordered)
