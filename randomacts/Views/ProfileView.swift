@@ -326,8 +326,13 @@ struct ProfileView: View {
     
     func AfterPasswordSet(isSuccess: Bool){
         if (isSuccess){
-            showToastWithMessage("Password was successfully set.")
+            
+            userPassword = pv.password
             pv.$password.wrappedValue = pv.localUser!.user.pwdHash ?? "***"
+            
+            pv.guidForLoadUser = pv.localUser?.user.guid ?? ""
+            pv.isLoadAfterSave = true
+            handleLoadUserButtonClick(isEmpty: false, email: "")
         }
         else{
             showToastWithMessage("Could not set the password, please try again.")

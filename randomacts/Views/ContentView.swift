@@ -33,6 +33,7 @@ struct ContentView: View {
     @State public var isGroupCreateError = false
     @State public var toastMessage = ""
     @State public var displayToast = false
+    @State public var isLoadAfterSave = false
     
     @State public var localUser: LocalUser?
         
@@ -107,7 +108,13 @@ struct ContentView: View {
                 showToastWithMessage("The new account was successfully created.")
             }
             else{
-                showToastWithMessage("The account was successfully loaded.")
+                if (isLoadAfterSave){
+                    isLoadAfterSave = false
+                    showToastWithMessage("The password was successfully saved and the account was reloaded.")
+                }
+                else{
+                    showToastWithMessage("The account was successfully loaded.")
+                }
             }
         }
     }
