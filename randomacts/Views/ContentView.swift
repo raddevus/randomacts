@@ -205,7 +205,7 @@ struct ContentView: View {
                 DailyTaskView(self)
             }
                 .tabItem{
-                    Label("Daily Task", systemImage:"calendar")
+                    Label("Daily Quote", systemImage:"calendar")
                 }
             // END 2nd TAB
             

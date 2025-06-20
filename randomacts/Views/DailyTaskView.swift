@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct DailyTaskView: View {
-    
+    @Environment(\.scenePhase) var scenePhase
     let parentView : ContentView
-    @State var isSavePresented = false
-    @State private var userHasSelectedTask = false
-    @State private var dailyTasksAvailable: Int = 0
+    
+    @State private var currentQuote = ""
+    @State private var lastQuoteDate = ""
+    @State private var quoteAuthor = ""
+    @State private var lastGotQuoteDate: String? = nil
     
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -26,100 +28,68 @@ struct DailyTaskView: View {
             removeUserSelectedTasks(allUserTasks: parentView.currentUserTasks!)
             print("KTask count: \(allKTasks.count)")
         }
-        userHasSelectedTask = false
+        
     }
     
     var body: some View {
         Form{
-            Section{
-                if parentView.isRetrievingData{
-                    ProgressView("Retrieving Tasks...")
-                    Spacer()
+            DisclosureGroup("Quote of the Day", isExpanded: parentView.$isQuoteDisplayed){
+                Text(currentQuote).font(.title)
+                Text(quoteAuthor).font(.title2)
+            }
+            .onAppear(){
+                setQuote()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("i'm active!")
+                    setQuote()
                 }
             }
-            Section{
-                HStack{
-
-                    Button("New Task", systemImage:"rosette"){
-                        loadAllKTasks(parentView.updateCurrentTask)
-                        userHasSelectedTask = false
-                    }.buttonStyle(.bordered)
-                    
-                    Spacer()
-                    
-                    Button("Accept Task", systemImage:"square.and.arrow.up"){
-                        if (parentView.localUser != nil){
-                            let currentUserId = parentView.localUser?.user.id ?? 0
-                            print ("#*#*#*#*  \(currentUserId) #*#*#*#*")
-                            let currentTaskId = parentView.currentTask?.id ?? 0
+        }
+        
+    }
     
-                            if currentUserId > 0 && currentTaskId > 0{
-                                acceptUserTask(ShowUserTaskResult, userId: currentUserId,
-                                               taskId: currentTaskId)
-                                userHasSelectedTask = true
-                                removeUserTaskById(taskId: currentTaskId)
-                            }
-                            
-                        }
-                        else{
-                            print ("#*#*#*#*  it was freaking NULL #*#*#*#*")
-                        }
-                    }.buttonStyle(.bordered)
-                        .alert("Daily Task Saved", isPresented: $isSavePresented){
-                            Button("OK"){
-                                // set the currentUserTasks to nil
-                                // so they will be loaded again
-                                // with new one
-                                // history tab is clicked by user again.
-                                parentView.currentUserTasks = nil
-                            }
-                        } message:{
-                            Text("DailyTask was saved to your UserTask History")
-                        }
-                }
-                Text(parentView.currentTaskText)
-                    .font(.title )
-                    .fontWeight(userHasSelectedTask ? .ultraLight : .regular)
-                    .foregroundStyle(userHasSelectedTask ? Color.gray : .primary )
-                if userHasSelectedTask {
-                    Text(Image(systemName:"checkmark.circle"))
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }
-                
-                Text(Image(systemName:"tray.full"))
-                + Text("  There are \(allKTasks.count) tasks available for selection.")
-                    .font(.footnote)
+    func setQuote(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        let currentDate = formatter.string(from: Date.now)
+        print("currentDate: \(currentDate)")
+        if !HasDailyQuoteBeenRetrieved(currentDate:currentDate){
+            print("Retrieving quote for \(currentDate)")
+            let q = QuoteX()
+            q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
+        }
+        else{
+            currentQuote = UserDefaults.standard.string(forKey: "currentQuote") ?? ""
+            quoteAuthor = UserDefaults.standard.string(forKey: "quoteAuthor") ?? ""
+            // handle situation if the user defaults are set wrong
+            if currentQuote == "" && quoteAuthor == ""{
+                let q = QuoteX()
+                q.GetQuote(setQuote: setQuoteText, iso8601Date: currentDate)
             }
-        }.toolbar{
-            ToolbarItem(placement: .navigationBarLeading) {
-                Text("Daily Task")
-                    .font(.system(size: 22, weight: .bold))
-            }
-            
-        }.onAppear(){
-            let currentUserId = parentView.localUser?.user.id ?? 0
-            if currentUserId == 0{
-                parentView.localUser?.setNewAccount()
-                parentView.localUser?.Save(saveUser: parentView.saveUserToUserDefaults,
-                                isScreenName: false)
-            }
-            print("doing the thing!")
-            print ("currentTaskText: \(parentView.currentTaskText)")
-            if (parentView.currentTaskText == ""){
-                if (parentView.currentUserTasks == nil){
-                    print(" ##### CURRENTUSERTASKS is NIL!!!!!! ######")
-                    loadUserTaskFromWebApi(pView: parentView, forceLoad: false)
-                }
-            }
-            let ctt = parentView.currentTaskText
-            parentView.currentTaskText = ""
-            parentView.currentTaskText = ctt
         }
     }
     
-    func ShowUserTaskResult(result: String){
-        print("userTask Result: \(result)")
-        isSavePresented = true
+    func HasDailyQuoteBeenRetrieved(currentDate: String) -> Bool{
+        lastGotQuoteDate = UserDefaults.standard.string(forKey: "gotQuoteDate")
+        if (lastGotQuoteDate == nil){
+            UserDefaults.standard.setValue(currentDate, forKey: "gotQuoteDate")
+            return false
+        }
+        print("last: \(lastGotQuoteDate ?? "") -- current: \(currentDate)")
+        if lastGotQuoteDate == currentDate{
+            return true
+        }
+        UserDefaults.standard.setValue(currentDate, forKey: "gotQuoteDate")
+        return false
+    }
+    
+    func setQuoteText(quote: String, author: String){
+        currentQuote = quote
+        quoteAuthor = "~ " + author
+        UserDefaults.standard.setValue(currentQuote, forKey:"currentQuote")
+        UserDefaults.standard.setValue(quoteAuthor, forKey:"quoteAuthor")
     }
 }
 
