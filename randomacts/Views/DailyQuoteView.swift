@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DailyTaskView: View {
+struct DailyQuoteView: View {
     @Environment(\.scenePhase) var scenePhase
     let parentView : ContentView
     
@@ -94,5 +94,5 @@ struct DailyTaskView: View {
 }
 
 #Preview {
-    DailyTaskView(ContentView())
+    DailyQuoteView(ContentView())
 }

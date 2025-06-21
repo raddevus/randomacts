@@ -202,7 +202,7 @@ struct ContentView: View {
             
             // Begin 2nd Tab
             NavigationStack{
-                DailyTaskView(self)
+                DailyQuoteView(self)
             }
                 .tabItem{
                     Label("Daily Quote", systemImage:"calendar")
