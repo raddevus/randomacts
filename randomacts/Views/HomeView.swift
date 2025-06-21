@@ -77,6 +77,7 @@ struct HomeView: View {
                                 // with new one
                                 // history tab is clicked by user again.
                                 parentView.currentUserTasks = nil
+                                userHasSelectedTask = false
                             }
                         } message:{
                             Text("DailyTask was saved to your UserTask History")
