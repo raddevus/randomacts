@@ -19,6 +19,14 @@ struct HomeView: View {
     @State private var userHasSelectedTask = false
     @State private var dailyTasksAvailable: Int = 0
     
+    let instructions = [
+            "Select a task from the list below.",
+            "Complete the task In Real Life (IRL).",
+            "Open the History tab & select the task",
+            "Add notes about your experience.",
+            "Set the task as Completed."
+        ]
+    
     let parentView : ContentView
     init(_ parentView: ContentView){
         self.parentView = parentView
@@ -34,7 +42,19 @@ struct HomeView: View {
                 Text("While each individual task might only take a few moments or cost a few dollars, the cumulative impact of your efforts, and the efforts of others using this app, will undoubtedly make the world a more positive place! In addition, research suggests completing tasks like these is likely to strength your connections with others, improve your mood, and possibly your health. If you are ready, let's get started!")
             }
             
-            
+            DisclosureGroup("Instructions") {
+                VStack(alignment: .leading, spacing: 8) {
+                 ForEach(Array(instructions.enumerated()), id: \.offset) { index, item in
+                 Text("\(index + 1). \(item)")
+                 .multilineTextAlignment(.leading)
+                 .lineLimit(nil)
+                 .fixedSize(horizontal: false, vertical: true)
+                 .frame(maxWidth: .infinity, alignment: .leading)
+                 //.padding(.leading, 30) // Indentation for wrapped lines
+                 .textSelection(.enabled)
+                 }
+                 }
+            }
             Section{
                 Text("Daily Tasks")
                     if parentView.isRetrievingData{
