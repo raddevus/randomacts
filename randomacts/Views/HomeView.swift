@@ -20,11 +20,11 @@ struct HomeView: View {
     @State private var dailyTasksAvailable: Int = 0
     
     let instructions = [
-            "Select a task from the list below.",
+            "Accept a task from the list below.",
             "Complete the task In Real Life (IRL).",
-            "Open the History tab & select the task",
+            "Tap the History tab & select the task.",
             "Add notes about your experience.",
-            "Set the task as Completed."
+            "Set the task as completed."
         ]
     
     let parentView : ContentView
